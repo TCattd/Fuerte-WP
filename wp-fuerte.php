@@ -67,7 +67,7 @@ if ( ! isset( $wpfuerte ) && empty( $wpfuerte ) ) {
 			'envato-market',
 		],
 	];
-	// ...to here.
+	// ...to here. Paste into your wp-config.php file, and tweak it as you like.
 }
 
 /**
