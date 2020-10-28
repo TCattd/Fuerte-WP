@@ -25,6 +25,7 @@ And, as WP Fuerte lives as a WordPress [Must Use plugin](https://wordpress.org/s
 - Restrict editing or deleting super users.
 - Disable ACF Custom Fields editor access for non super users.
 - Restrict access to some pages inside wp-admin, like plugins or theme uploads, for non super users. Restricted pages can be extended vía configuration.
+- Change WP sender email address to match WP installed domain, to avoid receiving WP emails as spam.
 
 ## How to install WP Fuerte
 
