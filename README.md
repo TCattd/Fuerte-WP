@@ -25,4 +25,4 @@ Edit and tweak the config array as needed.
 Please, open [an issue](https://github.com/TCattd/wp-fuerte/issues).
 
 ## Changelog
-[Available here](https://github.com/TCattd/wp-fuerte/blob/main/CHANGELOG.md).
+[Available here](https://github.com/TCattd/wp-fuerte/blob/master/CHANGELOG.md).
