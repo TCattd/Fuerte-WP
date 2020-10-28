@@ -41,12 +41,14 @@ if ( ! isset( $wpfuerte ) && empty( $wpfuerte ) ) {
 	$wpfuerte = [
 		'config' => [
 			'recovery_email'          => 'esteban@attitude.cl', // https://make.wordpress.org/core/2019/04/16/fatal-error-recovery-mode-in-5-2/
+			'autoupdate_core'         => true,
 			'autoupdate_plugins'      => true,
 			'autoupdate_themes'       => true,
 			'autoupdate_translations' => true,
+			'disable_update_email'    => true,
 		],
 		// user account's email address
-		'allowed_users'    => [
+		'super_users'    => [
 			'esteban@attitude.cl',
 		],
 		// $pagenow
@@ -76,11 +78,16 @@ function wpfuerte_main() {
 	/**
 	 * Disable email notification for updates
 	 */
-	add_filter( 'auto_core_update_send_email', '__return_false' );
+	if ( $wpfuerte['config']['disable_update_email'] === true ) {
+		add_filter( 'auto_core_update_send_email', '__return_false' );
+	}
 
 	/**
 	 * Themes & Plugins auto updates
 	 */
+	if ( $wpfuerte['config']['autoupdate_core'] === true ) {
+		add_filter( 'auto_update_core', '__return_true' );
+	}
 	if ( $wpfuerte['config']['autoupdate_plugins'] === true ) {
 		add_filter( 'auto_update_plugin', '__return_true' );
 	}
@@ -103,7 +110,7 @@ function wpfuerte_main() {
 	if ( is_admin() ) {
 		$current_user = wp_get_current_user();
 
-		if ( ! in_array( strtolower( $current_user->user_email ), $wpfuerte['allowed_users'] ) || WPFUERTE_FORCE === true ) {
+		if ( ! in_array( strtolower( $current_user->user_email ), $wpfuerte['super_users'] ) || WPFUERTE_FORCE === true ) {
 			// No Plugins/Theme upload/install/update/remove
 			define( 'DISALLOW_FILE_MODS', true );
 
@@ -133,7 +140,7 @@ function wpfuerte_main() {
 				if( ! empty( $_REQUEST['user_id'] ) && isset( $_REQUEST['user_id'] ) ) {
 					$user_info = get_userdata( $_REQUEST['user_id'] );
 
-					if ( in_array( strtolower( $user_info->user_email ), $wpfuerte['allowed_users'] ) ) {
+					if ( in_array( strtolower( $user_info->user_email ), $wpfuerte['super_users'] ) ) {
 						wp_die('Can\'t touch this.');
 						return false;
 					}
@@ -149,7 +156,7 @@ function wpfuerte_main() {
 						foreach ($_REQUEST['users'] as $user) {
 							$user_info = get_userdata( $user );
 
-							if ( in_array( strtolower( $user_info->user_email ), $wpfuerte['allowed_users'] ) ) {
+							if ( in_array( strtolower( $user_info->user_email ), $wpfuerte['super_users'] ) ) {
 								wp_die('Can\'t touch this.');
 								return false;
 							}
@@ -158,7 +165,7 @@ function wpfuerte_main() {
 						// Batch deletion
 						$user_info = get_userdata( $_REQUEST['user'] );
 
-						if ( in_array( strtolower( $user_info->user_email ), $wpfuerte['allowed_users'] ) ) {
+						if ( in_array( strtolower( $user_info->user_email ), $wpfuerte['super_users'] ) ) {
 							wp_die('Can\'t touch this.');
 							return false;
 						}
