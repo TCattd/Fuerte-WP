@@ -46,6 +46,7 @@ if ( ! isset( $wpfuerte ) && empty( $wpfuerte ) ) {
 			'autoupdate_themes'       => true,
 			'autoupdate_translations' => true,
 			'disable_update_email'    => true,
+			'sender_email_address'    => '', // if empty, no-reply@wpdomaininstallation.tld will be used
 		],
 		// user account's email address
 		'super_users'    => [
@@ -105,7 +106,31 @@ function wpfuerte_main() {
 		$email_data['to'] = $wpfuerte['config']['autoupdate_themes']['recovery_email'];
 		return $email_data;
 	});*/
-	define('RECOVERY_MODE_EMAIL', $wpfuerte['config']['autoupdate_themes']['recovery_email']);
+	define('RECOVERY_MODE_EMAIL', $wpfuerte['config']['recovery_email']);
+
+	/**
+	 * Change WP sender email address
+	 */
+	add_filter('wp_mail_from', function() {
+		global $wpfuerte;
+
+		if ( empty( $wpfuerte['config']['sender_email_address'] ) ) {
+			$sender_email_address = 'no-reply@' . parse_url(home_url())['host'];
+		} else {
+			$sender_email_address = $wpfuerte['config']['sender_email_address'];
+		}
+
+		return $sender_email_address;
+	});
+	add_filter('wp_mail_from_name', function() {
+		global $wpfuerte;
+
+		if ( empty( $wpfuerte['config']['sender_email_address'] ) ) {
+			$sender_email_address = 'no-reply@' . parse_url(home_url())['host'];
+		} else {
+			$sender_email_address = $wpfuerte['config']['sender_email_address'];
+		}
+	});
 
 	if ( is_admin() ) {
 		$current_user = wp_get_current_user();
