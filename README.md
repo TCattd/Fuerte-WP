@@ -12,7 +12,7 @@ WP Fuerte will limit some administrators from access critical WordPress areas th
 
 And, as WP Fuerte lives as a WordPress [Must Use plugin](https://wordpress.org/support/article/must-use-plugins/), it cannot be disabled unless you have access to the server (FTP, SFTP, SSH, cPanel, etc.). 
 
-## What WP Fuerte does
+## Features
 
 - Enable and force auto updates for WP core.
 - Enable and force auto updates for plugins.
