@@ -8,7 +8,7 @@ Because even if you choose to set an user only as Editor, some plugins require u
 
 Not only because admins can edit every single configuration inside WordPress. Administrators can also upload plugins or themes, and with them, compromise your WordPress installation.
 
-WP Fuerte will limit administrator from access critical WordPress areas that you can define.
+WP Fuerte will limit some administrators from access critical WordPress areas that you can define.
 
 And, as WP Fuerte lives as a WordPress [Must Use plugin](https://wordpress.org/support/article/must-use-plugins/), it cannot be disabled unless you have access to the server (FTP, SFTP, SSH, cPanel, etc.). 
 
