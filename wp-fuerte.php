@@ -111,26 +111,8 @@ function wpfuerte_main() {
 	/**
 	 * Change WP sender email address
 	 */
-	add_filter('wp_mail_from', function() {
-		global $wpfuerte;
-
-		if ( empty( $wpfuerte['config']['sender_email_address'] ) ) {
-			$sender_email_address = 'no-reply@' . parse_url(home_url())['host'];
-		} else {
-			$sender_email_address = $wpfuerte['config']['sender_email_address'];
-		}
-
-		return $sender_email_address;
-	});
-	add_filter('wp_mail_from_name', function() {
-		global $wpfuerte;
-
-		if ( empty( $wpfuerte['config']['sender_email_address'] ) ) {
-			$sender_email_address = 'no-reply@' . parse_url(home_url())['host'];
-		} else {
-			$sender_email_address = $wpfuerte['config']['sender_email_address'];
-		}
-	});
+	add_filter('wp_mail_from', 'wpfuerte_sender_email_address');
+	add_filter('wp_mail_from_name', 'wpfuerte_sender_email_address');
 
 	if ( is_admin() ) {
 		$current_user = wp_get_current_user();
@@ -140,7 +122,7 @@ function wpfuerte_main() {
 			define( 'DISALLOW_FILE_MODS', true );
 
 			// Remove menu items
-			add_action( 'admin_menu', 'wpfuerte_remove_wpadmin_menus' );
+			add_action( 'admin_menu', 'wpfuerte_remove_menus' );
 
 			// Disallowed wp-admin scripts
 			if ( in_array( $pagenow, $wpfuerte['restricted_scripts'] ) && ! wp_doing_ajax() ) {
@@ -205,7 +187,7 @@ function wpfuerte_main() {
 }
 add_action( 'plugins_loaded', 'wpfuerte_main' );
 
-function wpfuerte_remove_wpadmin_menus() {
+function wpfuerte_remove_menus() {
 	global $wpfuerte;
 
 	foreach ( $wpfuerte['restricted_scripts'] as $item ) {
@@ -214,4 +196,16 @@ function wpfuerte_remove_wpadmin_menus() {
 
 	remove_submenu_page( 'options-general.php', 'mainwp_child_tab' ); // MainWP Child
 	remove_submenu_page( 'tools.php', 'export.php' ); // Export
+}
+
+function wpfuerte_sender_email_address() {
+	global $wpfuerte;
+
+	if ( empty( $wpfuerte['config']['sender_email_address'] ) ) {
+		$sender_email_address = 'no-reply@' . parse_url(home_url())['host'];
+	} else {
+		$sender_email_address = $wpfuerte['config']['sender_email_address'];
+	}
+
+	return $sender_email_address;
 }
