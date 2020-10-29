@@ -4,8 +4,8 @@
 - Now using a proper Class.
 - Added option to change WP sender email address.
 - Added configuration to remove custom submenu items (remove_submenu_page).
-- Force user creation and editing to use WP default strong password suggestion.
-- Prevent admin accounts creation or edition.
+- Force user creation and editing to use WP default strong password suggestion, for non super users.
+- Prevent admin accounts creation or edition, for non super users.
 - Customizable not allowed error message.
 
 ## 1.0.0 / 2020-10-27
