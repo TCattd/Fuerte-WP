@@ -1,11 +1,15 @@
 # Changelog
 
 ## 1.0.1 / 2020-10-29
-- Now using a proper Class
+- Now using a proper Class.
 - Added option to change WP sender email address.
+- Added configuration to remove custom submenu items (remove_submenu_page).
+- Force user creation and editing to use WP default strong password suggestion.
+- Prevent creation and edition of admin accounts.
+- Customizable not allowed error message.
 
 ## 1.0.0 / 2020-10-27
-- Initial release
+- Initial release.
 - Enable and force auto updates for WP core.
 - Enable and force auto updates for plugins.
 - Enable and force auto updates for themes.
