@@ -172,7 +172,7 @@ class WPFuerte {
 				add_filter( 'admin_footer', array( __CLASS__, 'custom_javascript' ) );
 
 				// Custom CSS
-				add_filter( 'admin_head', array( __CLASS__, 'custom_css' ) );
+				//add_filter( 'admin_head', array( __CLASS__, 'custom_css' ) );
 
 				// Remove menu items
 				add_filter( 'admin_menu', array( __CLASS__, 'remove_menus' ) );
