@@ -14,6 +14,7 @@ And, as WP Fuerte lives as a WordPress [Must Use plugin](https://wordpress.org/s
 
 ## Features
 
+- Configure your own super users that will not be affected by changes and tweaks applied by WP Fuerte.
 - Enable and force auto updates for WP core.
 - Enable and force auto updates for plugins.
 - Enable and force auto updates for themes.
