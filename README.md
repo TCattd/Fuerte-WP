@@ -28,6 +28,7 @@ And, as WP Fuerte lives as a WordPress [Must Use plugin](https://wordpress.org/s
 - Change WP sender email address to match WP installed domain, to avoid receiving WP emails as spam (assuming your domain SPF records are properly configured).
 - Force user creation and editing to use WP default strong password suggestion.
 - Prevent admin accounts creation or edition.
+- Customizable not allowed error message.
 
 ## How to install
 
