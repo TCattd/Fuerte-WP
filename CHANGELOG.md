@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.0.1 / 2020-10-29
+- Now using a proper Class
 - Added option to change WP sender email address.
 
 ## 1.0.0 / 2020-10-27

@@ -1,4 +1,6 @@
 <?php
+define('WPFUERTE_FORCE', false);
+
 /**
  * Plugin Name: WP Fuerte
  * Plugin URI: https://github.com/TCattd/wp-fuerte
@@ -27,26 +29,28 @@ if ( defined('WPFUERTE_DISABLE') ) {
 	return false;
 }
 
+/**
+ * To force skip super_users abilities, for testing
+ */
 if ( ! defined('WPFUERTE_FORCE') ) {
 	define('WPFUERTE_FORCE', false);
 }
 
-global $wpfuerte;
-
 /**
  * WP Fuerte default config array
  */
+global $wpfuerte;
 if ( ! isset( $wpfuerte ) && empty( $wpfuerte ) ) {
 	// Copy from here...
 	$wpfuerte = [
 		'config' => [
-			'recovery_email'          => 'esteban@attitude.cl', // https://make.wordpress.org/core/2019/04/16/fatal-error-recovery-mode-in-5-2/
+			'recovery_email'          => '', // if empty, dev@wpdomain.tld will be used
 			'autoupdate_core'         => true,
 			'autoupdate_plugins'      => true,
 			'autoupdate_themes'       => true,
 			'autoupdate_translations' => true,
 			'disable_update_email'    => true,
-			'sender_email_address'    => '', // if empty, no-reply@wpdomaininstallation.tld will be used
+			'sender_email'            => '', // if empty, no-reply@wpdomain.tld will be used
 		],
 		// user account's email address
 		'super_users'    => [
@@ -71,141 +75,208 @@ if ( ! isset( $wpfuerte ) && empty( $wpfuerte ) ) {
 }
 
 /**
- * TODO: Convert this to a proper Class
+ * Main WP Fuerte Class
  */
-function wpfuerte_main() {
-	global $wpfuerte, $pagenow;
+class WPFuerte {
+	/**
+	 * Plugin instance.
+	 *
+	 * @see get_instance()
+	 * @type object
+	 */
+	protected static $instance = NULL;
+
+	public $pagenow;
+	public $wpfuerte;
 
 	/**
-	 * Disable email notification for updates
+	 * Constructicon. Intentionally left public and empty, because Decepticons are bad.
 	 */
-	if ( $wpfuerte['config']['disable_update_email'] === true ) {
-		add_filter( 'auto_core_update_send_email', '__return_false' );
+	public function __construct() {}
+
+	/**
+	 * Access this plugin instance
+	 */
+	public static function get_instance() {
+		NULL === self::$instance and self::$instance = new self;
+
+		return self::$instance;
 	}
 
 	/**
-	 * Themes & Plugins auto updates
+	 * Init the plugin
 	 */
-	if ( $wpfuerte['config']['autoupdate_core'] === true ) {
-		add_filter( 'auto_update_core', '__return_true' );
-	}
-	if ( $wpfuerte['config']['autoupdate_plugins'] === true ) {
-		add_filter( 'auto_update_plugin', '__return_true' );
-	}
-	if ( $wpfuerte['config']['autoupdate_themes'] === true ) {
-		add_filter( 'auto_update_theme', '__return_true' );
-	}
-	if ( $wpfuerte['config']['autoupdate_themes'] === true ) {
-		add_filter( 'autoupdate_translations', '__return_true' );
+	public function init() {
+		global $wpfuerte, $pagenow;
+
+		$this->wpfuerte = $wpfuerte;
+		$this->pagenow  = $pagenow;
+
+		$this->main();
 	}
 
 	/**
-	 * Change recovery mode email
+	 * Main method
 	 */
-	/*add_filter( 'recovery_mode_email', function( $email_data ) {
-		$email_data['to'] = $wpfuerte['config']['autoupdate_themes']['recovery_email'];
-		return $email_data;
-	});*/
-	define('RECOVERY_MODE_EMAIL', $wpfuerte['config']['recovery_email']);
+	protected function main() {
+		/**
+		 * Disable email notification for updates
+		 */
+		if ( $this->wpfuerte['config']['disable_update_email'] === true ) {
+			add_filter( 'auto_core_update_send_email', '__return_false' );
+		}
 
-	/**
-	 * Change WP sender email address
-	 */
-	add_filter('wp_mail_from', 'wpfuerte_sender_email_address');
-	add_filter('wp_mail_from_name', 'wpfuerte_sender_email_address');
+		/**
+		 * Themes & Plugins auto updates
+		 */
+		if ( $this->wpfuerte['config']['autoupdate_core'] === true ) {
+			add_filter( 'auto_update_core', '__return_true' );
+		}
 
-	if ( is_admin() ) {
-		$current_user = wp_get_current_user();
+		if ( $this->wpfuerte['config']['autoupdate_plugins'] === true ) {
+			add_filter( 'auto_update_plugin', '__return_true' );
+		}
 
-		if ( ! in_array( strtolower( $current_user->user_email ), $wpfuerte['super_users'] ) || WPFUERTE_FORCE === true ) {
-			// No Plugins/Theme upload/install/update/remove
-			define( 'DISALLOW_FILE_MODS', true );
+		if ( $this->wpfuerte['config']['autoupdate_themes'] === true ) {
+			add_filter( 'auto_update_theme', '__return_true' );
+		}
 
-			// Remove menu items
-			add_action( 'admin_menu', 'wpfuerte_remove_menus' );
+		if ( $this->wpfuerte['config']['autoupdate_translations'] === true ) {
+			add_filter( 'autoupdate_translations', '__return_true' );
+		}
 
-			// Disallowed wp-admin scripts
-			if ( in_array( $pagenow, $wpfuerte['restricted_scripts'] ) && ! wp_doing_ajax() ) {
-				wp_die('Can\'t touch this.');
-				return false;
-			}
+		/**
+		 * Change recovery mode email
+		 */
+		add_filter( 'recovery_mode_email', array( __CLASS__, 'recovery_email_address') );
 
-			// Disallowed wp-admin pages
-			if ( in_array( $_REQUEST['page'], $wpfuerte['restricted_pages'] ) && ! wp_doing_ajax() ) {
-				wp_die('Can\'t touch this.');
-				return false;
-			}
+		/**
+		 * Change WP sender email address
+		 */
+		add_filter( 'wp_mail_from', array( __CLASS__, 'sender_email_address') );
+		add_filter( 'wp_mail_from_name', array( __CLASS__, 'sender_email_address') );
 
-			// No user switching
-			if ( $_REQUEST['action'] == 'switch_to_user' ) {
-				wp_die('Can\'t touch this.');
-				return false;
-			}
+		if ( is_admin() ) {
+			$current_user = wp_get_current_user();
 
-			// No protected users editing
-			if ( $pagenow == 'user-edit.php' ) {
-				if( ! empty( $_REQUEST['user_id'] ) && isset( $_REQUEST['user_id'] ) ) {
-					$user_info = get_userdata( $_REQUEST['user_id'] );
+			if ( ! in_array( strtolower( $current_user->user_email ), $this->wpfuerte['super_users'] ) || WPFUERTE_FORCE === true ) {
+				// No Plugins/Theme upload/install/update/remove
+				define( 'DISALLOW_FILE_MODS', true );
 
-					if ( in_array( strtolower( $user_info->user_email ), $wpfuerte['super_users'] ) ) {
-						wp_die('Can\'t touch this.');
-						return false;
-					}
+				// Remove menu items
+				add_filter( 'admin_menu', array( __CLASS__, 'remove_menus') );
+
+				// Disallowed wp-admin scripts
+				if ( in_array( $this->pagenow, $this->wpfuerte['restricted_scripts'] ) && ! wp_doing_ajax() ) {
+					wp_die('Can\'t touch this.');
+					return false;
 				}
-			}
 
-			// No protected users deletion
-			if ( $pagenow == 'users.php' ) {
-				if( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'delete' ) {
+				// Disallowed wp-admin pages
+				if ( isset( $_REQUEST['page'] ) && in_array( $_REQUEST['page'], $this->wpfuerte['restricted_pages'] ) && ! wp_doing_ajax() ) {
+					wp_die('Can\'t touch this.');
+					return false;
+				}
 
-					if( isset( $_REQUEST['users'] ) ) {
-						// Single user
-						foreach ($_REQUEST['users'] as $user) {
-							$user_info = get_userdata( $user );
+				// No user switching
+				if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'switch_to_user' ) {
+					wp_die('Can\'t touch this.');
+					return false;
+				}
 
-							if ( in_array( strtolower( $user_info->user_email ), $wpfuerte['super_users'] ) ) {
-								wp_die('Can\'t touch this.');
-								return false;
-							}
-						}
-					} elseif( isset( $_REQUEST['user'] ) ) {
-						// Batch deletion
-						$user_info = get_userdata( $_REQUEST['user'] );
+				// No protected users editing
+				if ( $this->pagenow == 'user-edit.php' ) {
+					if( isset( $_REQUEST['user_id'] ) && ! empty( $_REQUEST['user_id'] ) ) {
+						$user_info = get_userdata( $_REQUEST['user_id'] );
 
-						if ( in_array( strtolower( $user_info->user_email ), $wpfuerte['super_users'] ) ) {
+						if ( in_array( strtolower( $user_info->user_email ), $this->wpfuerte['super_users'] ) ) {
 							wp_die('Can\'t touch this.');
 							return false;
 						}
 					}
 				}
+
+				// No protected users deletion
+				if ( $this->pagenow == 'users.php' ) {
+					if( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'delete' ) {
+
+						if( isset( $_REQUEST['users'] ) ) {
+							// Single user
+							foreach ($_REQUEST['users'] as $user) {
+								$user_info = get_userdata( $user );
+
+								if ( in_array( strtolower( $user_info->user_email ), $this->wpfuerte['super_users'] ) ) {
+									wp_die('Can\'t touch this.');
+									return false;
+								}
+							}
+						} elseif( isset( $_REQUEST['user'] ) ) {
+							// Batch deletion
+							$user_info = get_userdata( $_REQUEST['user'] );
+
+							if ( in_array( strtolower( $user_info->user_email ), $this->wpfuerte['super_users'] ) ) {
+								wp_die('Can\'t touch this.');
+								return false;
+							}
+						}
+					}
+				}
+
+				// No ACF editor menu
+				add_filter('acf/settings/show_admin', '__return_false');
 			}
+		} // is_admin()
+	}
 
-			// No ACF editor menu
-			add_filter('acf/settings/show_admin', '__return_false');
+	/**
+	 * Set WP sender email address
+	 *
+	 * @return string 	email adress
+	 */
+	static function sender_email_address() {
+		global $wpfuerte;
+
+		if ( empty( $wpfuerte['config']['sender_email'] ) ) {
+			$sender_email_address = 'no-reply@' . parse_url(home_url())['host'];
+		} else {
+			$sender_email_address = $wpfuerte['config']['sender_email'];
 		}
-	} // is_admin()
-}
-add_action( 'plugins_loaded', 'wpfuerte_main' );
 
-function wpfuerte_remove_menus() {
-	global $wpfuerte;
-
-	foreach ( $wpfuerte['restricted_scripts'] as $item ) {
-		remove_menu_page( $item );
+		return $sender_email_address;
 	}
 
-	remove_submenu_page( 'options-general.php', 'mainwp_child_tab' ); // MainWP Child
-	remove_submenu_page( 'tools.php', 'export.php' ); // Export
-}
+	/**
+	 * Remove wp-admin menus
+	 */
+	static function remove_menus() {
+		global $wpfuerte;
 
-function wpfuerte_sender_email_address() {
-	global $wpfuerte;
+		foreach ( $wpfuerte['restricted_scripts'] as $item ) {
+			remove_menu_page( $item );
+		}
 
-	if ( empty( $wpfuerte['config']['sender_email_address'] ) ) {
-		$sender_email_address = 'no-reply@' . parse_url(home_url())['host'];
-	} else {
-		$sender_email_address = $wpfuerte['config']['sender_email_address'];
+		remove_submenu_page( 'options-general.php', 'mainwp_child_tab' ); // MainWP Child
+		remove_submenu_page( 'tools.php', 'export.php' ); // Export
 	}
 
-	return $sender_email_address;
-}
+	/**
+	 * Change WP recovery email adresss
+	 *
+	 * @return string 	email adress
+	 */
+	static function recovery_email_address() {
+		global $wpfuerte;
+
+		if ( empty( $wpfuerte['config']['recovery_email'] ) ) {
+			$recovery_email = 'dev@' . parse_url(home_url())['host'];
+		} else {
+			$recovery_email = $wpfuerte['config']['recovery_email'];
+		}
+
+		$email_data['to'] = $recovery_email;
+
+		return $email_data;
+	}
+} // Class WPFuerte
+
+add_action( 'plugins_loaded', array( WPFuerte::get_instance(), 'init' ) );
