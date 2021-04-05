@@ -1,5 +1,13 @@
 # Changelog
 
+## Work in progress
+- Added ability to suggest plugins for installation.
+- Added ability to suggest discouraged plugins for removal, with alternatives to install.
+
+## 1.0.2 / 2021-04-05
+- Added support for remove_menu_page.
+- Added ability to disable WordPress's new Application Passwords feature.
+
 ## 1.0.1 / 2020-10-29
 - Now using a proper Class.
 - Added option to change WP sender email address.

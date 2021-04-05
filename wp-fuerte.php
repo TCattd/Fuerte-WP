@@ -3,7 +3,7 @@
  * Plugin Name: WP Fuerte
  * Plugin URI: https://github.com/TCattd/wp-fuerte
  * Description: Limit access to critical WordPress's areas
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Esteban Cuevas
  * Author URI: https://actitud.xyz
  *
@@ -29,15 +29,15 @@ defined( 'ABSPATH' ) || die();
 /**
  * Exit if WPFUERTE_DISABLE is defined in wp-config.php
  */
-if ( defined('WPFUERTE_DISABLE') ) {
+if ( defined( 'WPFUERTE_DISABLE' ) ) {
 	return false;
 }
 
 /**
  * To force skip super_users abilities, for testing
  */
-if ( ! defined('WPFUERTE_FORCE') ) {
-	define('WPFUERTE_FORCE', false);
+if ( ! defined( 'WPFUERTE_FORCE' ) ) {
+	define( 'WPFUERTE_FORCE', false );
 }
 
 /**
@@ -48,7 +48,8 @@ if ( ! isset( $wpfuerte ) && empty( $wpfuerte ) ) {
 	// Copy from here...
 	$wpfuerte = [
 		'config' => [
-			'not_allowed_message'       => 'Can\'t touch this.',
+			'version'                   => '1.0.2',
+			'not_allowed_message'       => 'Access denied.',
 			'recovery_email'            => '', // if empty, dev@wpdomain.tld will be used
 			'sender_email'              => '', // if empty, no-reply@wpdomain.tld will be used
 			'autoupdate_core'           => true,
@@ -57,6 +58,7 @@ if ( ! isset( $wpfuerte ) && empty( $wpfuerte ) ) {
 			'autoupdate_translations'   => true,
 			'disable_update_email'      => true,
 			'disable_admin_create_edit' => true,
+			'disable_app_passwords'     => true,
 		],
 		// user account's email address
 		'super_users'    => [
@@ -76,10 +78,41 @@ if ( ! isset( $wpfuerte ) && empty( $wpfuerte ) ) {
 			'wp_stream_settings',
 			'envato-market',
 		],
+		// remove_menu_page, use: menu-slug
+		'removed_menus' => [
+			'backwpup', // BackWPup
+			'check-email-status', // Check & Log Email
+			'limit-login-attempts', // Limit Logins Attempts Reloaded
+		],
 		// remove_submenu_page, use: parent-menu-slug => submenu-slug
 		'removed_submenus' => [
 			'options-general.php' => 'mainwp_child_tab', // MainWP Child
 			'tools.php'           => 'export.php', // WP export tool
+		],
+		// format: slug-name/main-file.php
+		'recommended_plugins' => [
+			'imsanity/imsanity.php', // Imsanity
+			'safe-svg/safe-svg.php', // Save SVG
+			'limit-login-attempts-reloaded/limit-login-attempts-reloaded.php', // Limit Login Attempts Reloaded
+		],
+		// format: check the included examples
+		'discouraged_plugins' => [
+			[
+				// SEO Framework instead of Yoast SEO
+				'discouraged_plugin' => 'wordpress-seo/wp-seo-main.php',
+				'discouraged_name'   => 'Yoast SEO',
+				'alternative_plugin' => 'autodescription/autodescription.php',
+				'alternative_name'   => 'SEO Framework',
+				'reason'             => 'SEO Framework is lightweight, have less bloat, same features and no promotionals nags like Yoast SEO.',
+			],
+			[
+				// WP Core instead of Clean Filenames
+				'discouraged_plugin' => 'sanitize-spanish-filenames/sanitize-spanish-filenames.php',
+				'discouraged_name'   => 'Clean Filenames',
+				'alternative_plugin' => '',
+				'alternative_name'   => '',
+				'reason'             => 'Feature included in WP core since version 5.6',
+			],
 		],
 	];
 	// ...to here. Paste into your wp-config.php file, and tweak it as you like.
@@ -174,6 +207,11 @@ class WPFuerte {
 				// No Plugins/Theme upload/install/update/remove
 				define( 'DISALLOW_FILE_MODS', true );
 
+				// Disable Application Passwords
+				if ( true === $this->wpfuerte['config']['disable_app_passwords'] ) {
+					add_filter( 'wp_is_application_passwords_available', '__return_false' );
+				}
+
 				// Custom Javascript
 				add_filter( 'admin_footer', array( __CLASS__, 'custom_javascript' ) );
 
@@ -181,7 +219,7 @@ class WPFuerte {
 				//add_filter( 'admin_head', array( __CLASS__, 'custom_css' ) );
 
 				// Remove menu items
-				add_filter( 'admin_menu', array( __CLASS__, 'remove_menus' ) );
+				add_filter( 'admin_menu', array( __CLASS__, 'remove_menus' ), 9999 );
 
 				// Disallow create/edit admin users
 				if ( true === $this->wpfuerte['config']['disable_admin_create_edit'] ) {
@@ -273,12 +311,22 @@ class WPFuerte {
 	static function remove_menus() {
 		global $wpfuerte;
 
-		foreach ( $wpfuerte['restricted_scripts'] as $item ) {
-			remove_menu_page( $item );
+		if ( isset( $wpfuerte['restricted_scripts'] ) && ! empty( $wpfuerte['restricted_scripts'] ) ) {
+			foreach ( $wpfuerte['restricted_scripts'] as $item ) {
+				remove_menu_page( $item );
+			}
 		}
 
-		foreach ( $wpfuerte['removed_submenus'] as $slug => $subitem ) {
-			remove_submenu_page( $slug, $subitem );
+		if ( isset( $wpfuerte['removed_menus'] ) && ! empty( $wpfuerte['removed_menus'] ) ) {
+			foreach ( $wpfuerte['removed_menus'] as $slug ) {
+				remove_menu_page($slug);
+			}
+		}
+
+		if ( isset( $wpfuerte['removed_submenus'] ) && ! empty( $wpfuerte['removed_submenus'] ) ) {
+			foreach ( $wpfuerte['removed_submenus'] as $slug => $subitem ) {
+				remove_submenu_page( $slug, $subitem );
+			}
 		}
 	}
 
@@ -336,6 +384,32 @@ class WPFuerte {
 		<style type="text/css">
 		</style>
 		<?php
+	}
+
+	static function recommended_plugins() {
+		global $wpfuerte, $pagenow;
+
+		$show_notice            = false;
+		$plugin_recommendations = [];
+
+		if ( ! isset ( $wpfuerte['recommended_plugins'] ) || empty( $wpfuerte['recommended_plugins'] ) ) {
+			return;
+		}
+
+		if ( current_user_can( 'activate_plugins' ) && ( ! wp_doing_ajax() ) ) {
+			if ( is_array( $wpfuerte['recommended_plugins'] ) ) {
+				foreach ( $wpfuerte['recommended_plugins'] as $plugin ) {
+					if ( ! is_plugin_active( $plugin ) && ! is_plugin_active_for_network( $plugin ) ) {
+						$show_notice              = true;
+						$plugin_recommendations[] = $plugin;
+					}
+				}
+			}
+		}
+
+		if ( true === $show_notice && ( $pagenow == 'plugins.php' || ( isset( $_REQUEST['page'] ) && $_REQUEST['page'] == 'wc-settings' ) || $pagenow == 'options-general.php' ) ) {
+			//add_action( 'admin_notices', 'wpfuerte_recommended_plugins_notice' );
+		}
 	}
 } // Class WPFuerte
 
