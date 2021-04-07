@@ -30,7 +30,14 @@
 defined( 'ABSPATH' ) || die();
 
 /**
- * Exit if WPFUERTE_DISABLE is defined in wp-config.php
+ * Load WP Fuerte config file
+ */
+if ( file_exists(ABSPATH . 'wp-config-fuerte.php') ) {
+	require_once ABSPATH . 'wp-config-fuerte.php';
+}
+
+/**
+ * Exit if WPFUERTE_DISABLE is defined (in wp-config.php or wp-config-fuerte.php).
  */
 if ( defined( 'WPFUERTE_DISABLE' ) ) {
 	return false;
@@ -41,13 +48,6 @@ if ( defined( 'WPFUERTE_DISABLE' ) ) {
  */
 if ( ! defined( 'WPFUERTE_FORCE' ) ) {
 	define( 'WPFUERTE_FORCE', false );
-}
-
-/**
- * Load WP Fuerte config file
- */
-if ( file_exists( ABSPATH . 'wp-config-fuerte.php' ) ) {
-	require_once ABSPATH . 'wp-config-fuerte.php';
 }
 
 /**
