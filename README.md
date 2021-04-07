@@ -28,17 +28,18 @@ And, as WP Fuerte lives as a WordPress [Must Use plugin](https://wordpress.org/s
 - Remove items from WP menus, for non super users.
 - Restrict editing or deleting super users, for non super users.
 - Disables ACF Custom Fields editor access, for non super users.
-- Force user creation and editing to use WP default strong password suggestion, for non super users.
+- Force users to use WP default strong password suggestion, for non super users.
+- Prevent the use of weak passwords disabling the "Confirm use of weak password" checkbox.
 - Prevent admin accounts creation or edition, for non super users.
 - Restrict access to some pages inside wp-admin, like plugins or theme uploads, for non super users. Restricted pages can be extended vía configuration.
 
 ## How to install
 
-Upload ```wp-fuerte.php``` to ```/wp-content/plugins/mu-plugins/```
+Upload ```wp-fuerte.php``` to ```/wp-content/plugins/mu-plugins/wp-fuerte.php```
 
-Copy _WP Fuerte default config array_ from inside ```wp-fuerte.php``` and paste it to your WordPress's ```wp-config.php```
+Set up a copy of the wp-config-fuerte.php file with your desired settings. Edit and tweak the config array as needed.
 
-Edit and tweak the config array as needed.
+Upload your already set up ```wp-config-fuerte.php``` file to your WordPress's root directory. This usually is where your wp-config.php file resides. WP Fuerte will not run at all if ```wp-config-fuerte.php``` file doesn't exist in that location.
 
 ## Bugs, suggestions?
 
