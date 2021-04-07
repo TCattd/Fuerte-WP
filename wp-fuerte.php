@@ -32,7 +32,7 @@ defined( 'ABSPATH' ) || die();
 /**
  * Load WP Fuerte config file
  */
-if ( file_exists(ABSPATH . 'wp-config-fuerte.php') ) {
+if ( file_exists( ABSPATH . 'wp-config-fuerte.php' ) ) {
 	require_once ABSPATH . 'wp-config-fuerte.php';
 }
 
