@@ -41,7 +41,11 @@ Set up a copy of the ```wp-config-fuerte.php``` file with your desired settings.
 
 Upload your already set up ```wp-config-fuerte.php``` file to your WordPress's root directory. This usually is where your wp-config.php file resides. WP Fuerte will not run at all if ```wp-config-fuerte.php``` file doesn't exist in that location.
 
-## Bugs, suggestions?
+## Suggestions?
+
+Please, open [a discussion](https://github.com/TCattd/wp-fuerte/discussions).
+
+## Bugs?
 
 Please, open [an issue](https://github.com/TCattd/wp-fuerte/issues).
 
