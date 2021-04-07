@@ -45,15 +45,16 @@ $wpfuerte = [
 	// Restricted pages by page URL variable.
 	// In wp-admin, check for admin.php?page=
 	'restricted_pages' => [
-		'wp_stream_settings',
-		'envato-market',
+		'wp_stream_settings', // Stream configuration
+		'envato-market', // Envato market plugin configuration
 	],
-	// Menus to be removed. Use menu' slug.
+	// Menus to be removed. Use menu's slug.
 	// These slugs will be thrown into removed_menus.
 	'removed_menus' => [
 		'backwpup', // BackWPup
 		'check-email-status', // Check & Log Email
 		'limit-login-attempts', // Limit Logins Attempts Reloaded
+		'envato-market',  // Envato market plugin configuration
 	],
 	// Submenus to be removed. Use parent-menu-slug => submenu-slug.
 	// These will be thrown into remove_submenu_page.
