@@ -19,7 +19,7 @@ And, as WP Fuerte lives as a WordPress [Must Use plugin](https://wordpress.org/s
 - Enable and force auto updates for plugins.
 - Enable and force auto updates for themes.
 - Enable and force auto updates for translations.
-- Disables email notification triggered when WP auto updates.
+- Disables several WP email notification to site admin or network admin.
 - Disables WP Application Passwords feature.
 - Change [WP recovery email](https://make.wordpress.org/core/2019/04/16/fatal-error-recovery-mode-in-5-2/) so WP crashes will go to a different email than the Administration Email Address in WP General Settings.
 - Change WP sender email address to match WP installed domain, to avoid receiving WP emails as spam (assuming your domain SPF records are properly configured).
@@ -32,6 +32,7 @@ And, as WP Fuerte lives as a WordPress [Must Use plugin](https://wordpress.org/s
 - Prevent the use of weak passwords disabling the "Confirm use of weak password" checkbox.
 - Prevent admin accounts creation or edition, for non super users.
 - Restrict access to some pages inside wp-admin, like plugins or theme uploads, for non super users. Restricted pages can be extended vía configuration.
+- Disable WP admin bar for subscribers.
 
 ## How to install
 
