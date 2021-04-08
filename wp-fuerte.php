@@ -275,7 +275,7 @@ class WPFuerte
 			// Outside wp-admin tweaks
 			if ( ! is_admin() ) {
 				// Disable admin bar for subscribers
-				if ( true === $this->wpfuerte['general']['disable_admin_bar_subscribers'] && true === has_role( 'subscriber' ) ) {
+				if ( true === $this->wpfuerte['general']['disable_admin_bar_subscribers'] && true === $this->has_role( 'subscriber' ) ) {
 					add_filter( 'show_admin_bar', '__return_false', 9999 );
 				}
 
