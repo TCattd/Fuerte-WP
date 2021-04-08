@@ -4,6 +4,10 @@
 - Added ability to suggest plugins for installation.
 - Added ability to suggest discouraged plugins for removal, with alternatives to install.
 
+## 1.1.1 / 2021-04-08
+- Added support to disable several WP's automatic emails.
+- Added support to disable WP admin bar for subscribers.
+
 ## 1.1.0 / 2021-04-07
 - WP Fuerte's configuration file now lives outside wp-config.php file, into his own wp-config-fuerte.php file. This to make it easier to deploy it to several WP installations, without the need to edit the wp-config.php file in all of them. Check the readme on how to install it.
 - Added option to enable or disable strong passwords enforcing.
