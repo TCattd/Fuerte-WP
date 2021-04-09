@@ -33,22 +33,23 @@ $wpfuerte = [
 		'disable_app_passwords'         => true,               // Disable WP application passwords.
 		'force_strong_passwords'        => true,               // Force strong passwords usage, make password field read-only.
 		'disable_weak_passwords'        => true,               // Disable ability to use a weak passwords. User can't uncheck "Confirm use of weak password".
-		'disable_admin_bar_subscribers' => true,               // Disable admin bar for subscribers
+		'disable_admin_bar_roles'       => 'subscriber,customer', // Comma separated list of WP/WC roles. Empty string to not use.
 	],
 	/*
-	Disable several WordPress notification emails, mainly targeted to site/network admin email address.
+	Controls several WordPress notification emails, mainly targeted to site/network admin email address.
+	True to keep an email enabled. False to disable an email.
 	*/
 	'emails' => [
-		'disable_comment_awaiting_moderation'               => true,  // Site admin
-		'disable_comment_has_been_published'                => true,  // Post author
-		'disable_user_reset_their_password'                 => true,  // Site admin
-		'disable_user_confirm_personal_data_export_request' => true,  // Site admin
-		'disable_automatic_updates'                         => true,  // Site admin
-		'disable_new_user_created'                          => false, // Site admin
-		'disable_network_new_site_created'                  => true,  // Network admin
-		'disable_network_new_user_site_registered'          => true,  // Network admin
-		'disable_network_new_site_activated'                => true,  // Network admin
-		'disable_fatal_error'                               => false, // Site admin OR recovery_email address
+		'comment_awaiting_moderation'               => false, // Site admin
+		'comment_has_been_published'                => false, // Post author
+		'user_reset_their_password'                 => false, // Site admin
+		'user_confirm_personal_data_export_request' => false, // Site admin
+		'automatic_updates'                         => false, // Site admin
+		'new_user_created'                          => true,  // Site admin
+		'network_new_site_created'                  => false, // Network admin
+		'network_new_user_site_registered'          => false, // Network admin
+		'network_new_site_activated'                => false, // Network admin
+		'fatal_error'                               => true,  // Site admin OR recovery_email address
 	],
 	/*
 	Restricted scripts by file name.

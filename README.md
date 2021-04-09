@@ -32,7 +32,7 @@ And, as WP Fuerte lives as a WordPress [Must Use plugin](https://wordpress.org/s
 - Prevent the use of weak passwords disabling the "Confirm use of weak password" checkbox.
 - Prevent admin accounts creation or edition, for non super users.
 - Restrict access to some pages inside wp-admin, like plugins or theme uploads, for non super users. Restricted pages can be extended vía configuration.
-- Disable WP admin bar for subscribers.
+- Disable WP admin bar for specific roles. Default to disable for: subscriber, customer.
 
 ## How to install
 

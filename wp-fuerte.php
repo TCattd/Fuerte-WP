@@ -136,28 +136,28 @@ class WPFuerte
 		/**
 		 * Disable WP notification emails
 		 */
-		if ( true === $this->wpfuerte['emails']['disable_comment_awaiting_moderation'] ) {
+		if ( false === $this->wpfuerte['emails']['comment_awaiting_moderation'] ) {
 			add_filter( 'notify_moderator', '__return_false', 9999 );
 		}
 
-		if ( true === $this->wpfuerte['emails']['disable_comment_has_been_published'] ) {
+		if ( false === $this->wpfuerte['emails']['comment_has_been_published'] ) {
 			add_filter( 'notify_post_author', '__return_false', 9999 );
 		}
 
-		if ( true === $this->wpfuerte['emails']['disable_user_reset_their_password'] ) {
+		if ( false === $this->wpfuerte['emails']['user_reset_their_password'] ) {
 			remove_action( 'after_password_reset', 'wp_password_change_notification', 9999 );
 		}
 
-		if ( true === $this->wpfuerte['emails']['disable_user_confirm_personal_data_export_request'] ) {
+		if ( false === $this->wpfuerte['emails']['user_confirm_personal_data_export_request'] ) {
 			remove_action( 'user_request_action_confirmed', '_wp_privacy_send_request_confirmation_notification', 9999 );
 		}
 
-		if ( true === $this->wpfuerte['emails']['disable_automatic_updates'] ) {
+		if ( false === $this->wpfuerte['emails']['automatic_updates'] ) {
 			add_filter( 'auto_core_update_send_email', '__return_false', 9999 );
 			add_filter( 'send_core_update_notification_email', '__return_false', 9999 );
 		}
 
-		if ( true === $this->wpfuerte['emails']['disable_new_user_created'] ) {
+		if ( false === $this->wpfuerte['emails']['new_user_created'] ) {
 			remove_action( 'register_new_user', 'wp_send_new_user_notifications', 9999 );
 			remove_action( 'edit_user_created_user', 'wp_send_new_user_notifications', 9999 );
 			remove_action( 'network_site_new_created_user', 'wp_send_new_user_notifications', 9999 );
@@ -165,19 +165,19 @@ class WPFuerte
 			remove_action( 'network_user_new_created_user', 'wp_send_new_user_notifications', 9999 );
 		}
 
-		if ( true === $this->wpfuerte['emails']['disable_network_new_site_created'] ) {
+		if ( false === $this->wpfuerte['emails']['network_new_site_created'] ) {
 			add_filter( 'send_new_site_email', '__return_false', 9999 );
 		}
 
-		if ( true === $this->wpfuerte['emails']['disable_network_new_user_site_registered'] ) {
+		if ( false === $this->wpfuerte['emails']['network_new_user_site_registered'] ) {
 			add_filter( 'wpmu_signup_blog_notification', '__return_false', 9999 );
 		}
 
-		if ( true === $this->wpfuerte['emails']['disable_network_new_site_activated'] ) {
+		if ( false === $this->wpfuerte['emails']['network_new_site_activated'] ) {
 			remove_action( 'wp_initialize_site', 'newblog_notify_siteadmin', 9999 );
 		}
 
-		if ( true === $this->wpfuerte['emails']['disable_fatal_error'] ) {
+		if ( false === $this->wpfuerte['emails']['fatal_error'] ) {
 			define( 'WP_DISABLE_FATAL_ERROR_HANDLER', true );
 		}
 
@@ -274,11 +274,24 @@ class WPFuerte
 
 			// Outside wp-admin tweaks
 			if ( ! is_admin() ) {
-				// Disable admin bar for subscribers
-				if ( true === $this->wpfuerte['general']['disable_admin_bar_subscribers'] && true === $this->has_role( 'subscriber' ) ) {
-					add_filter( 'show_admin_bar', '__return_false', 9999 );
-				}
+				// Disable admin bar for certain roles
+				if ( ! empty( $this->wpfuerte['general']['disable_admin_bar_roles'] ) ) {
+					$roles_array = [];
 
+					// Create and array of roles
+					if ( stripos( $this->wpfuerte['general']['disable_admin_bar_roles'], ',' ) !== false ) {
+						$roles_array = explode( ',', $this->wpfuerte['general']['disable_admin_bar_roles'] );
+					} else {
+						$roles_array[] = $this->wpfuerte['general']['disable_admin_bar_roles'];
+					}
+
+					// Loop and disable if user has a defined role
+					foreach ( $roles_array as $role ) {
+						if ( true === $this->has_role( $role ) ) {
+							add_filter( 'show_admin_bar', '__return_false', 9999 );
+						}
+					}
+				}
 			} // !is_admin()
 		} // user affected by WP FUERTE
 	}
