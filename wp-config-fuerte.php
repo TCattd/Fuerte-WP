@@ -31,7 +31,7 @@ $wpfuerte = [
 		'autoupdate_translations'       => true,               // Auto update translations.
 		'disable_admin_create_edit'     => true,               // Disable creation of new admin accounts by non super admins.
 		'disable_app_passwords'         => true,               // Disable WP application passwords.
-		'force_strong_passwords'        => true,               // Force strong passwords usage, make password field read-only.
+		'force_strong_passwords'        => false,               // Force strong passwords usage, make password field read-only.
 		'disable_weak_passwords'        => true,               // Disable ability to use a weak passwords. User can't uncheck "Confirm use of weak password".
 		'disable_admin_bar_roles'       => 'subscriber,customer', // Comma separated list of WP/WC roles. Empty string to not use.
 	],
