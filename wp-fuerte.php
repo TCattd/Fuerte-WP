@@ -20,7 +20,7 @@
 /**
  * Installation:
  *
- * Upload wp-fuerte.php to /wp-content/plugins/mu-plugins/wp-fuerte.php
+ * Upload wp-fuerte.php to /wp-content/plugins/mu-plugins/ folder.
  *
  * Configure your settings inside the wp-config-fuerte.php file.
  *

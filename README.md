@@ -36,7 +36,7 @@ And, as WP Fuerte lives as a WordPress [Must Use plugin](https://wordpress.org/s
 
 ## How to install
 
-Upload ```wp-fuerte.php``` to ```/wp-content/plugins/mu-plugins/wp-fuerte.php```
+Upload ```wp-fuerte.php``` to ```/wp-content/plugins/mu-plugins/``` folder.
 
 Set up a copy of the ```wp-config-fuerte.php``` file with your desired settings. Edit and tweak the configuration array as needed.
 
