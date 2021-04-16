@@ -4,6 +4,9 @@
 - Added ability to suggest plugins for installation.
 - Added ability to suggest discouraged plugins for removal, with alternatives to install.
 
+# 1.1.2 / 2021-04-16
+- Added missing support to disable update emails for plugins and themes.
+
 ## 1.1.1 / 2021-04-09
 - Added support to control several WP's automatic emails.
 - Added support to disable WP admin bar for specific roles.

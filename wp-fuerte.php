@@ -3,7 +3,7 @@
  * Plugin Name: WP Fuerte
  * Plugin URI: https://github.com/TCattd/wp-fuerte
  * Description: Limit access to critical WordPress's areas
- * Version: 1.1.1
+ * Version: 1.1.2
  * Author: Esteban Cuevas
  * Author URI: https://actitud.xyz
  *
@@ -155,6 +155,8 @@ class WPFuerte
 		if ( false === $this->wpfuerte['emails']['automatic_updates'] ) {
 			add_filter( 'auto_core_update_send_email', '__return_false', 9999 );
 			add_filter( 'send_core_update_notification_email', '__return_false', 9999 );
+			add_filter( 'auto_plugin_update_send_email', '__return_false' );
+			add_filter( 'auto_theme_update_send_email', '__return_false' );
 		}
 
 		if ( false === $this->wpfuerte['emails']['new_user_created'] ) {
