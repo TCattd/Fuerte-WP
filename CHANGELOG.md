@@ -6,7 +6,7 @@
 
 # 1.1.3 / 2021-04-22
 - Added ability to disable the old XML-RPC API.
-- Now it hides ACF cog inside ACF meta fields UI, and prevent opening ACF custom post type (acf-field-group), to avoid non super admins to access ACF editing UI. So, non super-admin users can't access ACF Custom Fields UI URLs, even if they put it directly into the address bar.
+- Now it hides ACF cog inside ACF meta fields UI, and prevent opening ACF custom post type (acf-field-group), to avoid non super admins to access ACF editing UI. So, non super-admin users can't access ACF Custom Fields UI, even if they put the URL directly into the address bar.
 
 # 1.1.2 / 2021-04-16
 - Added missing support to disable update emails for plugins and themes.
