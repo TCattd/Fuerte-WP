@@ -21,13 +21,14 @@ And, as WP Fuerte lives as a WordPress [Must Use plugin](https://wordpress.org/s
 - Enable and force auto updates for translations.
 - Disables several WP email notification to site admin or network admin.
 - Disables WP Application Passwords feature.
+- Disables XML-RPC API.
 - Change [WP recovery email](https://make.wordpress.org/core/2019/04/16/fatal-error-recovery-mode-in-5-2/) so WP crashes will go to a different email than the Administration Email Address in WP General Settings.
 - Change WP sender email address to match WP installed domain, to avoid receiving WP emails as spam (assuming your domain SPF records are properly configured).
 - Customizable not allowed error message.
 - Disables WP theme and plugin editor, for non super users.
 - Remove items from WP menus, for non super users.
 - Restrict editing or deleting super users, for non super users.
-- Disables ACF Custom Fields editor access, for non super users.
+- Disables ACF Custom Fields editor access (ACF editor/creator backend UI), for non super users.
 - Force users to use WP default strong password suggestion, for non super users.
 - Prevent the use of weak passwords disabling the "Confirm use of weak password" checkbox.
 - Prevent admin accounts creation or edition, for non super users.

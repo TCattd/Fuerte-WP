@@ -3,7 +3,7 @@
  * Plugin Name: WP Fuerte
  * Plugin URI: https://github.com/TCattd/wp-fuerte
  * Description: Limit access to critical WordPress's areas
- * Version: 1.1.2
+ * Version: 1.1.3
  * Author: Esteban Cuevas
  * Author URI: https://actitud.xyz
  *
@@ -123,6 +123,13 @@ class WPFuerte
 		}
 
 		/**
+		 * Disable XML-RPC API
+		 */
+		if ( true === $this->wpfuerte['general']['disable_xmlrpc'] ) {
+			add_filter( 'xmlrpc_enabled', '__return_false', 9999 );
+		}
+
+		/**
 		 * Change recovery mode email
 		 */
 		add_filter( 'recovery_mode_email', array(__CLASS__, 'recovery_email_address'), 9999 );
@@ -221,23 +228,23 @@ class WPFuerte
 				}
 
 				// Disallowed wp-admin pages
-				if (isset($_REQUEST['page']) && in_array($_REQUEST['page'], $this->wpfuerte['restricted_pages']) && !wp_doing_ajax()) {
+				if ( isset($_REQUEST['page']) && in_array($_REQUEST['page'], $this->wpfuerte['restricted_pages']) && !wp_doing_ajax() ) {
 					wp_die($this->wpfuerte['general']['access_denied_message']);
 					return false;
 				}
 
 				// No user switching
-				if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'switch_to_user') {
+				if ( isset($_REQUEST['action']) && $_REQUEST['action'] == 'switch_to_user' ) {
 					wp_die($this->wpfuerte['general']['access_denied_message']);
 					return false;
 				}
 
 				// No protected users editing
-				if ($this->pagenow == 'user-edit.php') {
-					if (isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id'])) {
+				if ( $this->pagenow == 'user-edit.php' ) {
+					if ( isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id']) ) {
 						$user_info = get_userdata($_REQUEST['user_id']);
 
-						if (in_array(strtolower($user_info->user_email), $this->wpfuerte['super_users'])) {
+						if ( in_array( strtolower( $user_info->user_email ), $this->wpfuerte['super_users'] ) ) {
 							wp_die($this->wpfuerte['general']['access_denied_message']);
 							return false;
 						}
@@ -270,8 +277,20 @@ class WPFuerte
 					}
 				}
 
-				// No ACF editor menu
-				add_filter( 'acf/settings/show_admin', '__return_false', 9999 );
+				if ( true === $this->wpfuerte['general']['restrict_acf'] ) {
+					// No ACF editor menu
+					add_filter( 'acf/settings/show_admin', '__return_false', 9999 );
+
+					if ( in_array( $this->pagenow, ['post.php'] ) && isset( $_GET['post'] ) && 'acf-field-group' === get_post_type( $_GET['post'] ) ) {
+						wp_die($this->wpfuerte['general']['access_denied_message']);
+						return false;
+					}
+
+					if ( in_array($this->pagenow, ['edit.php', 'post-new.php'] ) && isset( $_GET['post_type'] ) && 'acf-field-group' === $_GET['post_type'] ) {
+						wp_die($this->wpfuerte['general']['access_denied_message']);
+						return false;
+					}
+				}
 			} // is_admin()
 
 			// Outside wp-admin tweaks
@@ -433,6 +452,15 @@ class WPFuerte
 		if ( true === $wpfuerte['general']['disable_weak_passwords'] ) :
 		?>
 			.pw-weak { display: none !important; }
+		<?php
+		endif;
+		?>
+
+		<?php
+		// Hides ACF cog that allow users access ACF editable meta boxes UI
+		if ( true === $wpfuerte['general']['restrict_acf'] ) :
+		?>
+			.wp-admin h3.hndle.ui-sortable-handle a.acf-hndle-cog { display: none !important; visibility: hidden !important; }
 		<?php
 		endif;
 		?>
