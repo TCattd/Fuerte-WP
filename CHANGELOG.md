@@ -1,6 +1,8 @@
 # Changelog
 
 ## Work in progress
+- Allow access to plugins.php, but don't allow to delete or add new ones. Just enable or disable the ones that are already installed.
+- Convert it to a plugin. Release it at official WP repo.
 - Added ability to suggest plugins for installation.
 - Added ability to suggest discouraged plugins for removal, with alternatives to install.
 
