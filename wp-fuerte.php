@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WP-Fuerte
+ * Plugin Name: Fuerte-WP
  * Plugin URI: https://github.com/TCattd/WP-Fuerte
  * Description: Stronger WP. Limit access to critical WordPress areas, even other for admins.
  * Version: 1.2.0
