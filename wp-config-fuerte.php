@@ -1,46 +1,53 @@
 <?php
 /**
  * Author: Esteban Cuevas
- * https://github.com/TCattd/wp-fuerte
+ * https://github.com/TCattd/WP-Fuerte
  */
+
+// No access outside WP
 defined( 'ABSPATH' ) || die();
 
 /**
- * Force and Debug === true
+ * To debug or test WP-Fuerte, set to true
  */
 define( 'WPFUERTE_FORCE', false );
 
 /**
- * WP Fuerte configuration.
+ * WP-Fuerte configuration.
+ * Version: 1.2.0
  *
- * Set up as you like.
+ * Edit and set up as you like.
  */
 $wpfuerte = [
 	/*
-	Super Users accounts by email address. They will become inmune from WP Fuerte's restrictions.
+	Super Users accounts, by email address.
+	This users will not be affected by WP-Fuerte's restrictions.
+	Add one email per item inside the array.
 	*/
 	'super_users' => [
 		'esteban@attitude.cl',
+		'esteban@actitud.xyz',
 	],
 	/*
 	General configuration.
 	*/
 	'general' => [
-		'version'                       => '1.1.3',            // WP Fuerte's version.
-		'access_denied_message'         => 'Access denied.',   // Default access denied message.
-		'recovery_email'                => '',                 // Recovery email. If empty, dev@wpdomain.tld will be used
-		'sender_email'                  => '',                 // Default sender email. If empty, no-reply@wpdomain.tld will be used.
-		'autoupdate_core'               => true,               // Auto update WP core.
-		'autoupdate_plugins'            => true,               // Auto update plugins.
-		'autoupdate_themes'             => true,               // Auto update themes.
-		'autoupdate_translations'       => true,               // Auto update translations.
-		'disable_admin_create_edit'     => true,               // Disable creation of new admin accounts by non super admins.
-		'disable_app_passwords'         => true,               // Disable WP application passwords.
-		'force_strong_passwords'        => false,               // Force strong passwords usage, make password field read-only.
-		'disable_weak_passwords'        => true,               // Disable ability to use a weak passwords. User can't uncheck "Confirm use of weak password".
-		'disable_admin_bar_roles'       => 'subscriber,customer', // Comma separated list of WP/WC roles. Empty string to not use.
-		'disable_xmlrpc'                => true,               // Disable the old XML-RPC API
-		'restrict_acf'                  => true,               // Restrict ACF access
+		'access_denied_message'         => 'Access denied.', // Default access denied message.
+		'recovery_email'                => '', // Recovery email. If empty, dev@wpdomain.tld will be used
+		'sender_email'                  => '', // Default sender email. If empty, no-reply@wpdomain.tld will be used.
+		'autoupdate_core'               => true, // Auto update WP core.
+		'autoupdate_plugins'            => true, // Auto update plugins.
+		'autoupdate_themes'             => true, // Auto update themes.
+		'autoupdate_translations'       => true, // Auto update translations.
+		'use_site_logo_login'           => true, // Use customizer logo as WP login logo.
+		'disable_admin_create_edit'     => true, // Disable creation of new admin accounts by non super admins.
+		'disable_app_passwords'         => true, // Disable WP application passwords.
+		'force_strong_passwords'        => false, // Force strong passwords usage, make password field read-only. Users must use WP provided strong password.
+		'disable_weak_passwords'        => true, // Disable ability to use a weak passwords. User can't uncheck "Confirm use of weak password". Let users type their own password, but must be somewhat secure (following WP built in recommendation).
+		'disable_admin_bar_roles'       => 'subscriber,customer', // Disable admin bar for some user roles. Comma separated list of WP/WC roles. Empty string to not use this feature.
+		'disable_xmlrpc'                => true, // Disable the old XML-RPC API
+		'restrict_acf'                  => true, // Restrict ACF editing access
+		'restrict_permalinks'           => true, // Restrict Permalink config access
 	],
 	/*
 	Controls several WordPress notification emails, mainly targeted to site/network admin email address.
@@ -66,7 +73,7 @@ $wpfuerte = [
 	'restricted_scripts' => [
 		'export.php',
 		'theme-editor.php',
-		'plugins.php',
+		//'plugins.php',
 		'plugin-install.php',
 		'theme-install.php',
 		'update.php',

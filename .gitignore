@@ -1,3 +1,4 @@
-dev-wp-config.php
-dev-wp-config-fuerte.php
+assets-wp-repo/wp-fuerte-logo.afdesign
 configs/*
+deploy.sh
+deploy-notag.sh

@@ -1,10 +1,14 @@
 # Changelog
 
 ## Work in progress
-- Allow access to plugins.php, but don't allow to delete or add new ones. Just enable or disable the ones that are already installed in the file system.
-- Convert it to a plugin. Release it at official WP repo.
 - Added ability to suggest plugins for installation.
 - Added ability to suggest discouraged plugins for removal, with alternatives to install.
+
+# 1.2.0 / 2021-08-13
+- Converted to a plugin.
+- Added ability to access plugins management, but don't allow install or upload new plugins. Also WP-Fuerte will auto-protect itself from deactivation.
+- Added ability to restrict access to Permalinks configuration.
+- Added ability to use custom site logo (from Customizer) as WP login logo.
 
 # 1.1.3 / 2021-04-22
 - Added ability to disable the old XML-RPC API.
