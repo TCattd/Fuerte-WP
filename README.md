@@ -1,7 +1,7 @@
 # WP-Fuerte
 
 <p align="center">
-	![WP-Fuerte Logo](https://github.com/TCattd/WP-Fuerte/blob/master/assets-wp-repo/icon-256x256.png?raw=true)
+	<img src="https://github.com/TCattd/WP-Fuerte/blob/master/assets-wp-repo/icon-256x256.png?raw=true" alt="WP-Fuerte Logo" />
 </p>
 
 Stronger WP. Limit access to critical WordPress areas, even other for admins.
