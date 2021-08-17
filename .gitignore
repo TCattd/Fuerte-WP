@@ -1,4 +1,4 @@
 assets-wp-repo/wp-fuerte-logo.afdesign
-configs/*
+config-tcattd/*
 deploy.sh
 deploy-notag.sh
