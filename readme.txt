@@ -19,7 +19,7 @@ Learn more at [GitHub](https://github.com/TCattd/WP-Fuerte).
 
 == Installation ==
 1. Install Fuerte-WP from WP's repos. Plugins -> Add New -> Search for: Fuerte_WP. Activate it.
-2. Grab a copy of [wp-fuerte-config.php](https://github.com/TCattd/WP-Fuerte/blob/master/wp-config-fuerte.php) an tweak the configuration array as you like.
+2. Grab a copy of [config-sample/wp-fuerte-config.php](https://github.com/TCattd/WP-Fuerte/blob/master/config-sample/wp-config-fuerte.php) an tweak the configuration array as you like.
 3. Upload your tweaked [wp-fuerte-config.php](https://github.com/TCattd/WP-Fuerte/blob/master/wp-config-fuerte.php) file to your WordPress root directory. This usually is where your wp-config.php file resides. WP-Fuerte will not run at all if ```wp-config-fuerte.php``` file doesn't exist in that location.
 4. Enjoy.
 

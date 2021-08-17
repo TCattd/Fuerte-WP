@@ -11,7 +11,7 @@
  * Tested up to: 5.8
  * Requires PHP: 7.4
  *
- * Text Domain: wp-fuerte
+ * Text Domain: fuerte-wp
  *
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt

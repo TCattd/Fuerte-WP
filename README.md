@@ -48,7 +48,7 @@ WP-Fuerte auto-protect itself and cannot be disabled unless you have access to t
 
 Install the plugin. Activate it.
 
-Set up a copy of the ```wp-config-fuerte.php``` file with your desired settings. Edit and tweak the configuration array as needed.
+Set up a copy of the ```config-sample/wp-config-fuerte.php``` file with your desired settings. Edit and tweak the configuration array as needed.
 
 Upload your tweaked ```wp-config-fuerte.php``` file to your WordPress's root directory. This usually is where your wp-config.php file resides. WP-Fuerte will not run at all if ```wp-config-fuerte.php``` file doesn't exist in that location.
 
