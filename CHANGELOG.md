@@ -1,12 +1,13 @@
 # Changelog
 
-## Work in progress
-- Added ability to suggest plugins for installation.
-- Added ability to suggest discouraged plugins for removal, with alternatives to install.
+# 1.3.0 / 2021-08-26
+- Reworked as full featured plugin.
+- Added an options page for easy configuration.
+- New logo, courtesy of [Nicolás Franz](https://nicolasfranz.com). Many thanks, pal!
 
 # 1.2.0 / 2021-08-13
 - Converted to a plugin.
-- Added ability to access plugins management, but don't allow install or upload new plugins. Also WP-Fuerte will auto-protect itself from deactivation.
+- Added ability to access plugins management, but don't allow install or upload new plugins. Also Fuerte-WP will auto-protect itself from deactivation.
 - Added ability to restrict access to Permalinks configuration.
 - Added ability to use custom site logo (from Customizer) as WP login logo.
 
@@ -22,7 +23,7 @@
 - Added support to disable WP admin bar for specific roles.
 
 ## 1.1.0 / 2021-04-07
-- WP Fuerte's configuration file now lives outside wp-config.php file, into his own wp-config-fuerte.php file. This to make it easier to deploy it to several WP installations, without the need to edit the wp-config.php file in all of them. Check the readme on how to install it.
+- Fuerte-WP configuration file now lives outside wp-config.php file, into his own wp-config-fuerte.php file. This to make it easier to deploy it to several WP installations, without the need to edit the wp-config.php file in all of them. Check the readme on how to install it.
 - Added option to enable or disable strong passwords enforcing.
 - Added support to prevent use of weak passwords.
 - Added support for remove_menu_page.

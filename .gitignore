@@ -1,4 +1,6 @@
-assets-wp-repo/wp-fuerte-logo.afdesign
-config-tcattd/*
+.wp-org-assets/fuerte-wp-logo.afdesign
+.wp-org-assets/fuerte-wp-logo.png
+.config-tcattd/*
+vendor/*
 deploy.sh
 deploy-notag.sh

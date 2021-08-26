@@ -1,26 +1,26 @@
 # Fuerte-WP
 
 <p align="center">
-	<img src="https://github.com/TCattd/WP-Fuerte/blob/master/assets-wp-repo/icon-256x256.png?raw=true" alt="WP-Fuerte Logo" />
+	<img src="https://github.com/TCattd/Fuerte-WP/blob/master/.wp-org-assets/icon-256x256.png?raw=true" alt="Fuerte-WP Logo" />
 </p>
 
 Stronger WP. Limit access to critical WordPress areas, even other for admins.
 
-Fuerte-WP is a WordPress Plugin to enforce certain limits for users with wp-admin access, and to force some other security related tweaks.
+Fuerte-WP is a WordPress Plugin to enforce certain limits for users with wp-admin administrator access, and to force some other security related tweaks into WordPress.
 
 ## Why?
 
 Because even if you choose to set an user only as Editor, some plugins require users to be an Administrator. And so many Administrators without limits could become an issue, security-wise.
 
-Not only because admins can edit every single configuration inside WordPress. Administrators can also upload plugins or themes, and with them, compromise your WordPress installation.
+Not only because admins can edit every single configuration inside WordPress. Administrators can also upload plugins or themes, or even edit plugins and theme files (on by default), and with those capabitilies, compromise your WordPress installation.
 
-WP-Fuerte will limit some administrators from access critical WordPress areas that you can define.
+Fuerte-WP will limit some administrators from access critical WordPress areas that you can define.
 
-WP-Fuerte auto-protect itself and cannot be disabled unless you have access to the server (FTP, SFTP, SSH, cPanel/Plesk, etc.) or your account is declared as a super-admin in WP-Fuerte configuration file.
+Fuerte-WP auto-protect itself and cannot be disabled, unless your account is declared as super user, or you have access to the server (FTP, SFTP, SSH, cPanel/Plesk, etc.).
 
 ## Features
 
-- Configure your own super users that will not be affected by changes and tweaks enforced by WP-Fuerte.
+- Configure your own super users that will not be affected by changes and tweaks enforced by Fuerte-WP.
 - Enable and force auto updates for WP core.
 - Enable and force auto updates for plugins.
 - Enable and force auto updates for themes.
@@ -46,31 +46,42 @@ WP-Fuerte auto-protect itself and cannot be disabled unless you have access to t
 
 ## How to install
 
-Install the plugin. Activate it.
+1. Install Fuerte-WP from WordPress repository. Plugins > Add New > Search for: Fuerte-WP. Activate it.
+2. Configure Fuerte-WP at Settings > Fuerte-WP. Make sure to Enable it.
+3. Enjoy.
 
-Set up a copy of the ```config-sample/wp-config-fuerte.php``` file with your desired settings. Edit and tweak the configuration array as needed.
+### Harder configuration (optional)
 
-Upload your tweaked ```wp-config-fuerte.php``` file to your WordPress's root directory. This usually is where your wp-config.php file resides. WP-Fuerte will not run at all if ```wp-config-fuerte.php``` file doesn't exist in that location.
+Fuerte-WP allows you to configure it "harder". This way, Fuerte-WP options inside wp-admin panel aren't even shown at all. Useful to mass deploy Fuerte-WP configuration to multiple WordPress installations.
 
-### Upgrade instructions
+To use the harder configuration, follow this steps:
 
-After updating WP-Fuerte, please check WP-Fuerte version number in your WP's plugins area. WP-Fuerte config file version will match that number.
+- Download a copy of [```config-sample/wp-config-fuerte.php```](https://github.com/TCattd/Fuerte-WP/blob/master/config-sample/wp-config-fuerte.php) file, and set it up with your desired settings. Edit and tweak the configuration array as needed.
 
-Then check your own wp-config-fuerte.php file. If yours has a lower version number, then compare your config with the [default wp-config-fuerte.php file](https://github.com/TCattd/WP-Fuerte/blob/master/wp-config-fuerte.php) and add the new/missing settings to your file. You can use [Meld](https://meldmerge.org/) (or similars) to help you here.
+- Upload your tweaked ```wp-config-fuerte.php``` file to your WordPress's root directory. This usually is where your wp-config.php file resides.
 
-Upload your updated wp-config-fuerte.php to your WordPress's root directory, as per install instructions.
+- When Fuerte-WP detects that file, it will load the configuration from it. This will bypass the DB values from the options page, completely.
+
+To upgrade a ```wp-config-fuerte.php``` file, check Fuerte-WP version number in your WP's plugins area. Fuerte-WP config file version will match the plugin version number.
+
+Then check your own ```wp-config-fuerte.php``` file. If yours has a lower version number, then compare your config with the [default wp-config-fuerte.php file](https://github.com/TCattd/Fuerte-WP/blob/master/config-sample/wp-config-fuerte.php) and add the new/missing settings to your file. You can use [Meld](https://meldmerge.org/) (or similars) to help you here.
+
+Upload your updated ```wp-config-fuerte.php``` to your WordPress's root directory and replace the old one.
 
 Don't worry. New features will not run or affect you until you upgrade your config file and add the new/missing settings.
 
 ## FAQ
-### Suggestions?
 
-Please, open [a discussion](https://github.com/TCattd/WP-Fuerte/discussions).
+Check the [full FAQ here](https://github.com/TCattd/Fuerte-WP/blob/master/FAQ.md).
 
-### Support?, Bugs?
+## Suggestions, Support
 
-Please, open [an issue](https://github.com/TCattd/WP-Fuerte/issues).
+Please, open [a discussion](https://github.com/TCattd/Fuerte-WP/discussions).
 
-### Changelog
+## Bugs and Error reporting
 
-[Available here](https://github.com/TCattd/WP-Fuerte/blob/master/CHANGELOG.md).
+Please, open [an issue](https://github.com/TCattd/Fuerte-WP/issues).
+
+## Changelog
+
+[Available here](https://github.com/TCattd/Fuerte-WP/blob/master/CHANGELOG.md).

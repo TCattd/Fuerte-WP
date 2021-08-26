@@ -1,7 +1,7 @@
 === Fuerte-WP ===
 Contributors: tcattd
 Tags: security
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 Requires at least: 5.8
 Tested up to: 5.8
 Requires PHP: 7.4
@@ -15,31 +15,28 @@ Stronger WP. Limit access to critical WordPress areas, even other for admins.
 
 Fuerte-WP is a WordPress Plugin to enforce certain limits for users with wp-admin access, and to force some other security related tweaks.
 
-Learn more at [GitHub](https://github.com/TCattd/WP-Fuerte).
+Check the [full feature set at here](https://github.com/TCattd/Fuerte-WP).
 
 == Installation ==
-1. Install Fuerte-WP from WP's repos. Plugins -> Add New -> Search for: Fuerte_WP. Activate it.
-2. Grab a copy of [config-sample/wp-fuerte-config.php](https://github.com/TCattd/WP-Fuerte/blob/master/config-sample/wp-config-fuerte.php) an tweak the configuration array as you like.
-3. Upload your tweaked [wp-fuerte-config.php](https://github.com/TCattd/WP-Fuerte/blob/master/wp-config-fuerte.php) file to your WordPress root directory. This usually is where your wp-config.php file resides. WP-Fuerte will not run at all if ```wp-config-fuerte.php``` file doesn't exist in that location.
-4. Enjoy.
+1. Install Fuerte-WP from WordPress repository. Plugins > Add New > Search for: Fuerte-WP. Activate it.
+2. Configure Fuerte-WP at Settings > Fuerte-WP. Make sure to Enable it.
+3. Enjoy.
 
 == Frequently Asked Questions ==
-= Suggestions? =
-Please, open [a discussion](https://github.com/TCattd/WP-Fuerte/discussions).
+= Where is the FAQ? =
+You can [read the full FAQ at GitHub](https://github.com/TCattd/Fuerte-WP/blob/master/FAQ.md).
 
-= Support?, Bugs? =
-Please, open [an issue](https://github.com/TCattd/WP-Fuerte/issues).
+= Suggestions, Support? =
+Please, open [a discussion](https://github.com/TCattd/Fuerte-WP/discussions).
+
+= Found a Bug or Error? =
+Please, open [an issue](https://github.com/TCattd/Fuerte-WP/issues).
 
 == Screenshots ==
+1. Main options page.
+2. Emails configuration.
+3. Restrictions.
+4. Advanced restrictions.
 
 == Changelog ==
-[Check the changelog at GitHub](https://github.com/TCattd/WP-Fuerte/blob/master/CHANGELOG.md).
-
-== Upgrade Notice ==
-After updating WP-Fuerte, please check WP-Fuerte version number in your WP's plugins area. WP-Fuerte config file version will match that number.
-
-Then check your own wp-config-fuerte.php file. If yours has a lower version number, then compare your config with the [default wp-config-fuerte.php file](https://github.com/TCattd/WP-Fuerte/blob/master/wp-config-fuerte.php) and add the new/missing settings to your file. You can use [Meld](https://meldmerge.org/) (or similars) to help you here.
-
-Upload your updated wp-config-fuerte.php to your WordPress's root directory, as per install instructions.
-
-Don't worry. New features will not run or affect you until you upgrade your config file and add the new/missing settings.
+[Check the changelog at GitHub](https://github.com/TCattd/Fuerte-WP/blob/master/CHANGELOG.md).
