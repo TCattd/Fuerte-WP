@@ -61,13 +61,19 @@ To use the harder configuration, follow this steps:
 
 - When Fuerte-WP detects that file, it will load the configuration from it. This will bypass the DB values from the options page, completely.
 
-To upgrade a ```wp-config-fuerte.php``` file, check Fuerte-WP version number in your WP's plugins area. Fuerte-WP config file version will match the plugin version number.
+#### Config file updates
 
-Then check your own ```wp-config-fuerte.php``` file. If yours has a lower version number, then compare your config with the [default wp-config-fuerte.php file](https://github.com/TCattd/Fuerte-WP/blob/master/config-sample/wp-config-fuerte.php) and add the new/missing settings to your file. You can use [Meld](https://meldmerge.org/) (or similars) to help you here.
+To check if your ```wp-config-fuerte.php``` file need an update, follow this steps:
+
+Check the default [```config-sample/wp-config-fuerte.php```](https://github.com/TCattd/Fuerte-WP/blob/master/config-sample/wp-config-fuerte.php) file. The header of the sample config will have the version when it was last modified.
+
+Then check out your own ```wp-config-fuerte.php``` file. If yours has a lower version number, then you need to update your settings array.
+
+Compare your config with the [default wp-config-fuerte.php file](https://github.com/TCattd/Fuerte-WP/blob/master/config-sample/wp-config-fuerte.php) and add the new/missing settings to your file. You can use [Meld](https://meldmerge.org/) (or similars) to help you here.
 
 Upload your updated ```wp-config-fuerte.php``` to your WordPress's root directory and replace the old one.
 
-Don't worry. New features will not run or affect you until you upgrade your config file and add the new/missing settings.
+Don't worry. New Fuerte-WP features that need new configuration values will not run or affect you until you upgrade your config file and add the new/missing settings.
 
 ## FAQ
 

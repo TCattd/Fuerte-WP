@@ -1,5 +1,8 @@
 <?php
 /**
+ * Fuerte-WP configuration.
+ * Version: 1.3.1
+ *
  * Author: Esteban Cuevas
  * https://github.com/TCattd/Fuerte-WP
  */
@@ -14,10 +17,7 @@ define( 'FUERTEWP_DISABLE', false );
 define( 'FUERTEWP_FORCE', false );
 
 /**
- * Fuerte-WP configuration.
- * Version: 1.3.1
- *
- * Edit and set up as you like.
+ * Edit this configuration array and set up as you like.
  */
 $fuertewp = [
 	/*
