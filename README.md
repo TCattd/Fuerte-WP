@@ -4,7 +4,7 @@
 	<img src="https://github.com/TCattd/Fuerte-WP/blob/master/.wp-org-assets/icon-256x256.png?raw=true" alt="Fuerte-WP Logo" />
 </p>
 
-Stronger WP. Limit access to critical WordPress areas, even other for admins.
+Stronger WP. Limit access to critical WordPress areas, even for other admins.
 
 Fuerte-WP is a WordPress Plugin to enforce certain limits for users with wp-admin administrator access, and to force some other security related tweaks into WordPress.
 
