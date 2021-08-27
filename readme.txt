@@ -1,7 +1,7 @@
 === Fuerte-WP ===
 Contributors: tcattd
 Tags: security
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 Requires at least: 5.8
 Tested up to: 5.8
 Requires PHP: 7.4
@@ -13,13 +13,23 @@ Stronger WP. Limit access to critical WordPress areas, even other for admins.
 == Description ==
 Stronger WP. Limit access to critical WordPress areas, even other for admins.
 
-Fuerte-WP is a WordPress Plugin to enforce certain limits for users with wp-admin access, and to force some other security related tweaks.
+Fuerte-WP is a WordPress Plugin to enforce certain limits for users with administrator access, and to force some other security related tweaks.
+
+Some features included are:
+- Configure your own super users that will not be affected by changes and tweaks enforced by Fuerte-WP.
+- Enable and force auto updates for WordPress core, plugins, themes & translations.
+- Disables XML-RPC API.
+- Disables WordPress theme and plugin editor, for non super users.
+- Restrict editing or deleting super users, for non super users.
+- Restrict access to some pages inside WordPress admin panel, like plugins or theme uploads, for non super users. Restricted pages and areas can be extended vía configuration.
+- Remove (and restrict) items from WordPress menus, for non super users.
+- Disable Plugins installation (via WP's repo or upload). Also disable plugins deletion.
 
 Check the [full feature set at here](https://github.com/TCattd/Fuerte-WP).
 
 == Installation ==
 1. Install Fuerte-WP from WordPress repository. Plugins > Add New > Search for: Fuerte-WP. Activate it.
-2. Configure Fuerte-WP at Settings > Fuerte-WP. Make sure to Enable it.
+2. Configure Fuerte-WP at Settings > Fuerte-WP.
 3. Enjoy.
 
 == Frequently Asked Questions ==

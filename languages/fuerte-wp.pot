@@ -67,7 +67,7 @@ msgstr ""
 msgid "Recovery email."
 msgstr ""
 
-#. translators: %s: site domain, automatically replaced, don't translate
+#. translators: %s: site domain
 #: admin/class-fuerte-wp-admin.php:144
 msgid "Admin recovery email. If empty, dev@%s will be used.<br/>This email will receive fatal errors from WP, and not the administration email in the General Settings. Check <a href=\"https://make.wordpress.org/core/2019/04/16/fatal-error-recovery-mode-in-5-2/\" target=\"_blank\">fatal error recovery mode</a>."
 msgstr ""
@@ -76,7 +76,7 @@ msgstr ""
 msgid "Sender email."
 msgstr ""
 
-#. translators: %s: site domain, automatically replaced, don't translate
+#. translators: %s: site domain
 #: admin/class-fuerte-wp-admin.php:150
 msgid "Default site sender email. If empty, no-reply@%1$s will be used.<br/>Emails sent by WP will use this email address. Make sure to check your <a href=\"https://mxtoolbox.com/SPFRecordGenerator.aspx?domain=%1$s&prefill=true\" target=\"_blank\">SPF Records</a> to avoid WP emails going to spam."
 msgstr ""
@@ -294,4 +294,9 @@ msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:319
 msgid "One per line. Admin bar menus to be removed. Use: <i>adminbar-item-node-id</i>.<br/>These nodes will be thrown into <a href=\"https://developer.wordpress.org/reference/classes/wp_admin_bar/remove_node/#finding-toolbar-node-ids\" target=\"_blank\">remove_node</a>. Check the docs on how to find an admin bar node id."
+msgstr ""
+
+#. translators: %s: plugin settings URL
+#: admin/class-fuerte-wp-admin.php:386
+msgid "<a href=\"%s\">Settings</a>"
 msgstr ""

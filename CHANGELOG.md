@@ -1,6 +1,6 @@
 # Changelog
 
-# 1.3.0 / 2021-08-26
+# 1.3.1 / 2021-08-27
 - Reworked as full featured plugin.
 - Added an options page for easy configuration.
 - New logo, courtesy of [Nicolás Franz](https://nicolasfranz.com). Many thanks, pal!

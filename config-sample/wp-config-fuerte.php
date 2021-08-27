@@ -15,7 +15,7 @@ define( 'FUERTEWP_FORCE', false );
 
 /**
  * Fuerte-WP configuration.
- * Version: 1.3.0
+ * Version: 1.3.1
  *
  * Edit and set up as you like.
  */
@@ -98,6 +98,7 @@ $fuertewp = [
 	In wp-admin, check for admin.php?page=
 	*/
 	'restricted_pages' => [
+		'wprocket', // WP-Rocket
 		'updraftplus', // UpdraftPlus
 		'backwpup', // BackWPup
 		'backwpupjobs', // BackWPup
@@ -131,6 +132,7 @@ $fuertewp = [
 		'options-general.php|updraftplus', // UpdraftPlus
 		'options-general.php|limit-login-attempts', // Limit Logins Attempts Reloaded
 		'options-general.php|mainwp_child_tab', // MainWP Child
+		'options-general.php|wprocket', // WP-Rocket
 		'tools.php|export.php', // WP Export
 		'tools.php|pw-transients-manager', // Transients Manager
 	],

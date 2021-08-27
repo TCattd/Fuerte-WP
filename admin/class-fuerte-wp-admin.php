@@ -177,7 +177,7 @@ class Fuerte_Wp_Admin {
 					->set_default_value( 'yes' )
 					->set_option_value( 'yes' )
 					/* translators: %s: customizer URL */
-					->set_help_text( sprintf(__( 'Use your site logo, uploaded via <a href="%s" target="_blank">Customizer > Site Identity</a>, for WordPress login page.', 'fuerte-wp' ), admin_url( 'customize.php?return=%2Fwp-admin%2Foptions-general.php%3Fpage%3Dcrb_carbon_fields_container_fuerte-wp.php' ) ) ),
+					->set_help_text( sprintf( __( 'Use your site logo, uploaded via <a href="%s" target="_blank">Customizer > Site Identity</a>, for WordPress login page.', 'fuerte-wp' ), admin_url( 'customize.php?return=%2Fwp-admin%2Foptions-general.php%3Fpage%3Dcrb_carbon_fields_container_fuerte-wp.php' ) ) ),
 			) )
 
 			->add_tab( __('E-mails', 'fuerte-wp'), array(
@@ -293,8 +293,20 @@ update.php' )
 
 				Field::make( 'textarea', 'fuertewp_restricted_pages', __( 'Restricted Pages.' ) )
 					->set_rows( 4 )
-					->set_default_value( 'wp_stream_settings
-envato-market' )
+					->set_default_value( 'wprocket
+updraftplus
+backwpup
+backwpupjobs
+backwpupeditjob
+backwpuplogs
+backwpupbackups
+backwpupsettings
+limit-login-attempts
+wp_stream_settings
+pw-transients-manager
+envato-market
+elementor-license
+elementor-connect' )
 					->set_help_text( __( 'One per line. Restricted pages by "page" URL variable.<br/>In wp-admin, checks for URLs like: <i>admin.php?page=</i>', 'fuerte-wp' ) ),
 
 				Field::make( 'textarea', 'fuertewp_removed_menus', __( 'Removed Menus.' ) )
@@ -307,8 +319,12 @@ envato-market' )
 
 				Field::make( 'textarea', 'fuertewp_removed_submenus', __( 'Removed Submenus.' ) )
 					->set_rows( 4 )
-					->set_default_value( 'options-general.php|mainwp_child_tab
-tools.php|export.php' )
+					->set_default_value( 'options-general.php|updraftplus
+options-general.php|limit-login-attempts
+options-general.php|mainwp_child_tab
+options-general.php|wprocket
+tools.php|export.php
+tools.php|pw-transients-manager' )
 					->set_help_text( __( 'One per line. Submenus to be removed. Use: <i>parent-menu-slug<strong>|</strong>submenu-slug</i>, separared with a pipe.<br/>These will be thrown into <a href="https://developer.wordpress.org/reference/functions/remove_submenu_page/" target="_blank">remove_submenu_page</a>.', 'fuerte-wp' ) ),
 
 				Field::make( 'textarea', 'fuertewp_removed_adminbar_menus', __( 'Removed Admin bar menus.' ) )
@@ -349,6 +365,28 @@ updraft_admin_node' )
 
 		// Clears options cache
 		delete_transient( 'fuertewp_cache_config' );
+	}
+
+	/**
+	 * Plugins list Settings link
+	 */
+	function add_action_links( $links ) {
+		global $fuertewp, $current_user;
+
+		if ( ! isset( $current_user ) ) {
+			$current_user = wp_get_current_user();
+		}
+
+		if ( ! in_array( strtolower( $current_user->user_email ), $fuertewp['super_users'] ) || defined( 'FUERTEWP_FORCE' ) && true === FUERTEWP_FORCE ) {
+			return $links;
+		}
+
+		$fuertewp_link = [
+			/* translators: %s: plugin settings URL */
+			sprintf( __( '<a href="%s">Settings</a>', 'fuerte-wp'), admin_url( 'options-general.php?page=crb_carbon_fields_container_fuerte-wp.php' ) ),
+		];
+
+		return array_merge( $links, $fuertewp_link );
 	}
 
 }

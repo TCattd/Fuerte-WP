@@ -8,6 +8,8 @@ Stronger WP. Limit access to critical WordPress areas, even other for admins.
 
 Fuerte-WP is a WordPress Plugin to enforce certain limits for users with wp-admin administrator access, and to force some other security related tweaks into WordPress.
 
+Available at the official [WordPress.org plugins repository](https://wordpress.org/plugins/fuerte-wp/).
+
 ## Why?
 
 Because even if you choose to set an user only as Editor, some plugins require users to be an Administrator. And so many Administrators without limits could become an issue, security-wise.
@@ -21,24 +23,21 @@ Fuerte-WP auto-protect itself and cannot be disabled, unless your account is dec
 ## Features
 
 - Configure your own super users that will not be affected by changes and tweaks enforced by Fuerte-WP.
-- Enable and force auto updates for WP core.
-- Enable and force auto updates for plugins.
-- Enable and force auto updates for themes.
-- Enable and force auto updates for translations.
+- Enable and force auto updates for WordPress core, plugins, themes & translations.
 - Disables several WP email notification to site admin or network admin.
 - Disables WP Application Passwords feature.
 - Disables XML-RPC API.
-- Change [WP recovery email](https://make.wordpress.org/core/2019/04/16/fatal-error-recovery-mode-in-5-2/) so WP crashes will go to a different email than the Administration Email Address in WP General Settings.
-- Change WP sender email address to match WP installed domain, to avoid receiving WP emails as spam (assuming your domain SPF records are properly configured).
+- Change WordPress [recovery email](https://make.wordpress.org/core/2019/04/16/fatal-error-recovery-mode-in-5-2/) so WP crashes will go to a different email than the Administration Email Address in WP General Settings.
+- Change WordPress sender email address to match WP installed domain, to avoid receiving WP emails as spam (assuming your domain SPF records are properly configured).
 - Customizable not allowed error message.
-- Disables WP theme and plugin editor, for non super users.
-- Remove items from WP menus, for non super users.
+- Disables WordPress theme and plugin editor, for non super users.
+- Remove (and restrict) items from WordPress menus, for non super users.
 - Restrict editing or deleting super users, for non super users.
 - Disables ACF Custom Fields editor access (ACF editor/creator backend UI), for non super users.
-- Force users to use WP default strong password suggestion, for non super users.
+- Force users to use WordPress default strong password suggestion, for non super users.
 - Prevent the use of weak passwords disabling the "Confirm use of weak password" checkbox.
 - Prevent admin accounts creation or edition, for non super users.
-- Restrict access to some pages inside wp-admin, like plugins or theme uploads, for non super users. Restricted pages can be extended vía configuration.
+- Restrict access to some pages inside WordPress admin panel, like plugins or theme uploads, for non super users. Restricted pages and areas can be extended vía configuration.
 - Disable WP admin bar for specific roles. Defaults to disable it for: subscriber, customer.
 - Disable access to Permalinks configuration.
 - Disable Plugins installation (via WP's repo or upload). Also disable plugins deletion.
@@ -47,7 +46,7 @@ Fuerte-WP auto-protect itself and cannot be disabled, unless your account is dec
 ## How to install
 
 1. Install Fuerte-WP from WordPress repository. Plugins > Add New > Search for: Fuerte-WP. Activate it.
-2. Configure Fuerte-WP at Settings > Fuerte-WP. Make sure to Enable it.
+2. Configure Fuerte-WP at Settings > Fuerte-WP.
 3. Enjoy.
 
 ### Harder configuration (optional)

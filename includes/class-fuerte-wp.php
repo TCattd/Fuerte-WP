@@ -175,6 +175,8 @@ class Fuerte_Wp {
 		$this->loader->add_action( 'carbon_fields_register_fields', $plugin_admin, 'fuertewp_plugin_options' );
 
 		$this->loader->add_action( 'carbon_fields_theme_options_container_saved', $plugin_admin, 'fuertewp_theme_options_saved', 10, 2 );
+
+		$this->loader->add_action( 'plugin_action_links_' . FUERTEWP_PLUGIN_BASE, $plugin_admin, 'add_action_links' );
 	}
 
 	/**

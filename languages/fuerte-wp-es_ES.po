@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2021-08-25T16:42:53+00:00\n"
-"PO-Revision-Date: 2021-08-26 15:36-0400\n"
+"PO-Revision-Date: 2021-08-27 13:36-0400\n"
 "X-Generator: Poedit 3.0\n"
 "X-Domain: fuerte-wp\n"
 "Last-Translator: Esteban Cuevas <esteban@attitude.cl>\n"
@@ -69,7 +69,7 @@ msgstr "Mensaje general de acceso denegado mostrado a los no super usuarios."
 msgid "Recovery email."
 msgstr "Email de recuperación."
 
-#. translators: %s: site domain, automatically replaced, don't translate
+#. translators: %s: site domain
 #: admin/class-fuerte-wp-admin.php:144
 msgid ""
 "Admin recovery email. If empty, dev@%s will be used.<br/>This email will receive fatal errors from WP, and not the administration email in the General Settings. Check <a href="
@@ -82,7 +82,7 @@ msgstr ""
 msgid "Sender email."
 msgstr "Email de remitente."
 
-#. translators: %s: site domain, automatically replaced, don't translate
+#. translators: %s: site domain
 #: admin/class-fuerte-wp-admin.php:150
 msgid ""
 "Default site sender email. If empty, no-reply@%1$s will be used.<br/>Emails sent by WP will use this email address. Make sure to check your <a href=\"https://mxtoolbox.com/"
@@ -135,7 +135,7 @@ msgstr "Ajustes"
 msgid "Use site logo at login."
 msgstr "Usar el logo del sitio para el login."
 
-#. translators: %s: customizer URL, automatically replaced, don't translate
+#. translators: %s: customizer URL
 #: admin/class-fuerte-wp-admin.php:180
 msgid "Use your site logo, uploaded via <a href=\"%s\" target=\"_blank\">Customizer > Site Identity</a>, for WordPress login page."
 msgstr "Utiliza tu logo de sitio, cargado a través del <a href=\"%s\" target=\"_blank\">Customizer > Identidad del Sitio</a>, para la página de login de WordPress."
@@ -327,3 +327,8 @@ msgid ""
 msgstr ""
 "Uno por línea. Menus de la barra de admin a ser removidos. Utiliza: <i>adminbar-item-node-id</i>.<br/>Estos nodos serán lanzados en <a href=\"https://developer.wordpress.org/"
 "reference/classes/wp_admin_bar/remove_node/#finding-toolbar-node-ids\" target=\"_blank\">remove_node</a>. Revisa la documentación para ver como encontrar la id de un nodo."
+
+#. translators: %s: plugin settings URL
+#: admin/class-fuerte-wp-admin.php:386
+msgid "<a href=\"%s\">Settings</a>"
+msgstr "<a href=\"%s\">Ajustes</a>"
