@@ -1,3 +1,6 @@
+<?php
+namespace FuerteWpDep;
+?>
 <style>
 	a.carbon-errors-dismiss { float: right; margin: 5px; text-decoration: none; color: #0073aa; }
 	a.carbon-errors-dismiss span.dashicons-dismiss { font-size: 14px; line-height: 20px; color: #b4b9be }
@@ -19,8 +22,6 @@
 		$('.carbon-errors-dismiss').on('click', function () {
 			$container.slideUp();
 			carbon.docCookies.setItem(<?php 
-namespace FuerteWpDep;
-
 echo \json_encode($hideErrorsCookieName);
 ?>, "1", Infinity);
 		});
