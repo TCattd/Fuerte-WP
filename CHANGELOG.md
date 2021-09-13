@@ -1,5 +1,8 @@
 # Changelog
 
+# 1.3.2 / 2021-09-13
+- PHP 7.3 compatibility.
+
 # 1.3.1 / 2021-08-27
 - Reworked as full featured plugin.
 - Added an options page for easy configuration.
