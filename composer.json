@@ -14,7 +14,7 @@
 		"issues": "https://github.com/TCattd/Fuerte-WP/issues"
 	},
 	"require": {
-		"php": ">=7.4",
+		"php": ">=7.3",
 		"htmlburger/carbon-fields": "^3.3"
 	},
 	"scripts": {
