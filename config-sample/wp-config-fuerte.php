@@ -1,7 +1,7 @@
 <?php
 /**
  * Fuerte-WP configuration.
- * Version: 1.3.1
+ * Version: 1.3.6
  *
  * Author: Esteban Cuevas
  * https://github.com/TCattd/Fuerte-WP
@@ -63,6 +63,10 @@ $fuertewp = [
 		'disable_admin_bar_roles'       => [ 'subscriber', 'customer' ], // Disable admin bar for some user roles. Array of WP/WC roles. Empty array to not use this feature.
 		'restrict_permalinks'           => true, // Restrict Permalinks config access.
 		'restrict_acf'                  => true, // Restrict ACF editing access (Custom Fields menu).
+		'disable_theme_editor'          => true, // Disable WP Theme code editor.
+		'disable_plugin_editor'         => true, // Disable WP Plugin code editor.
+		'disable_theme_install'         => true, // Disable Themes installation.
+		'disable_plugin_install'        => true, // Disable Plugins installation.
 	],
 	/*
 	Controls several WordPress notification emails, mainly targeted to site/network admin email address.
@@ -87,11 +91,9 @@ $fuertewp = [
 	*/
 	'restricted_scripts' => [
 		'export.php',
-		'theme-editor.php',
 		//'plugins.php',
-		'plugin-install.php',
-		'theme-install.php',
 		'update.php',
+		'update-core.php',
 	],
 	/*
 	Restricted pages by page URL variable.

@@ -1,5 +1,12 @@
 # Changelog
 
+# 1.3.6 / 2021-10-08
+- Option to configure Theme Editor restriction.
+- Option to configure Plugin Editor restriction.
+- Option to configure new plugins installation restriction.
+- Option to configure new themes installation restriction.
+- Fixed some translation errors.
+
 # 1.3.5 / 2021-09-13
 - PHP 7.3 compatibility.
 

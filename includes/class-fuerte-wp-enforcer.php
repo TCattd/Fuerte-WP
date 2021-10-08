@@ -174,6 +174,10 @@ class Fuerte_Wp_Enforcer
 			$disable_admin_bar_roles   = carbon_get_theme_option( 'fuertewp_restrictions_disable_admin_bar_roles' );
 			$restrict_permalinks       = carbon_get_theme_option( 'fuertewp_restrictions_restrict_permalinks' );
 			$restrict_acf              = carbon_get_theme_option( 'fuertewp_restrictions_restrict_acf' );
+			$disable_theme_editor      = carbon_get_theme_option( 'fuertewp_restrictions_disable_theme_editor' ) == 'yes';
+			$disable_plugin_editor     = carbon_get_theme_option( 'fuertewp_restrictions_disable_plugin_editor' ) == 'yes';
+			$disable_theme_install     = carbon_get_theme_option( 'fuertewp_restrictions_disable_theme_install' ) == 'yes';
+			$disable_plugin_install    = carbon_get_theme_option( 'fuertewp_restrictions_disable_plugin_install' ) == 'yes';
 
 			// restricted_scripts
 			$restricted_scripts = explode( PHP_EOL, carbon_get_theme_option( 'fuertewp_restricted_scripts' ) );
@@ -215,6 +219,10 @@ class Fuerte_Wp_Enforcer
 					'disable_admin_bar_roles'       => $disable_admin_bar_roles,
 					'restrict_permalinks'           => $restrict_permalinks,
 					'restrict_acf'                  => $restrict_acf,
+					'disable_theme_editor'          => $disable_theme_editor,
+					'disable_plugin_editor'         => $disable_plugin_editor,
+					'disable_theme_install'         => $disable_theme_install,
+					'disable_plugin_install'        => $disable_plugin_install,
 				],
 				'emails' => [
 					'fatal_error'                               => $fatal_error,
@@ -369,8 +377,44 @@ class Fuerte_Wp_Enforcer
 				// Fuerte-WP self-protect
 				$this->self_protect();
 
-				// No Plugins/Theme upload/install/update/remove
-				define( 'DISALLOW_FILE_MODS', true );
+				// Disable Theme Editor
+				if ( isset( $fuertewp['restrictions']['disable_theme_editor'] ) && true === $fuertewp['restrictions']['disable_theme_editor'] ) {
+					if ( $pagenow == 'theme-editor.php' ) {
+						$this->access_denied();
+					}
+				}
+
+				// Disable Plugin Editor
+				if ( isset( $fuertewp['restrictions']['disable_plugin_editor'] ) && true === $fuertewp['restrictions']['disable_plugin_editor'] ) {
+					if ( $pagenow == 'plugin-editor.php' ) {
+						$this->access_denied();
+					}
+				}
+
+				// Both? Theme and Plugin Editor?
+				if ( ( isset( $fuertewp['restrictions']['disable_theme_editor'] ) && true === $fuertewp['restrictions']['disable_theme_editor'] ) && ( isset( $fuertewp['restrictions']['disable_plugin_editor'] ) && true === $fuertewp['restrictions']['disable_plugin_editor'] ) ) {
+					define( 'DISALLOW_FILE_EDIT', true );
+				}
+
+				// Disable Theme Install
+				if ( isset( $fuertewp['restrictions']['disable_theme_install'] ) && true === $fuertewp['restrictions']['disable_theme_install'] ) {
+					if ( $pagenow == 'theme-install.php' ) {
+						$this->access_denied();
+					}
+				}
+
+				// Disable Plugin Install
+				if ( isset( $fuertewp['restrictions']['disable_plugin_install'] ) && true === $fuertewp['restrictions']['disable_plugin_install'] ) {
+					if ( $pagenow == 'plugin-install.php' ) {
+						$this->access_denied();
+					}
+				}
+
+				// Both? New Themes and Plugins Installations?
+				// First, let's check if wp's scheduler trigger auto-updates without this. Just to be safe. This definition is just an extra security step anyways. The main restiction is already happening before, for theme-install.php and plugin-install.php.
+				/* if ( ( isset( $fuertewp['restrictions']['disable_theme_install'] ) && true === $fuertewp['restrictions']['disable_theme_install'] ) && ( isset( $fuertewp['restrictions']['disable_plugin_install'] ) && true === $fuertewp['restrictions']['disable_plugin_install'] ) ) {
+					define( 'DISALLOW_FILE_MODS', true );
+				} */
 
 				// Disable Application Passwords
 				if ( isset( $fuertewp['restrictions']['disable_app_passwords'] ) && true === $fuertewp['restrictions']['disable_app_passwords'] ) {
@@ -378,14 +422,14 @@ class Fuerte_Wp_Enforcer
 				}
 
 				// Remove menu items
-				add_filter( 'admin_menu', array(__CLASS__, 'remove_menus'), 9999 );
+				add_filter( 'admin_menu', array( __CLASS__, 'remove_menus' ), 9999 );
 
 				// Remove adminbar menu items
-				add_filter( 'admin_bar_menu', array(__CLASS__, 'remove_adminbar_menus'), 9999 );
+				add_filter( 'admin_bar_menu', array( __CLASS__, 'remove_adminbar_menus' ), 9999 );
 
 				// Disallow create/edit admin users
 				if ( isset( $fuertewp['restrictions']['disable_admin_create_edit'] ) && true === $fuertewp['restrictions']['disable_admin_create_edit'] ) {
-					add_filter( 'editable_roles', array(__CLASS__, 'create_edit_role_check'), 9999 );
+					add_filter( 'editable_roles', array( __CLASS__, 'create_edit_role_check' ), 9999 );
 				}
 
 				// Disallowed wp-admin scripts

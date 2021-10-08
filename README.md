@@ -69,7 +69,7 @@ Check the default [```config-sample/wp-config-fuerte.php```](https://github.com/
 
 Then check out your own ```wp-config-fuerte.php``` file. If yours has a lower version number, then you need to update your settings array.
 
-Compare your config with the [default wp-config-fuerte.php file](https://github.com/TCattd/Fuerte-WP/blob/master/config-sample/wp-config-fuerte.php) and add the new/missing settings to your file. You can use [Meld](https://meldmerge.org/) (or similars) to help you here.
+Compare your config with the [default wp-config-fuerte.php file](https://github.com/TCattd/Fuerte-WP/blob/master/config-sample/wp-config-fuerte.php) and add the new/missing settings to your file. You can use [Meld](https://meldmerge.org), [WinMerge](https://winmerge.org), [Beyond Compare](https://www.scootersoftware.com), [Kaleidoscope](https://kaleidoscope.app), [Araxis Merge](https://www.araxis.com/merge/), [Diffchecker](https://www.diffchecker.com) or any similar software diff to help you here.
 
 Upload your updated ```wp-config-fuerte.php``` to your WordPress's root directory and replace the old one.
 

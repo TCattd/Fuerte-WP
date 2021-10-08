@@ -133,7 +133,7 @@ class Fuerte_Wp_Admin {
 
 				Field::make( 'separator', 'fuertewp_separator_general', __( 'General', 'fuerte-wp' ) ),
 
-				Field::make( 'text', 'fuertewp_access_denied_message', __( 'Access denied message.' ) )
+				Field::make( 'text', 'fuertewp_access_denied_message', __( 'Access denied message.', 'fuerte-wp' ) )
 					->set_default_value( 'Access denied.' )
 					->set_help_text( __( 'General access denied message shown to non super users.', 'fuerte-wp' ) ),
 
@@ -275,13 +275,33 @@ class Fuerte_Wp_Admin {
 					->set_default_value( 'yes' )
 					->set_option_value( 'yes' )
 					->set_help_text( __( 'Restrict Advanced Custom Fields editing access in the backend (Custom Fields menu).', 'fuerte-wp' ) ),
+
+				Field::make( 'checkbox', 'fuertewp_restrictions_disable_theme_editor', __( 'Disable Theme Editor.', 'fuerte-wp' ) )
+					->set_default_value( 'yes' )
+					->set_option_value( 'yes' )
+					->set_help_text( __( 'Disables the built in Theme code editor.', 'fuerte-wp' ) ),
+
+				Field::make( 'checkbox', 'fuertewp_restrictions_disable_plugin_editor', __( 'Disable Plugin Editor.', 'fuerte-wp' ) )
+					->set_default_value( 'yes' )
+					->set_option_value( 'yes' )
+					->set_help_text( __( 'Disables the built in Plugin code editor.', 'fuerte-wp' ) ),
+
+				Field::make( 'checkbox', 'fuertewp_restrictions_disable_theme_install', __( 'Disable Theme install.', 'fuerte-wp' ) )
+					->set_default_value( 'yes' )
+					->set_option_value( 'yes' )
+					->set_help_text( __( 'Disables installation of new Themes.', 'fuerte-wp' ) ),
+
+				Field::make( 'checkbox', 'fuertewp_restrictions_disable_plugin_install', __( 'Disable Plugin install.', 'fuerte-wp' ) )
+					->set_default_value( 'yes' )
+					->set_option_value( 'yes' )
+					->set_help_text( __( 'Disables installation of new Plugins.', 'fuerte-wp' ) ),
 			) )
 
 			->add_tab( __('Advanced Restrictions', 'fuerte-wp'), array(
 				Field::make( 'html', 'fuertewp_advanced_restrictions_header', __( 'Note:' ) )
 					->set_html( __( '<p>Only for power users. Leave a field blank to not use those restrictions.</p>', 'fuerte-wp' ) ),
 
-				Field::make( 'textarea', 'fuertewp_restricted_scripts', __( 'Restricted Scripts.' ) )
+				Field::make( 'textarea', 'fuertewp_restricted_scripts', __( 'Restricted Scripts.', 'fuerte-wp' ) )
 					->set_rows( 4 )
 					->set_default_value( 'export.php
 theme-editor.php
@@ -291,7 +311,7 @@ theme-install.php
 update.php' )
 					->set_help_text( __( 'One per line. Restricted scripts by file name.<br>These file names will be checked against <a href="https://codex.wordpress.org/Global_Variables" target="_blank">$pagenow</a>, and also will be thrown into <a href="https://developer.wordpress.org/reference/functions/remove_menu_page/" target="_blank">remove_menu_page</a>.<br/>You can comment a line with // to not use it.', 'fuerte-wp' ) ),
 
-				Field::make( 'textarea', 'fuertewp_restricted_pages', __( 'Restricted Pages.' ) )
+				Field::make( 'textarea', 'fuertewp_restricted_pages', __( 'Restricted Pages.', 'fuerte-wp' ) )
 					->set_rows( 4 )
 					->set_default_value( 'wprocket
 updraftplus
@@ -309,7 +329,7 @@ elementor-license
 elementor-connect' )
 					->set_help_text( __( 'One per line. Restricted pages by "page" URL variable.<br/>In wp-admin, checks for URLs like: <i>admin.php?page=</i>', 'fuerte-wp' ) ),
 
-				Field::make( 'textarea', 'fuertewp_removed_menus', __( 'Removed Menus.' ) )
+				Field::make( 'textarea', 'fuertewp_removed_menus', __( 'Removed Menus.', 'fuerte-wp' ) )
 					->set_rows( 4 )
 					->set_default_value( 'backwpup
 check-email-status
@@ -317,7 +337,7 @@ limit-login-attempts
 envato-market' )
 					->set_help_text( __( 'One per line. Menus to be removed. Use menu <i>slug</i>.<br/>These slugs will be thrown into <a href="https://developer.wordpress.org/reference/functions/remove_menu_page/" target="_blank">remove_menu_page</a>.', 'fuerte-wp' ) ),
 
-				Field::make( 'textarea', 'fuertewp_removed_submenus', __( 'Removed Submenus.' ) )
+				Field::make( 'textarea', 'fuertewp_removed_submenus', __( 'Removed Submenus.', 'fuerte-wp' ) )
 					->set_rows( 4 )
 					->set_default_value( 'options-general.php|updraftplus
 options-general.php|limit-login-attempts
@@ -327,7 +347,7 @@ tools.php|export.php
 tools.php|pw-transients-manager' )
 					->set_help_text( __( 'One per line. Submenus to be removed. Use: <i>parent-menu-slug<strong>|</strong>submenu-slug</i>, separared with a pipe.<br/>These will be thrown into <a href="https://developer.wordpress.org/reference/functions/remove_submenu_page/" target="_blank">remove_submenu_page</a>.', 'fuerte-wp' ) ),
 
-				Field::make( 'textarea', 'fuertewp_removed_adminbar_menus', __( 'Removed Admin bar menus.' ) )
+				Field::make( 'textarea', 'fuertewp_removed_adminbar_menus', __( 'Removed Admin Bar menus.', 'fuerte-wp' ) )
 					->set_rows( 4 )
 					->set_default_value( 'wp-logo
 tm-suspend

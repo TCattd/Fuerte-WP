@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Fuerte-WP 1.3.0\n"
+"Project-Id-Version: Fuerte-WP 1.3.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Fuerte-WP\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,6 +57,10 @@ msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:134
 msgid "General"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php
+msgid "Access denied message."
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:138
@@ -264,6 +268,38 @@ msgstr ""
 msgid "Restrict ACF fields editing."
 msgstr ""
 
+#: admin/class-fuerte-wp-admin.php:
+msgid "Disable Theme Editor."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:
+msgid "Disables the built in Theme code editor."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:
+msgid "Disable Plugin Editor."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:
+msgid "Disables the built in Plugin code editor."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:
+msgid "Disable Theme install."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:
+msgid "Disables installation of new Themes."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:
+msgid "Disable Plugin install."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:
+msgid "Disables installation of new Plugins."
+msgstr ""
+
 #: admin/class-fuerte-wp-admin.php:277
 msgid "Restrict Advanced Custom Fields editing access in the backend (Custom Fields menu)."
 msgstr ""
@@ -274,6 +310,26 @@ msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:282
 msgid "<p>Only for power users. Leave a field blank to not use those restrictions.</p>"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:
+msgid "Restricted Scripts."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:
+msgid "Restricted Pages."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:
+msgid "Removed Menus."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:
+msgid "Removed Submenus."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:
+msgid "Removed Admin Bar menus."
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:292
