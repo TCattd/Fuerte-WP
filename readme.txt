@@ -20,6 +20,7 @@ Some features included are:
 - Enable and force auto updates for WordPress core, plugins, themes & translations.
 - Disables XML-RPC API.
 - Disables WordPress theme and plugin editor, for non super users.
+- Disables installation of new themes and/or plugins, for non super users.
 - Restrict editing or deleting super users, for non super users.
 - Restrict access to some pages inside WordPress admin panel, like plugins or theme uploads, for non super users. Restricted pages and areas can be extended vía configuration.
 - Remove (and restrict) items from WordPress menus, for non super users.
