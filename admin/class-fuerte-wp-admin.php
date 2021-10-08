@@ -304,11 +304,9 @@ class Fuerte_Wp_Admin {
 				Field::make( 'textarea', 'fuertewp_restricted_scripts', __( 'Restricted Scripts.', 'fuerte-wp' ) )
 					->set_rows( 4 )
 					->set_default_value( 'export.php
-theme-editor.php
 //plugins.php
-plugin-install.php
-theme-install.php
-update.php' )
+update.php
+update-core.php' )
 					->set_help_text( __( 'One per line. Restricted scripts by file name.<br>These file names will be checked against <a href="https://codex.wordpress.org/Global_Variables" target="_blank">$pagenow</a>, and also will be thrown into <a href="https://developer.wordpress.org/reference/functions/remove_menu_page/" target="_blank">remove_menu_page</a>.<br/>You can comment a line with // to not use it.', 'fuerte-wp' ) ),
 
 				Field::make( 'textarea', 'fuertewp_restricted_pages', __( 'Restricted Pages.', 'fuerte-wp' ) )

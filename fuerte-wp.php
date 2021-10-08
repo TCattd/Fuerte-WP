@@ -4,7 +4,7 @@
  * Plugin Name:       Fuerte-WP
  * Plugin URI:        https://github.com/TCattd/Fuerte-WP
  * Description:       Stronger WP. Limit access to critical WordPress areas, even other for admins.
- * Version:           1.3.6
+ * Version:           1.3.7
  * Author:            Esteban Cuevas
  * Author URI:        https://actitud.xyz
  * License:           GPL-2.0+
@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'FUERTEWP_VERSION', '1.3.6' );
+define( 'FUERTEWP_VERSION', '1.3.7' );
 define( 'FUERTEWP_PATH', realpath( plugin_dir_path( __FILE__  ) ) . '/' );
 define( 'FUERTEWP_URL',  trailingslashit( plugin_dir_url( __FILE__ ) ), );
 define( 'FUERTEWP_PLUGIN_BASE', plugin_basename( __FILE__ ) );
