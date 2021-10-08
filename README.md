@@ -31,6 +31,7 @@ Fuerte-WP auto-protect itself and cannot be disabled, unless your account is dec
 - Change WordPress sender email address to match WP installed domain, to avoid receiving WP emails as spam (assuming your domain SPF records are properly configured).
 - Customizable not allowed error message.
 - Disables WordPress theme and plugin editor, for non super users.
+- Disables installation of new themes and/or plugins, for non super users.
 - Remove (and restrict) items from WordPress menus, for non super users.
 - Restrict editing or deleting super users, for non super users.
 - Disables ACF Custom Fields editor access (ACF editor/creator backend UI), for non super users.
