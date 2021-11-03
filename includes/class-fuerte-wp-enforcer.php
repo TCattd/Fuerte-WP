@@ -769,6 +769,7 @@ class Fuerte_Wp_Enforcer
 					background-image: url(<?php echo esc_url( wp_get_attachment_url( get_theme_mod( 'custom_logo' ) ) ); ?>);
 					background-repeat: no-repeat;
 					padding-bottom: 20px;
+					filter: drop-shadow(0px 0px 4px #3c434a);
 				}
 			</style>
 			<?php
