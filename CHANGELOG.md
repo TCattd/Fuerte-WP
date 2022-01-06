@@ -1,5 +1,8 @@
 # Changelog
 
+# 1.3.9 / 2022-01-06
+- Fixed bug with un-trimmed advanced restrictions.
+
 # 1.3.8 / 2021-10-08
 - Option to configure Theme Editor restriction.
 - Option to configure Plugin Editor restriction.

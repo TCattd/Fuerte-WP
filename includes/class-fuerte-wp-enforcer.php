@@ -136,7 +136,8 @@ class Fuerte_Wp_Enforcer
 		}
 
 		// Get options from cache
-		if ( false === ( $fuertewp = get_transient( 'fuertewp_cache_config' ) ) ) {
+		$version_to_string = str_replace( '.', '', FUERTEWP_VERSION );
+		if ( false === ( $fuertewp = get_transient( 'fuertewp_cache_config_' . $version_to_string ) ) ) {
 			// status
 			$status                    = carbon_get_theme_option( 'fuertewp_status' );
 
@@ -181,18 +182,23 @@ class Fuerte_Wp_Enforcer
 
 			// restricted_scripts
 			$restricted_scripts = explode( PHP_EOL, carbon_get_theme_option( 'fuertewp_restricted_scripts' ) );
+			$restricted_scripts = array_map( 'trim', $restricted_scripts );
 
 			// restricted_pages
 			$restricted_pages = explode( PHP_EOL, carbon_get_theme_option( 'fuertewp_restricted_pages' ) );
+			$restricted_pages = array_map( 'trim', $restricted_pages );
 
 			// removed_menus
 			$removed_menus = explode( PHP_EOL, carbon_get_theme_option( 'fuertewp_removed_menus' ) );
+			$removed_menus = array_map( 'trim', $removed_menus );
 
 			// removed_submenus
 			$removed_submenus = explode( PHP_EOL, carbon_get_theme_option( 'fuertewp_removed_submenus' ) );
+			$removed_submenus = array_map( 'trim', $removed_submenus );
 
 			// removed_adminbar_menus
 			$removed_adminbar_menus = explode( PHP_EOL, carbon_get_theme_option( 'fuertewp_removed_adminbar_menus' ) );
+			$removed_adminbar_menus = array_map( 'trim', $removed_adminbar_menus );
 
 			// Main config array, mimics wp-config-fuerte.php
 			$fuertewp = [
@@ -244,7 +250,7 @@ class Fuerte_Wp_Enforcer
 			];
 
 			// Store our processed config inside a transient, with long expiration date. Cache auto-clears when Fuerte-WP options are saved.
-			set_transient( 'fuertewp_cache_config', $fuertewp, 30 * DAY_IN_SECONDS );
+			set_transient( 'fuertewp_cache_config_' . $version_to_string, $fuertewp, 30 * DAY_IN_SECONDS );
 		}
 
 		return $fuertewp;
@@ -438,7 +444,8 @@ class Fuerte_Wp_Enforcer
 				}
 
 				// Disallowed wp-admin pages
-				if ( isset( $fuertewp['restricted_pages'] ) && isset( $_REQUEST['page'] ) && in_array( $_REQUEST['page'], $fuertewp['restricted_pages'] ) && !wp_doing_ajax() ) {
+				if ( isset( $fuertewp['restricted_pages'] ) && isset( $_REQUEST['page'] ) && in_array( $_REQUEST['page'], $fuertewp['restricted_pages'] ) && ! wp_doing_ajax() ) {
+					echo 'debug';
 					$this->access_denied();
 				}
 
@@ -642,6 +649,7 @@ class Fuerte_Wp_Enforcer
 			$submenu_parts = [];
 			foreach ( $fuertewp['removed_submenus'] as $item ) {
 				$submenu_parts = explode( '|', $item );
+				$submenu_parts = array_map( 'trim', $submenu_parts );
 
 				remove_submenu_page( $submenu_parts[0], $submenu_parts[1] );
 			}
@@ -827,7 +835,7 @@ class Fuerte_Wp_Enforcer
 			}
 		}
 
-		if ( true === $show_notice && ( $pagenow == 'plugins.php' || ( isset($_REQUEST['page'] ) && $_REQUEST['page'] == 'wc-settings' ) || $pagenow == 'options-general.php' ) ) {
+		if ( true === $show_notice && ( $pagenow == 'plugins.php' || ( isset( $_REQUEST['page'] ) && $_REQUEST['page'] == 'wc-settings' ) || $pagenow == 'options-general.php' ) ) {
 			//add_action( 'admin_notices', 'fuertewp_recommended_plugins_notice' );
 		}
 	}
