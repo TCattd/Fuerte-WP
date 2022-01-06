@@ -1,6 +1,6 @@
 # Changelog
 
-# 1.3.9 / 2022-01-06
+# 1.3.10 / 2022-01-06
 - Fixed bug with un-trimmed advanced restrictions.
 
 # 1.3.8 / 2021-10-08

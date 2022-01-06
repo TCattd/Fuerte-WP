@@ -445,7 +445,6 @@ class Fuerte_Wp_Enforcer
 
 				// Disallowed wp-admin pages
 				if ( isset( $fuertewp['restricted_pages'] ) && isset( $_REQUEST['page'] ) && in_array( $_REQUEST['page'], $fuertewp['restricted_pages'] ) && ! wp_doing_ajax() ) {
-					echo 'debug';
 					$this->access_denied();
 				}
 
