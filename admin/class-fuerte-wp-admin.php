@@ -382,7 +382,8 @@ updraft_admin_node' )
 		}
 
 		// Clears options cache
-		delete_transient( 'fuertewp_cache_config' );
+		$version_to_string = str_replace( '.', '', FUERTEWP_VERSION );
+		delete_transient( 'fuertewp_cache_config_' . $version_to_string );
 	}
 
 	/**
