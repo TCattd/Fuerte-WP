@@ -59,8 +59,39 @@ function fuertewp_option_exists( $option_name, $site_wide = false ) {
 }
 
 /**
- * WP Customizer register
+ * Customizer disable Additional CSS editor.
  */
 function fuertewp_customizer_remove_css_editor( $wp_customize ) {
 	$wp_customize->remove_section('custom_css');
+}
+
+/**
+ * REST API restrict access to logged in users only.
+ * https://developer.wordpress.org/rest-api/frequently-asked-questions/#require-authentication-for-all-requests
+ */
+function fuertewp_restapi_loggedin_only( $result ) {
+	// If a previous authentication check was applied,
+	// pass that result along without modification.
+	if ( true === $result || is_wp_error( $result ) ) {
+		return $result;
+	}
+
+	// Exclude JWT auth token endpoints URLs
+	if ( false !== stripos( $_SERVER['REQUEST_URI'], 'jwt-auth' ) ) {
+		return $result;
+	}
+
+	// No authentication has been performed yet.
+	// Return an error if user is not logged in.
+	if ( ! is_user_logged_in() ) {
+		return new WP_Error(
+			'rest_not_logged_in',
+			__( 'You are not currently logged in.' ),
+			array( 'status' => 401 )
+		);
+	}
+
+	// Our custom authentication check should have no effect
+	// on logged-in requests
+	return $result;
 }

@@ -167,10 +167,13 @@ class Fuerte_Wp_Enforcer
 			$network_new_user_site_registered          = carbon_get_theme_option( 'fuertewp_emails_network_new_user_site_registered' ) == 'yes';
 			$network_new_site_activated                = carbon_get_theme_option( 'fuertewp_emails_network_new_site_activated' ) == 'yes';
 
+			// REST API
+			$restapi_loggedin_only     = carbon_get_theme_option( 'fuertewp_restrictions_restapi_loggedin_only' ) == 'yes';
+			$disable_app_passwords     = carbon_get_theme_option( 'fuertewp_restrictions_restapi_disable_app_passwords' ) == 'yes';
+
 			// restrictions
 			$disable_xmlrpc            = carbon_get_theme_option( 'fuertewp_restrictions_disable_xmlrpc' ) == 'yes';
 			$disable_admin_create_edit = carbon_get_theme_option( 'fuertewp_restrictions_disable_admin_create_edit' ) == 'yes';
-			$disable_app_passwords     = carbon_get_theme_option( 'fuertewp_restrictions_disable_app_passwords' ) == 'yes';
 			$disable_weak_passwords    = carbon_get_theme_option( 'fuertewp_restrictions_disable_weak_passwords' ) == 'yes';
 			$force_strong_passwords    = carbon_get_theme_option( 'fuertewp_restrictions_force_strong_passwords' ) == 'yes';
 			$disable_admin_bar_roles   = carbon_get_theme_option( 'fuertewp_restrictions_disable_admin_bar_roles' );
@@ -219,10 +222,13 @@ class Fuerte_Wp_Enforcer
 				'tweaks'     => [
 					'use_site_logo_login'           => $use_site_logo_login,
 				],
+				'rest_api' => [
+					'loggedin_only'                 => $restapi_loggedin_only,
+					'disable_app_passwords'         => $disable_app_passwords,
+				],
 				'restrictions' => [
 					'disable_xmlrpc'                => $disable_xmlrpc,
 					'disable_admin_create_edit'     => $disable_admin_create_edit,
-					'disable_app_passwords'         => $disable_app_passwords,
 					'disable_weak_passwords'        => $disable_weak_passwords,
 					'force_strong_passwords'        => $force_strong_passwords,
 					'disable_admin_bar_roles'       => $disable_admin_bar_roles,
@@ -368,6 +374,11 @@ class Fuerte_Wp_Enforcer
 			define( 'WP_DISABLE_FATAL_ERROR_HANDLER', true );
 		}
 
+		// REST API disable Application Passwords
+		if ( isset( $fuertewp['rest_api']['loggedin_only'] ) && true === $fuertewp['rest_api']['loggedin_only'] ) {
+			add_filter( 'rest_authentication_errors', 'fuertewp_restapi_loggedin_only' );
+		}
+
 		// Check if current user should be affected by Fuerte-WP
 		if ( ! in_array( strtolower( $current_user->user_email ), $fuertewp['super_users'] ) || defined( 'FUERTEWP_FORCE' ) && true === FUERTEWP_FORCE ) {
 			// Everywhere tweaks (wp-admin or not)
@@ -435,8 +446,8 @@ class Fuerte_Wp_Enforcer
 					define( 'DISALLOW_FILE_MODS', true );
 				} */
 
-				// Disable Application Passwords
-				if ( isset( $fuertewp['restrictions']['disable_app_passwords'] ) && true === $fuertewp['restrictions']['disable_app_passwords'] ) {
+				// REST API disable Application Passwords
+				if ( isset( $fuertewp['rest_api']['disable_app_passwords'] ) && true === $fuertewp['rest_api']['disable_app_passwords'] ) {
 					add_filter( 'wp_is_application_passwords_available', '__return_false', 9999 );
 				}
 

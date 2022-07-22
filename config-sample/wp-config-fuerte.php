@@ -53,12 +53,18 @@ $fuertewp = [
 		'use_site_logo_login'           => true, // Use customizer logo as WP login logo.
 	],
 	/*
+	REST API
+	*/
+	'rest_api' => [
+		'loggedin_only'         => true, // Force REST API to logged in users only.
+		'disable_app_passwords' => true, // Disable WP application passwords for REST API.
+	],
+	/*
 	Restrictions
 	*/
 	'restrictions' => [
 		'disable_xmlrpc'                => true, // Disable old XML-RPC API
 		'disable_admin_create_edit'     => true, // Disable creation of new admin accounts by non super admins.
-		'disable_app_passwords'         => true, // Disable WP application passwords.
 		'disable_weak_passwords'        => true, // Disable ability to use a weak passwords. User can't uncheck "Confirm use of weak password". Let users type their own password, but must be somewhat secure (following WP built in recommendation library).
 		'force_strong_passwords'        => false, // Force strong passwords usage, make password field read-only. Users must use WP provided strong password.
 		'disable_admin_bar_roles'       => [ 'subscriber', 'customer' ], // Disable admin bar for some user roles. Array of WP/WC roles. Empty array to not use this feature.

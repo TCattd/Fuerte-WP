@@ -250,6 +250,22 @@ class Fuerte_Wp_Admin {
 					->set_help_text( __( 'Receipt: network admin.', 'fuerte-wp' ) ),
 			) )
 
+			->add_tab( __('REST API', 'fuerte-wp'), [
+				Field::make( 'html', 'fuertewp_restapi_restrictions_header', __( 'Note:' ) )
+					->set_html( __( '<p>REST API restrictions.</p>', 'fuerte-wp' ) ),
+
+				Field::make( 'checkbox', 'fuertewp_restrictions_restapi_loggedin_only', __( 'Restrict REST API usage to logged in users only.', 'fuerte-wp' ) )
+					->set_default_value( 'yes' )
+					->set_option_value( 'yes' )
+					->set_help_text( __( 'Modern WordPress depends on his REST API. The entire new editor, Gutenberg, uses it. And many more usage instances are common the WP core. You should not disable the REST API entirely, or WordPress will breake. This is the second best option: limit his usage to only logged in users. <a href="https://developer.wordpress.org/rest-api/frequently-asked-questions/" target="_blank">Learn more</a>.', 'fuerte-wp' ) ),
+
+				Field::make( 'checkbox', 'fuertewp_restrictions_restapi_disable_app_passwords', __( 'Disable app passwords.', 'fuerte-wp' ) )
+					->set_default_value( 'yes' )
+					->set_option_value( 'yes' )
+					->set_help_text( __( 'Disable generation of App Passwords, used for the REST API. <a href="https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/" target="_blank">Check here</a> for more info.', 'fuerte-wp' ) ),
+
+			] )
+
 			->add_tab( __('Restrictions', 'fuerte-wp'), array(
 				Field::make( 'checkbox', 'fuertewp_restrictions_disable_xmlrpc', __( 'Disable XML-RPC API.', 'fuerte-wp' ) )
 					->set_default_value( 'yes' )
@@ -260,11 +276,6 @@ class Fuerte_Wp_Admin {
 					->set_default_value( 'yes' )
 					->set_option_value( 'yes' )
 					->set_help_text( __( 'Disable the creation of new admin accounts and the editing of existing admin accounts.', 'fuerte-wp' ) ),
-
-				Field::make( 'checkbox', 'fuertewp_restrictions_disable_app_passwords', __( 'Disable app passwords.', 'fuerte-wp' ) )
-					->set_default_value( 'yes' )
-					->set_option_value( 'yes' )
-					->set_help_text( __( 'Disable WordPress app passwords. <a href="https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/" target="_blank">Check here</a> for more info.', 'fuerte-wp' ) ),
 
 				Field::make( 'checkbox', 'fuertewp_restrictions_disable_weak_passwords', __( 'Disable weak passwords.', 'fuerte-wp' ) )
 					->set_default_value( 'yes' )
