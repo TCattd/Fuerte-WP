@@ -27,6 +27,7 @@ Fuerte-WP auto-protect itself and cannot be disabled, unless your account is dec
 - Disables several WP email notification to site admin or network admin.
 - Disables WP Application Passwords feature.
 - Disables XML-RPC API.
+- Restrict the REST API to logged in users only.
 - Change WordPress [recovery email](https://make.wordpress.org/core/2019/04/16/fatal-error-recovery-mode-in-5-2/) so WP crashes will go to a different email than the Administration Email Address in WP General Settings.
 - Change WordPress sender email address to match WP installed domain, to avoid receiving WP emails as spam (assuming your domain SPF records are properly configured).
 - Customizable not allowed error message.
@@ -43,6 +44,7 @@ Fuerte-WP auto-protect itself and cannot be disabled, unless your account is dec
 - Disable access to Permalinks configuration.
 - Disable Plugins installation (via WP's repo or upload). Also disable plugins deletion.
 - Enable using Customizer custom logo as a WP login logo.
+- Disable Customizer Additional CSS editor.
 
 ## How to install
 
