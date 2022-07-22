@@ -257,7 +257,7 @@ class Fuerte_Wp_Admin {
 				Field::make( 'checkbox', 'fuertewp_restrictions_restapi_loggedin_only', __( 'Restrict REST API usage to logged in users only.', 'fuerte-wp' ) )
 					->set_default_value( 'yes' )
 					->set_option_value( 'yes' )
-					->set_help_text( __( 'Modern WordPress depends on his REST API. The entire new editor, Gutenberg, uses it. And many more usage instances are common the WP core. You should not disable the REST API entirely, or WordPress will breake. This is the second best option: limit his usage to only logged in users. <a href="https://developer.wordpress.org/rest-api/frequently-asked-questions/" target="_blank">Learn more</a>.', 'fuerte-wp' ) ),
+					->set_help_text( __( 'Modern WordPress depends on his REST API. The entire new editor, Gutenberg, uses it. And many more usage instances are common the WP core. You should not disable the REST API entirely, or WordPress will brake. This is the second best option: limit his usage to only logged in users. <a href="https://developer.wordpress.org/rest-api/frequently-asked-questions/" target="_blank">Learn more</a>.', 'fuerte-wp' ) ),
 
 				Field::make( 'checkbox', 'fuertewp_restrictions_restapi_disable_app_passwords', __( 'Disable app passwords.', 'fuerte-wp' ) )
 					->set_default_value( 'yes' )

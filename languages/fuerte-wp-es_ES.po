@@ -224,7 +224,7 @@ msgid "Restrict REST API usage to logged in users only."
 msgstr "Restringe el uso de la REST API a usuarios conectados únicamente."
 
 #: admin/class-fuerte-wp-admin.php:260
-msgid "Modern WordPress depends on his REST API. The entire new editor, Gutenberg, uses it. And many more usage instances are common the WP core. You should not disable the REST API entirely, or WordPress will breake. This is the second best option: limit his usage to only logged in users. <a href=\"https://developer.wordpress.org/rest-api/frequently-asked-questions/\" target=\"_blank\">Learn more</a>."
+msgid "Modern WordPress depends on his REST API. The entire new editor, Gutenberg, uses it. And many more usage instances are common the WP core. You should not disable the REST API entirely, or WordPress will brake. This is the second best option: limit his usage to only logged in users. <a href=\"https://developer.wordpress.org/rest-api/frequently-asked-questions/\" target=\"_blank\">Learn more</a>."
 msgstr "Un WordPress moderno depende de su API REST. El nuevo editor, Gutenberg, lo usa. Y muchas instancias más de uso son comunes en el núcleo de WP. No deberías desactivar la API REST por completo, o WordPress se romperá. Esta es la segunda mejor opción: limitar su uso solo a usuarios conectados.  <a href=“https://developer.wordpress.org/rest-api/frequently-asked-questions/“ target=“_blank”>Aprender más</a>."
 
 #: admin/class-fuerte-wp-admin.php:262
