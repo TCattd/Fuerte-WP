@@ -602,6 +602,9 @@ class Fuerte_Wp_Enforcer
 
 		if ( ! isset ( $fuertewp['general']['sender_email'] ) || empty( $fuertewp['general']['sender_email'] ) ) {
 			$sender_email_address = 'no-reply@' . parse_url( home_url() )['host'];
+
+			// Remove www from hostname
+			$sender_email_address = str_replace( 'www.', '', $sender_email_address );
 		} else {
 			$sender_email_address = $fuertewp['general']['sender_email'];
 		}
