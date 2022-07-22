@@ -344,6 +344,7 @@ update-core.php' )
 					->set_rows( 4 )
 					->set_default_value( 'wprocket
 updraftplus
+better-search-replace
 backwpup
 backwpupjobs
 backwpupeditjob
@@ -352,6 +353,7 @@ backwpupbackups
 backwpupsettings
 limit-login-attempts
 wp_stream_settings
+transients-manager
 pw-transients-manager
 envato-market
 elementor-license
@@ -373,7 +375,9 @@ options-general.php|limit-login-attempts
 options-general.php|mainwp_child_tab
 options-general.php|wprocket
 tools.php|export.php
-tools.php|pw-transients-manager' )
+tools.php|transients-manager
+tools.php|pw-transients-manager
+tools.php|better-search-replace' )
 					->set_help_text( __( 'One per line. Submenus to be removed. Use: <i>parent-menu-slug<strong>|</strong>submenu-slug</i>, separared with a pipe.<br/>These will be thrown into <a href="https://developer.wordpress.org/reference/functions/remove_submenu_page/" target="_blank">remove_submenu_page</a>.', 'fuerte-wp' ) ),
 
 				Field::make( 'textarea', 'fuertewp_removed_adminbar_menus', __( 'Removed Admin Bar menus.', 'fuerte-wp' ) )

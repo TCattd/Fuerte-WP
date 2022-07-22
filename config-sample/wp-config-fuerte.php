@@ -110,6 +110,7 @@ $fuertewp = [
 	'restricted_pages' => [
 		'wprocket', // WP-Rocket
 		'updraftplus', // UpdraftPlus
+		'better-search-replace', // Better Search Replace
 		'backwpup', // BackWPup
 		'backwpupjobs', // BackWPup
 		'backwpupeditjob', // BackWPup
@@ -118,6 +119,7 @@ $fuertewp = [
 		'backwpupsettings', // BackWPup
 		'limit-login-attempts', // Limit Login Attempts Reloaded
 		'wp_stream_settings', // Stream
+		'transients-manager', // Transients Manager
 		'pw-transients-manager', // Transients Manager
 		'envato-market', // Envato Market
 		'elementor-license', //  Elementor Pro
@@ -144,7 +146,9 @@ $fuertewp = [
 		'options-general.php|mainwp_child_tab', // MainWP Child
 		'options-general.php|wprocket', // WP-Rocket
 		'tools.php|export.php', // WP Export
+		'tools.php|transients-manager', // Transients Manager
 		'tools.php|pw-transients-manager', // Transients Manager
+		'tools.php|better-search-replace', // Better Search Replace
 	],
 	/*
 	Admin bar menus to be removed.
