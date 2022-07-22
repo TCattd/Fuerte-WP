@@ -146,7 +146,7 @@ class Fuerte_Wp_Admin {
 				Field::make( 'checkbox', 'fuertewp_sender_email_enable', __( 'Use a different sender email.', 'fuerte-wp' ) )
 					->set_default_value( 'yes' )
 					->set_option_value( 'yes' )
-					->set_help_text( __( 'Use a different email (than the <a href="' . admin_url('options-general.php') . '">administrator one</a>) for all emails that WordPress sends.', 'fuerte-wp' ) ),
+					->set_help_text( sprintf( __( 'Use a different email (than the <a href="%s">administrator one</a>) for all emails that WordPress sends.', 'fuerte-wp' ), admin_url('options-general.php') ), ),
 
 				Field::make( 'text', 'fuertewp_sender_email', __( 'Sender email.', 'fuerte-wp' ) )
 					->set_conditional_logic(

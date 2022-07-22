@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Fuerte-WP 1.4.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Fuerte-WP\n"
 "POT-Creation-Date: 2022-07-22T17:03:22+00:00\n"
-"PO-Revision-Date: 2022-07-22 14:09-0400\n"
+"PO-Revision-Date: 2022-07-22 14:36-0400\n"
 "Last-Translator: Esteban Cuevas <esteban@attitude.cl>\n"
 "Language-Team: \n"
 "Language: es\n"
@@ -81,9 +81,10 @@ msgstr "Email de recuperación. Si está vacío, se usará dev@%s.<br/>Este corr
 msgid "Use a different sender email."
 msgstr "Usar un email de salida distinto."
 
+#. translators: %s: link to general options
 #: admin/class-fuerte-wp-admin.php:149
-msgid "Use a different email (than the <a href=\""
-msgstr "Usa un email distinto (al fijado en <a href=“"
+msgid "Use a different email (than the <a href=\"%s\">administrator one</a>) for all emails that WordPress sends."
+msgstr "Utiliza un email diferente (que el del <a href=\"%s\">administrador</a>) para todos los emails que envía WordPress."
 
 #: admin/class-fuerte-wp-admin.php:151
 msgid "Sender email."

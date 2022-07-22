@@ -80,8 +80,9 @@ msgstr ""
 msgid "Use a different sender email."
 msgstr ""
 
+#. translators: %s: link to general options
 #: admin/class-fuerte-wp-admin.php:149
-msgid "Use a different email (than the <a href=\""
+msgid "Use a different email (than the <a href=\"%s\">administrator one</a>) for all emails that WordPress sends."
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:151
