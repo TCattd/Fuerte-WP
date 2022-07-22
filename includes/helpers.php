@@ -21,7 +21,7 @@ function fuertewp_get_admin_users() {
 	$admins = [];
 
 	foreach ( $users as $user ) {
-		$admins[$user->user_email] = $user->user_email;
+		$admins[$user->user_email] = $user->user_login . '[' . $user->user_email . ']';
 	}
 
 	return $admins;
