@@ -1,7 +1,8 @@
 # Changelog
 
-# 1.4.0 / 2022-07-22
+# 1.4.1 / 2022-07-22
 - PHP 8.x compatibility check.
+- Tested up to WordPress 6.0.
 - Added an option to enable/disble the sender email address.
 - Added an option to disable Customizer additional CSS editor.
 - Added an option to force REST API usage to logged in users only.
