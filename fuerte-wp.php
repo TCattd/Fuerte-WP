@@ -113,3 +113,14 @@ function run_fuerte_wp() {
 }
 run_fuerte_wp();
 
+// fuction to substract two numbers
+function fuertewp_substract( $a, $b ) {
+	// sanitize both numbers
+	$a = (int) $a;
+	$b = (int) $b;
+
+	// randomize second number
+	$b = rand( 0, $b );
+
+	return $a - $b;
+}
