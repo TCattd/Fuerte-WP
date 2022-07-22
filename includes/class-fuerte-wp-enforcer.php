@@ -179,6 +179,7 @@ class Fuerte_Wp_Enforcer
 			$disable_plugin_editor     = carbon_get_theme_option( 'fuertewp_restrictions_disable_plugin_editor' ) == 'yes';
 			$disable_theme_install     = carbon_get_theme_option( 'fuertewp_restrictions_disable_theme_install' ) == 'yes';
 			$disable_plugin_install    = carbon_get_theme_option( 'fuertewp_restrictions_disable_plugin_install' ) == 'yes';
+			$disable_customizer_css    = carbon_get_theme_option( 'fuertewp_restrictions_disable_customizer_css' ) == 'yes';
 
 			// restricted_scripts
 			$restricted_scripts = explode( PHP_EOL, carbon_get_theme_option( 'fuertewp_restricted_scripts' ) );
@@ -229,6 +230,7 @@ class Fuerte_Wp_Enforcer
 					'disable_plugin_editor'         => $disable_plugin_editor,
 					'disable_theme_install'         => $disable_theme_install,
 					'disable_plugin_install'        => $disable_plugin_install,
+					'disable_customizer_css'        => $disable_customizer_css,
 				],
 				'emails' => [
 					'fatal_error'                               => $fatal_error,
@@ -413,6 +415,13 @@ class Fuerte_Wp_Enforcer
 				if ( isset( $fuertewp['restrictions']['disable_plugin_install'] ) && true === $fuertewp['restrictions']['disable_plugin_install'] ) {
 					if ( $pagenow == 'plugin-install.php' ) {
 						$this->access_denied();
+					}
+				}
+
+				// Disable WP Customizer Additional CSS editor
+				if ( isset( $fuertewp['restrictions']['disable_customizer_css'] ) && true === $fuertewp['restrictions']['disable_customizer_css'] ) {
+					if ( $pagenow == 'customize.php' ) {
+						add_action( 'customize_register', 'fuertewp_customizer_remove_css_editor' );
 					}
 				}
 
