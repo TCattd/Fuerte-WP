@@ -57,3 +57,10 @@ function fuertewp_option_exists( $option_name, $site_wide = false ) {
 
 	return $wpdb->query( $wpdb->prepare( "SELECT * FROM ". ($site_wide ? $wpdb->base_prefix : $wpdb->prefix). "options WHERE option_name ='%s' LIMIT 1", $option_name ) );
 }
+
+/**
+ * WP Customizer register
+ */
+function fuertewp_customizer_remove_css_editor( $wp_customize ) {
+	$wp_customize->remove_section('custom_css');
+}

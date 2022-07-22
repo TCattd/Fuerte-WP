@@ -1,7 +1,7 @@
 === Fuerte-WP ===
 Contributors: tcattd
 Tags: security
-Stable tag: 1.3.11
+Stable tag: 1.4.0
 Requires at least: 5.8
 Tested up to: 5.9
 Requires PHP: 7.3

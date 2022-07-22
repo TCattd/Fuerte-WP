@@ -4,7 +4,7 @@
  * Plugin Name:       Fuerte-WP
  * Plugin URI:        https://github.com/TCattd/Fuerte-WP
  * Description:       Stronger WP. Limit access to critical WordPress areas, even other for admins.
- * Version:           1.3.11
+ * Version:           1.4.0
  * Author:            Esteban Cuevas
  * Author URI:        https://actitud.xyz
  * License:           GPL-2.0+
@@ -55,6 +55,11 @@ if ( defined( 'FUERTEWP_DISABLE' ) && true === FUERTEWP_DISABLE ) {
 function fuertewp_includes_autoload() {
 	if ( file_exists( FUERTEWP_PATH . 'includes/helpers.php' ) ) {
 		require_once FUERTEWP_PATH . 'includes/helpers.php';
+	}
+
+	// Elementor has JS issues with Carbon-Fields being loaded while in his editor.
+	if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'elementor' ) {
+		return;
 	}
 
 	if ( file_exists( FUERTEWP_PATH . 'build/vendor/autoload.php' ) ) {

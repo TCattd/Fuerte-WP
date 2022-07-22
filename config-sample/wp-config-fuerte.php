@@ -67,6 +67,7 @@ $fuertewp = [
 		'disable_plugin_editor'         => true, // Disable WP Plugin code editor.
 		'disable_theme_install'         => true, // Disable Themes installation.
 		'disable_plugin_install'        => true, // Disable Plugins installation.
+		'disable_customizer_css'        => true, // Disable Plugins installation.
 	],
 	/*
 	Controls several WordPress notification emails, mainly targeted to site/network admin email address.

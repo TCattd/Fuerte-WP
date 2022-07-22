@@ -295,6 +295,11 @@ class Fuerte_Wp_Admin {
 					->set_default_value( 'yes' )
 					->set_option_value( 'yes' )
 					->set_help_text( __( 'Disables installation of new Plugins.', 'fuerte-wp' ) ),
+
+				Field::make( 'checkbox', 'fuertewp_restrictions_disable_customizer_css', __( 'Disable Customizer CSS Editor.', 'fuerte-wp' ) )
+					->set_default_value( 'yes' )
+					->set_option_value( 'yes' )
+					->set_help_text( __( 'Disables WP Customizer Additional CSS Editor.', 'fuerte-wp' ) ),
 			) )
 
 			->add_tab( __('Advanced Restrictions', 'fuerte-wp'), array(
