@@ -39,6 +39,7 @@ $fuertewp = [
 	'general' => [
 		'access_denied_message'         => 'Access denied.', // Default access denied message.
 		'recovery_email'                => '', // Admin recovery email. If empty, dev@wpdomain.tld will be used. See https://make.wordpress.org/core/2019/04/16/fatal-error-recovery-mode-in-5-2/
+		'sender_email_enable'           => true, // Enable custom email sender.
 		'sender_email'                  => '', // Default site sender email. If empty, no-reply@wpdomain.tld will be used.
 		'autoupdate_core'               => true, // Auto update WP core.
 		'autoupdate_plugins'            => true, // Auto update plugins.
@@ -55,7 +56,7 @@ $fuertewp = [
 	Restrictions
 	*/
 	'restrictions' => [
-		'disable_xmlrpc'                => true, // Disable the old XML-RPC API
+		'disable_xmlrpc'                => true, // Disable old XML-RPC API
 		'disable_admin_create_edit'     => true, // Disable creation of new admin accounts by non super admins.
 		'disable_app_passwords'         => true, // Disable WP application passwords.
 		'disable_weak_passwords'        => true, // Disable ability to use a weak passwords. User can't uncheck "Confirm use of weak password". Let users type their own password, but must be somewhat secure (following WP built in recommendation library).
@@ -67,7 +68,7 @@ $fuertewp = [
 		'disable_plugin_editor'         => true, // Disable WP Plugin code editor.
 		'disable_theme_install'         => true, // Disable Themes installation.
 		'disable_plugin_install'        => true, // Disable Plugins installation.
-		'disable_customizer_css'        => true, // Disable Plugins installation.
+		'disable_customizer_css'        => true, // Disable Customizer Additional CSS.
 	],
 	/*
 	Controls several WordPress notification emails, mainly targeted to site/network admin email address.

@@ -145,6 +145,7 @@ class Fuerte_Wp_Enforcer
 			$super_users               = carbon_get_theme_option( 'fuertewp_super_users' );
 			$access_denied_message     = carbon_get_theme_option( 'fuertewp_access_denied_message' );
 			$recovery_email            = carbon_get_theme_option( 'fuertewp_recovery_email' );
+			$sender_email_enable       = carbon_get_theme_option( 'fuertewp_sender_email_enable' );
 			$sender_email              = carbon_get_theme_option( 'fuertewp_sender_email' );
 			$autoupdate_core           = carbon_get_theme_option( 'fuertewp_autoupdate_core' ) == 'yes';
 			$autoupdate_plugins        = carbon_get_theme_option( 'fuertewp_autoupdate_plugins' ) == 'yes';
@@ -208,6 +209,7 @@ class Fuerte_Wp_Enforcer
 				'general'     => [
 					'access_denied_message'         => $access_denied_message,
 					'recovery_email'                => $recovery_email,
+					'sender_email_enable'           => $sender_email_enable,
 					'sender_email'                  => $sender_email,
 					'autoupdate_core'               => $autoupdate_core,
 					'autoupdate_plugins'            => $autoupdate_plugins,
@@ -311,8 +313,10 @@ class Fuerte_Wp_Enforcer
 		/**
 		 * Change WP sender email address
 		 */
-		add_filter( 'wp_mail_from', array(__CLASS__, 'sender_email_address'), 9999 );
-		add_filter( 'wp_mail_from_name', array(__CLASS__, 'sender_email_address'), 9999 );
+		if ( isset ( $fuertewp['general']['sender_email_enable'] ) && true === $fuertewp['general']['sender_email_enable'] ) {
+			add_filter( 'wp_mail_from', array(__CLASS__, 'sender_email_address'), 9999 );
+			add_filter( 'wp_mail_from_name', array(__CLASS__, 'sender_email_address'), 9999 );
+		}
 
 		/**
 		 * Disable WP notification emails

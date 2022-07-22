@@ -143,7 +143,22 @@ class Fuerte_Wp_Admin {
 					/* translators: %s: site domain */
 					->set_help_text( sprintf( __('Admin recovery email. If empty, dev@%s will be used.<br/>This email will receive fatal errors from WP, and not the administration email in the General Settings. Check <a href="https://make.wordpress.org/core/2019/04/16/fatal-error-recovery-mode-in-5-2/" target="_blank">fatal error recovery mode</a>.', 'fuerte-wp' ), $domain ) ),
 
+				Field::make( 'checkbox', 'fuertewp_sender_email_enable', __( 'Use a different sender email.', 'fuerte-wp' ) )
+					->set_default_value( 'yes' )
+					->set_option_value( 'yes' )
+					->set_help_text( __( 'Use a different email (than the <a href="' . admin_url('options-general.php') . '">administrator one</a>) for all emails that WordPress sends.', 'fuerte-wp' ) ),
+
 				Field::make( 'text', 'fuertewp_sender_email', __( 'Sender email.', 'fuerte-wp' ) )
+					->set_conditional_logic(
+						[
+							'relation' => 'AND',
+								[
+								'field' => 'fuertewp_sender_email_enable',
+								'value' => true,
+								'compare' => '=',
+							],
+						]
+					)
 					->set_default_value( '' )
 					->set_attribute( 'type', 'email' )
 					/* translators: %s: site domain */
@@ -239,7 +254,7 @@ class Fuerte_Wp_Admin {
 				Field::make( 'checkbox', 'fuertewp_restrictions_disable_xmlrpc', __( 'Disable XML-RPC API.', 'fuerte-wp' ) )
 					->set_default_value( 'yes' )
 					->set_option_value( 'yes' )
-					->set_help_text( __( 'Disable the old and insecure XML-RPC API in WordPress.', 'fuerte-wp' ) ),
+					->set_help_text( __( 'Disable the old and insecure XML-RPC API in WordPress. <a href="https://blog.wpscan.com/is-wordpress-xmlrpc-a-security-problem/" target="_blank">Learn more</a>.', 'fuerte-wp' ) ),
 
 				Field::make( 'checkbox', 'fuertewp_restrictions_disable_admin_create_edit', __( 'Disable admin creation/edition.', 'fuerte-wp' ) )
 					->set_default_value( 'yes' )
@@ -299,7 +314,7 @@ class Fuerte_Wp_Admin {
 				Field::make( 'checkbox', 'fuertewp_restrictions_disable_customizer_css', __( 'Disable Customizer CSS Editor.', 'fuerte-wp' ) )
 					->set_default_value( 'yes' )
 					->set_option_value( 'yes' )
-					->set_help_text( __( 'Disables WP Customizer Additional CSS Editor.', 'fuerte-wp' ) ),
+					->set_help_text( __( 'Disables Customizer Additional CSS Editor.', 'fuerte-wp' ) ),
 			) )
 
 			->add_tab( __('Advanced Restrictions', 'fuerte-wp'), array(
