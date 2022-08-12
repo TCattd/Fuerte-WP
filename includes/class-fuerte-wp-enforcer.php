@@ -309,6 +309,7 @@ class Fuerte_Wp_Enforcer
 		 */
 		if ( isset( $fuertewp['restrictions']['disable_xmlrpc'] ) && true === $fuertewp['restrictions']['disable_xmlrpc'] ) {
 			add_filter( 'xmlrpc_enabled', '__return_false', 9999 );
+			add_filter( 'xmlrpc_methods', 'fuertewp_remove_xmlrpc_methods', 9999 );
 		}
 
 		/**

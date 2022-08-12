@@ -95,3 +95,13 @@ function fuertewp_restapi_loggedin_only( $result ) {
 	// on logged-in requests
 	return $result;
 }
+
+/**
+ * Remove WP XML-RPC methods, to fully disable it
+ *
+ * https://www.scottbrownconsulting.com/2020/03/two-ways-to-fully-disable-wordpress-xml-rpc/
+ */
+function fuertewp_remove_xmlrpc_methods( $methods ) {
+	return array();
+}
+

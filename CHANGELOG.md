@@ -1,6 +1,6 @@
 # Changelog
 
-# 1.4.1 / 2022-07-22
+# 1.4.2 / 2022-07-22
 - PHP 8.x compatibility check.
 - Tested up to WordPress 6.0.
 - Added an option to enable/disble the sender email address.
