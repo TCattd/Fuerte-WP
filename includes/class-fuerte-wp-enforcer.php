@@ -168,7 +168,7 @@ class Fuerte_Wp_Enforcer
 			$network_new_site_activated                = carbon_get_theme_option( 'fuertewp_emails_network_new_site_activated' ) == 'yes';
 
 			// REST API
-			$restapi_loggedin_only     = carbon_get_theme_option( 'fuertewp_restrictions_restapi_loggedin_only' ) == 'yes';
+			$restapi_loggedin_only     = carbon_get_theme_option( 'fuertewp_restrictions_restapi_loggedin_only' );
 			$disable_app_passwords     = carbon_get_theme_option( 'fuertewp_restrictions_restapi_disable_app_passwords' ) == 'yes';
 
 			// restrictions

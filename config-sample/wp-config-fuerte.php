@@ -56,7 +56,7 @@ $fuertewp = [
 	REST API
 	*/
 	'rest_api' => [
-		'loggedin_only'         => true, // Force REST API to logged in users only.
+		'loggedin_only'         => false, // Force REST API to logged in users only.
 		'disable_app_passwords' => true, // Disable WP application passwords for REST API.
 	],
 	/*
@@ -123,7 +123,6 @@ $fuertewp = [
 		'pw-transients-manager', // Transients Manager
 		'envato-market', // Envato Market
 		'elementor-license', //  Elementor Pro
-		'elementor-connect', // Elementor Pro
 	],
 	/*
 	Menus to be removed. Use menu's slug.
