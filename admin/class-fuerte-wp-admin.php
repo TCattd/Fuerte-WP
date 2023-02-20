@@ -113,7 +113,7 @@ class Fuerte_Wp_Admin {
 		}
 
 		// Get site's domain. Avoids error: Undefined array key "SERVER_NAME".
-		$domain = parse_url( get_site_url(), PHP_URL_HOST ) );
+		$domain = parse_url( get_site_url(), PHP_URL_HOST );
 
 		// Carbon Fields Custom Datastore
 		//require_once FUERTEWP_PATH . 'includes/class-fuerte-wp-carbon-fields-datastore.php';
