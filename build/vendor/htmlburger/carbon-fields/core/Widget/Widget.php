@@ -178,7 +178,7 @@ abstract class Widget extends \FuerteWpDep\WP_Widget
     {
         foreach ($fields as $field) {
             if (!$field instanceof \FuerteWpDep\Carbon_Fields\Field\Field) {
-                Incorrect_Syntax_Exception::raise('FuerteWpDep\\Object must be of type Carbon_Fields\\Field\\Field');
+                Incorrect_Syntax_Exception::raise('Object must be of type Carbon_Fields\\Field\\Field');
                 return;
             }
             $this->register_field_name($field->get_name());

@@ -1,8 +1,7 @@
-<?php
-namespace FuerteWpDep;
-?>
 <div class="carbon-container">
 	<fieldset class="container-<?php 
+namespace FuerteWpDep;
+
 echo $this->get_id();
 ?>" data-json="<?php 
 echo \urlencode(\json_encode($this->to_json(\false)));

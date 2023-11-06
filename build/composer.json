@@ -15,7 +15,7 @@
     },
     "require": {
         "php": ">=7.3",
-        "htmlburger\/carbon-fields": "^3.3"
+        "htmlburger\/carbon-fields": "^3.6"
     },
     "scripts": {
         "post-install-cmd": [

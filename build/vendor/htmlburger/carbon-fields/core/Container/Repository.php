@@ -184,6 +184,14 @@ class Repository
         }
         $id = \preg_replace('~[\\s]+~', '_', $id);
         $id = \preg_replace('~[^\\w\\-\\_]+~', '', $id);
+        // Remove multiple sequential underscores from the slug
+        $id = \preg_replace('~_+~', '_', $id);
+        // Sometimes we're unable to produce slug because the
+        // source language isn't latin; in those cases
+        // we just produce stable hash from the title
+        if (empty($id) || $id === '_') {
+            $id = \substr(\md5($title), 0, 8);
+        }
         $id = $id_prefix . $id . $id_suffix;
         $base = $id;
         $suffix = 0;

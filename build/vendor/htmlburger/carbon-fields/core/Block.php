@@ -13,6 +13,6 @@ class Block extends Container
      */
     public static function make()
     {
-        return \call_user_func_array(array('parent', 'make'), \array_merge(array('block'), \func_get_args()));
+        return \call_user_func_array(array(\get_parent_class(), 'make'), \array_merge(array('block'), \func_get_args()));
     }
 }

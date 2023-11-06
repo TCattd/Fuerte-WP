@@ -482,7 +482,8 @@ class Helper
                 foreach ($query->posts as $post_id) {
                     $meta = wp_get_attachment_metadata($post_id);
                     $original_file = wp_basename($meta['file']);
-                    $cropped_image_files = wp_list_pluck($meta['sizes'], 'file');
+                    $sizes = isset($meta['sizes']) && !empty($meta['sizes']) ? $meta['sizes'] : array();
+                    $cropped_image_files = wp_list_pluck($sizes, 'file');
                     if ($original_file === $filename || \in_array($filename, $cropped_image_files)) {
                         $attachment_id = \intval($post_id);
                         break;
@@ -627,5 +628,17 @@ class Helper
             $sidebars[] = array('id' => $sidebar['id'], 'name' => $sidebar['name']);
         }
         return $sidebars;
+    }
+    public static function get_attachments_urls($media_files)
+    {
+        if (empty($media_files)) {
+            return \is_array($media_files) ? [] : "";
+        }
+        if (!\is_array($media_files) && (int) $media_files > 0) {
+            return wp_get_attachment_url($media_files);
+        }
+        return \array_map(function ($media_file) {
+            return wp_get_attachment_url($media_file);
+        }, $media_files);
     }
 }

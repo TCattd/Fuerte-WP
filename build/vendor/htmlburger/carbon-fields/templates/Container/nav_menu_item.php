@@ -1,7 +1,6 @@
-<?php
-namespace FuerteWpDep;
-?>
 <div class="description description-wide" data-id="<?php 
+namespace FuerteWpDep;
+
 echo $this->get_id();
 ?>">
 	<fieldset class="container-<?php 

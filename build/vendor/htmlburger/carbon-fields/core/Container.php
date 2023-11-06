@@ -24,7 +24,7 @@ class Container
      */
     public static function factory()
     {
-        return \call_user_func_array(array('\\FuerteWpDep\\Carbon_Fields\\Container\\Container', 'factory'), \func_get_args());
+        return \call_user_func_array(array('\\Carbon_Fields\\Container\\Container', 'factory'), \func_get_args());
     }
     /**
      * An alias of factory().

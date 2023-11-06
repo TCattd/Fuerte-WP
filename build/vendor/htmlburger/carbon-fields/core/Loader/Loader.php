@@ -171,6 +171,7 @@ class Loader
     public function enqueue_assets()
     {
         global $pagenow;
+        global $wp_version;
         $this->enqueue_style('core');
         $this->enqueue_style('metaboxes');
         $this->enqueue_script('vendor', array('wp-polyfill', 'jquery'));
@@ -183,7 +184,7 @@ class Loader
         wp_add_inline_script('carbon-fields-vendor', 'window.cf = window.cf || {}', 'before');
         wp_add_inline_script('carbon-fields-vendor', \sprintf('window.cf.preloaded = %s', wp_json_encode($this->get_json_data())), 'before');
         $revisions = \FuerteWpDep\Carbon_Fields\Carbon_Fields::service('revisions');
-        wp_localize_script('carbon-fields-vendor', 'cf', apply_filters('carbon_fields_config', array('config' => array('locale' => $this->get_ui_translations(), 'pagenow' => $pagenow, 'compactInput' => \FuerteWpDep\Carbon_Fields\COMPACT_INPUT, 'compactInputKey' => \FuerteWpDep\Carbon_Fields\COMPACT_INPUT_KEY, 'revisionsInputKey' => $revisions::CHANGE_KEY))));
+        wp_localize_script('carbon-fields-vendor', 'cf', apply_filters('carbon_fields_config', array('config' => array('locale' => $this->get_ui_translations(), 'pagenow' => $pagenow, 'compactInput' => \FuerteWpDep\Carbon_Fields\COMPACT_INPUT, 'compactInputKey' => \FuerteWpDep\Carbon_Fields\COMPACT_INPUT_KEY, 'revisionsInputKey' => $revisions::CHANGE_KEY, 'wp_version' => $wp_version))));
     }
     /**
      * Trigger the initialization of the UI.

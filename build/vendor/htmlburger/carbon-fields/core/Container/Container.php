@@ -32,6 +32,11 @@ abstract class Container implements Datastore_Holder_Interface
      */
     const HIERARCHY_GROUP_SEPARATOR = ':';
     /**
+     * Visual layout type constants
+     */
+    const LAYOUT_TABBED_HORIZONTAL = 'tabbed-horizontal';
+    const LAYOUT_TABBED_VERTICAL = 'tabbed-vertical';
+    /**
      * Stores if the container is active on the current page
      *
      * @see activate()
@@ -45,6 +50,12 @@ abstract class Container implements Datastore_Holder_Interface
      * @var array
      */
     protected $registered_field_names = array();
+    /**
+     * Complex field layout
+     *
+     * @var string static::LAYOUT_* constant
+     */
+    protected $layout = self::LAYOUT_TABBED_HORIZONTAL;
     /**
      * Tabs available
      */
@@ -709,7 +720,7 @@ abstract class Container implements Datastore_Holder_Interface
     {
         $conditions = $this->condition_collection->evaluate($this->get_condition_types(\true), $this->get_environment_for_request(), array('CUSTOM'));
         $conditions = $this->condition_translator->fulfillable_to_foreign($conditions);
-        $container_data = array('id' => $this->get_id(), 'type' => $this->type, 'title' => $this->title, 'classes' => $this->get_classes(), 'settings' => $this->settings, 'conditions' => $conditions, 'fields' => array(), 'nonce' => array('name' => $this->get_nonce_name(), 'value' => $this->get_nonce_value()));
+        $container_data = array('id' => $this->get_id(), 'type' => $this->type, 'title' => $this->title, 'layout' => $this->layout, 'classes' => $this->get_classes(), 'settings' => $this->settings, 'conditions' => $conditions, 'fields' => array(), 'nonce' => array('name' => $this->get_nonce_name(), 'value' => $this->get_nonce_value()));
         $fields = $this->get_fields();
         foreach ($fields as $field) {
             $field_data = $field->to_json($load);
@@ -734,7 +745,7 @@ abstract class Container implements Datastore_Holder_Interface
     {
         foreach ($fields as $field) {
             if (!$field instanceof Field) {
-                Incorrect_Syntax_Exception::raise('FuerteWpDep\\Object must be of type Carbon_Fields\\Field\\Field');
+                Incorrect_Syntax_Exception::raise('Object must be of type Carbon_Fields\\Field\\Field');
                 return $this;
             }
             $unique = $this->register_field_name($field->get_name());
@@ -782,6 +793,23 @@ abstract class Container implements Datastore_Holder_Interface
     public function or_where()
     {
         \call_user_func_array(array($this->condition_collection, 'or_where'), \func_get_args());
+        return $this;
+    }
+    /**
+     * Modify the layout of this field.
+     *
+     * @param  string $layout
+     * @return self   $this
+     */
+    public function set_layout($layout)
+    {
+        $available_layouts = array(static::LAYOUT_TABBED_HORIZONTAL, static::LAYOUT_TABBED_VERTICAL);
+        if (!\in_array($layout, $available_layouts)) {
+            $error_message = 'Incorrect layout ``' . $layout . '" specified. ' . 'Available layouts: ' . \implode(', ', $available_layouts);
+            Incorrect_Syntax_Exception::raise($error_message);
+            return $this;
+        }
+        $this->layout = $layout;
         return $this;
     }
 }

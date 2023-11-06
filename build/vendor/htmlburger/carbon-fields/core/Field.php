@@ -33,6 +33,7 @@ namespace FuerteWpDep\Carbon_Fields;
  * @method static \Carbon_Fields\Field\Text_Field make_text( string $name, string $label = null )
  * @method static \Carbon_Fields\Field\Textarea_Field make_textarea( string $name, string $label = null )
  * @method static \Carbon_Fields\Field\Time_Field make_time( string $name, string $label = null )
+ * @method static \Carbon_Fields\Field\Block_Preview_Field make_html( string $name, string $label = null )
  */
 class Field
 {
@@ -44,7 +45,7 @@ class Field
      */
     public static function factory()
     {
-        return \call_user_func_array(array('\\FuerteWpDep\\Carbon_Fields\\Field\\Field', 'factory'), \func_get_args());
+        return \call_user_func_array(array('\\Carbon_Fields\\Field\\Field', 'factory'), \func_get_args());
     }
     /**
      * An alias of factory().

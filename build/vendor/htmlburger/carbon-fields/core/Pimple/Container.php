@@ -25,27 +25,31 @@
  */
 namespace FuerteWpDep\Carbon_Fields\Pimple;
 
+use FuerteWpDep\Carbon_Fields\Pimple\Exception\ExpectedInvokableException;
+use FuerteWpDep\Carbon_Fields\Pimple\Exception\FrozenServiceException;
+use FuerteWpDep\Carbon_Fields\Pimple\Exception\InvalidServiceIdentifierException;
+use FuerteWpDep\Carbon_Fields\Pimple\Exception\UnknownIdentifierException;
 /**
  * Container main class.
  *
- * @author  Fabien Potencier
+ * @author Fabien Potencier
  */
 class Container implements \ArrayAccess
 {
-    private $values = array();
+    private $values = [];
     private $factories;
     private $protected;
-    private $frozen = array();
-    private $raw = array();
-    private $keys = array();
+    private $frozen = [];
+    private $raw = [];
+    private $keys = [];
     /**
-     * Instantiate the container.
+     * Instantiates the container.
      *
      * Objects and parameters can be passed as argument to the constructor.
      *
-     * @param array $values The parameters or objects.
+     * @param array $values The parameters or objects
      */
-    public function __construct(array $values = array())
+    public function __construct(array $values = [])
     {
         $this->factories = new \SplObjectStorage();
         $this->protected = new \SplObjectStorage();
@@ -65,12 +69,15 @@ class Container implements \ArrayAccess
      * @param string $id    The unique identifier for the parameter or object
      * @param mixed  $value The value of the parameter or a closure to define an object
      *
-     * @throws \RuntimeException Prevent override of a frozen service
+     * @return void
+     *
+     * @throws FrozenServiceException Prevent override of a frozen service
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($id, $value)
     {
         if (isset($this->frozen[$id])) {
-            throw new \RuntimeException(\sprintf('Cannot override frozen service "%s".', $id));
+            throw new FrozenServiceException($id);
         }
         $this->values[$id] = $value;
         $this->keys[$id] = \true;
@@ -82,12 +89,13 @@ class Container implements \ArrayAccess
      *
      * @return mixed The value of the parameter or an object
      *
-     * @throws \InvalidArgumentException if the identifier is not defined
+     * @throws UnknownIdentifierException If the identifier is not defined
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($id)
     {
         if (!isset($this->keys[$id])) {
-            throw new \InvalidArgumentException(\sprintf('Identifier "%s" is not defined.', $id));
+            throw new UnknownIdentifierException($id);
         }
         if (isset($this->raw[$id]) || !\is_object($this->values[$id]) || isset($this->protected[$this->values[$id]]) || !\method_exists($this->values[$id], '__invoke')) {
             return $this->values[$id];
@@ -108,6 +116,7 @@ class Container implements \ArrayAccess
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($id)
     {
         return isset($this->keys[$id]);
@@ -116,7 +125,10 @@ class Container implements \ArrayAccess
      * Unsets a parameter or an object.
      *
      * @param string $id The unique identifier for the parameter or object
+     *
+     * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($id)
     {
         if (isset($this->keys[$id])) {
@@ -133,12 +145,12 @@ class Container implements \ArrayAccess
      *
      * @return callable The passed callable
      *
-     * @throws \InvalidArgumentException Service definition has to be a closure of an invokable object
+     * @throws ExpectedInvokableException Service definition has to be a closure or an invokable object
      */
     public function factory($callable)
     {
-        if (!\method_exists($callable, '__invoke')) {
-            throw new \InvalidArgumentException('Service definition is not a Closure or invokable object.');
+        if (!\is_object($callable) || !\method_exists($callable, '__invoke')) {
+            throw new ExpectedInvokableException('Service definition is not a Closure or invokable object.');
         }
         $this->factories->attach($callable);
         return $callable;
@@ -152,12 +164,12 @@ class Container implements \ArrayAccess
      *
      * @return callable The passed callable
      *
-     * @throws \InvalidArgumentException Service definition has to be a closure of an invokable object
+     * @throws ExpectedInvokableException Service definition has to be a closure or an invokable object
      */
     public function protect($callable)
     {
-        if (!\method_exists($callable, '__invoke')) {
-            throw new \InvalidArgumentException('Callable is not a Closure or invokable object.');
+        if (!\is_object($callable) || !\method_exists($callable, '__invoke')) {
+            throw new ExpectedInvokableException('Callable is not a Closure or invokable object.');
         }
         $this->protected->attach($callable);
         return $callable;
@@ -169,12 +181,12 @@ class Container implements \ArrayAccess
      *
      * @return mixed The value of the parameter or the closure defining an object
      *
-     * @throws \InvalidArgumentException if the identifier is not defined
+     * @throws UnknownIdentifierException If the identifier is not defined
      */
     public function raw($id)
     {
         if (!isset($this->keys[$id])) {
-            throw new \InvalidArgumentException(\sprintf('Identifier "%s" is not defined.', $id));
+            throw new UnknownIdentifierException($id);
         }
         if (isset($this->raw[$id])) {
             return $this->raw[$id];
@@ -192,18 +204,27 @@ class Container implements \ArrayAccess
      *
      * @return callable The wrapped callable
      *
-     * @throws \InvalidArgumentException if the identifier is not defined or not a service definition
+     * @throws UnknownIdentifierException        If the identifier is not defined
+     * @throws FrozenServiceException            If the service is frozen
+     * @throws InvalidServiceIdentifierException If the identifier belongs to a parameter
+     * @throws ExpectedInvokableException        If the extension callable is not a closure or an invokable object
      */
     public function extend($id, $callable)
     {
         if (!isset($this->keys[$id])) {
-            throw new \InvalidArgumentException(\sprintf('Identifier "%s" is not defined.', $id));
+            throw new UnknownIdentifierException($id);
+        }
+        if (isset($this->frozen[$id])) {
+            throw new FrozenServiceException($id);
         }
         if (!\is_object($this->values[$id]) || !\method_exists($this->values[$id], '__invoke')) {
-            throw new \InvalidArgumentException(\sprintf('Identifier "%s" does not contain an object definition.', $id));
+            throw new InvalidServiceIdentifierException($id);
+        }
+        if (isset($this->protected[$this->values[$id]])) {
+            @\trigger_error(\sprintf('How Pimple behaves when extending protected closures will be fixed in Pimple 4. Are you sure "%s" should be protected?', $id), \E_USER_DEPRECATED);
         }
         if (!\is_object($callable) || !\method_exists($callable, '__invoke')) {
-            throw new \InvalidArgumentException('Extension service definition is not a Closure or invokable object.');
+            throw new ExpectedInvokableException('Extension service definition is not a Closure or invokable object.');
         }
         $factory = $this->values[$id];
         $extended = function ($c) use($callable, $factory) {
@@ -227,12 +248,11 @@ class Container implements \ArrayAccess
     /**
      * Registers a service provider.
      *
-     * @param ServiceProviderInterface $provider A ServiceProviderInterface instance
-     * @param array                    $values   An array of values that customizes the provider
+     * @param array $values An array of values that customizes the provider
      *
      * @return static
      */
-    public function register(ServiceProviderInterface $provider, array $values = array())
+    public function register(ServiceProviderInterface $provider, array $values = [])
     {
         $provider->register($this);
         foreach ($values as $key => $value) {

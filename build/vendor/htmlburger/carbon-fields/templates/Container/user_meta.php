@@ -1,7 +1,6 @@
-<?php
-namespace FuerteWpDep;
-?>
 <h2><?php 
+namespace FuerteWpDep;
+
 echo $this->title;
 ?></h2>
 

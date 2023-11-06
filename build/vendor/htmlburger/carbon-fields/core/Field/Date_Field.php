@@ -34,7 +34,7 @@ class Date_Field extends Field
      *
      * @var array
      */
-    protected $picker_options = array('allowInput' => \true);
+    protected $picker_options = array('allowInput' => \true, 'altInput' => \true, 'altFormat' => "j M Y");
     /**
      * {@inheritDoc}
      */
@@ -70,6 +70,10 @@ class Date_Field extends Field
      */
     public function get_storage_format()
     {
+        if ($this->get_context() === 'block') {
+            $this->input_format_js = "Y-m-d h:i:S K";
+            return "Y-m-d H:i:s";
+        }
         return $this->storage_format;
     }
     /**
