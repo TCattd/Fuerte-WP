@@ -316,6 +316,14 @@ class Fuerte_Wp_Enforcer
 			add_filter('xmlrpc_methods', function () {
 				return [];
 			}, PHP_INT_MAX);
+
+			// Show Forbidden error for XML-RPC requests
+			add_action('init', function () {
+				if (defined('XMLRPC_REQUEST') && XMLRPC_REQUEST) {
+					header('HTTP/1.1 403 Forbidden');
+					die('403 Forbidden - XML-RPC functionality is disabled on this site.');
+				}
+			}, PHP_INT_MAX);
 		}
 
 		/**
