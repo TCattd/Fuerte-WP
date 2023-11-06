@@ -17,9 +17,6 @@
 		"php": ">=7.3",
 		"htmlburger/carbon-fields": "^3.6"
 	},
-	"config": {
-		"vendor-dir": "build/vendor"
-	},
 	"scripts": {
 		"post-install-cmd": [
 			"composer dump-autoload"
