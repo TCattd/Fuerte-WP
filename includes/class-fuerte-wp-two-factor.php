@@ -4,7 +4,6 @@
  * Fuerte_Wp_TwoFactor Class
  *
  * @link       https://actitud.xyz
- * @since      1.4.5
  *
  * @package    Fuerte_Wp
  * @subpackage Fuerte_Wp/includes
