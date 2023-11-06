@@ -278,6 +278,11 @@ class Fuerte_Wp_Admin
 					->set_option_value('yes')
 					->set_help_text(__('Disable the old and insecure XML-RPC API in WordPress. <a href="https://blog.wpscan.com/is-wordpress-xmlrpc-a-security-problem/" target="_blank">Learn more</a>.', 'fuerte-wp')),
 
+				Field::make('checkbox', 'fuertewp_restrictions_htaccess_security_rules', __('Enable htaccess security rules', 'fuerte-wp'))
+					->set_default_value('yes')
+					->set_option_value('yes')
+					->set_help_text(__('Disable the usage of /wp-admin/install.php wizard, and the execution of php files inside /wp-content/uploads/ folder, by adding restrictions on the htaccess file on the server. If you are using Nginx, please, <a href="https://github.com/TCattd/Fuerte-WP/blob/master/FAQ.md" target="_blank">Add them manually</a>.', 'fuerte-wp')),
+
 				Field::make('checkbox', 'fuertewp_restrictions_disable_admin_create_edit', __('Disable admin creation/edition.', 'fuerte-wp'))
 					->set_default_value('yes')
 					->set_option_value('yes')

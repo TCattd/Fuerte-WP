@@ -1,7 +1,9 @@
 # Changelog
 
-# 1.4.11 / 2023-11-06
+# 1.4.12 / 2023-11-06
 - Enhanced disabling of XML-RPC API.
+- Disable re-running of the WP setup wizard.
+- Disable execution of PHP files inside uploads folder.
 - Updated Carbon Fields to fix PHP 8.x and WP 6.2 compatibility issues.
 
 # 1.4.4 / 2023-02-20

@@ -174,6 +174,7 @@ class Fuerte_Wp_Enforcer
 
 			// restrictions
 			$disable_xmlrpc            = carbon_get_theme_option('fuertewp_restrictions_disable_xmlrpc') == 'yes';
+			$htaccess_security_rules    = carbon_get_theme_option('fuertewp_restrictions_htaccess_security_rules') == 'yes';
 			$disable_admin_create_edit = carbon_get_theme_option('fuertewp_restrictions_disable_admin_create_edit') == 'yes';
 			$disable_weak_passwords    = carbon_get_theme_option('fuertewp_restrictions_disable_weak_passwords') == 'yes';
 			$force_strong_passwords    = carbon_get_theme_option('fuertewp_restrictions_force_strong_passwords') == 'yes';
@@ -229,6 +230,7 @@ class Fuerte_Wp_Enforcer
 				],
 				'restrictions' => [
 					'disable_xmlrpc'                => $disable_xmlrpc,
+					'htaccess_security_rules'       => $htaccess_security_rules,
 					'disable_admin_create_edit'     => $disable_admin_create_edit,
 					'disable_weak_passwords'        => $disable_weak_passwords,
 					'force_strong_passwords'        => $force_strong_passwords,
@@ -303,6 +305,30 @@ class Fuerte_Wp_Enforcer
 
 		if (isset($fuertewp['general']['autoupdate_translations']) && true === $fuertewp['general']['autoupdate_translations']) {
 			add_filter('autoupdate_translations', '__return_true', PHP_INT_MAX);
+		}
+
+		/**
+		 * htaccess security rules
+		 */
+		if (isset($fuertewp['restrictions']['htaccess_security_rules']) && true === $fuertewp['restrictions']['htaccess_security_rules']) {
+			// Ensure we are running Apache
+			if (isset($_SERVER['SERVER_SOFTWARE']) && stripos($_SERVER['SERVER_SOFTWARE'], 'Apache') !== false) {
+				// Read .htaccess file contents, if exists
+				$htaccessFile = ABSPATH . '.htaccess';
+
+				// Check if we can write to .htaccess
+				if (file_exists($htaccessFile) && is_writable($htaccessFile)) {
+					$currentContent = file_get_contents($htaccessFile);
+
+					// If .htaccess doesn't contain our rules, add them
+					if (false === stripos($currentContent, '# BEGIN Fuerte-WP')) {
+						global $fuertewp_htaccess;
+
+						// Write .htaccess file, add our rules at the very end
+						file_put_contents($htaccessFile, $currentContent . PHP_EOL . $fuertewp_htaccess);
+					}
+				}
+			}
 		}
 
 		/**

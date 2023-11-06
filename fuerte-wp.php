@@ -5,7 +5,7 @@
  * Plugin Name:       Fuerte-WP
  * Plugin URI:        https://github.com/TCattd/Fuerte-WP
  * Description:       Stronger WP. Limit access to critical WordPress areas, even other for admins.
- * Version:           1.4.11
+ * Version:           1.4.12
  * Author:            Esteban Cuevas
  * Author URI:        https://actitud.xyz
  * License:           GPL-2.0+
@@ -31,7 +31,7 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('FUERTEWP_VERSION', '1.4.11');
+define('FUERTEWP_VERSION', '1.4.12');
 define('FUERTEWP_PATH', realpath(plugin_dir_path(__FILE__)) . '/');
 define('FUERTEWP_URL',  trailingslashit(plugin_dir_url(__FILE__)),);
 define('FUERTEWP_PLUGIN_BASE', plugin_basename(__FILE__));
@@ -103,6 +103,15 @@ register_activation_hook(__FILE__, 'activate_fuerte_wp');
 register_deactivation_hook(__FILE__, 'deactivate_fuerte_wp');
 
 /**
+ * Code that runs on plugins uninstallation
+ */
+function uninstall_fuerte_wp()
+{
+	require_once plugin_dir_path(__FILE__) . 'includes/class-fuerte-wp-uninstaller.php';
+	Fuerte_Wp_Uninstaller::uninstall();
+}
+
+/**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
@@ -124,15 +133,21 @@ function run_fuerte_wp()
 }
 run_fuerte_wp();
 
-// fuction to substract two numbers
-function fuertewp_substract($a, $b)
-{
-	// sanitize both numbers
-	$a = (int) $a;
-	$b = (int) $b;
+/**
+ * htaccess security rules
+ */
+$fuertewp_htaccess = "
+# BEGIN Fuerte-WP
+# Avoid install.php and install-helper.php from being accessed directly
+<FilesMatch \"^(wp-admin/)?(install|install-helper)\.php$\">
+	Order allow,deny
+	Deny from all
+</FilesMatch>
 
-	// randomize second number
-	$b = rand(0, $b);
-
-	return $a - $b;
-}
+# Disable running PHP scripts in the uploads directory
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteRule ^(wp-content/uploads/.*)\.(php|phtml|php3|php4|php5|pl|py|jsp|asp|html|htm|shtml|sh|cgi|suspected)$ - [F,L]
+</IfModule>
+# END Fuerte-WP
+";
