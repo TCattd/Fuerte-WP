@@ -1,5 +1,8 @@
 # Changelog
 
+# 1.4.5 / 2023-11-06
+- Updated Carbon Fields to fix PHP 8.x and WP 6.2 compatibility issues.
+
 # 1.4.4 / 2023-02-20
 - Avoids a PHP Warning when getting the website's domain name.
 

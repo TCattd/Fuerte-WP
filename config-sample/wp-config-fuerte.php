@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Fuerte-WP configuration.
  * Version: 1.3.7
@@ -8,13 +9,13 @@
  */
 
 // No access outside WP
-defined( 'ABSPATH' ) || die();
+defined('ABSPATH') || die();
 
 /**
  * To debug or test Fuerte-WP
  */
-define( 'FUERTEWP_DISABLE', false );
-define( 'FUERTEWP_FORCE', false );
+define('FUERTEWP_DISABLE', false);
+define('FUERTEWP_FORCE', false);
 
 /**
  * Edit this configuration array and set up as you like.
@@ -67,7 +68,7 @@ $fuertewp = [
 		'disable_admin_create_edit'     => true, // Disable creation of new admin accounts by non super admins.
 		'disable_weak_passwords'        => true, // Disable ability to use a weak passwords. User can't uncheck "Confirm use of weak password". Let users type their own password, but must be somewhat secure (following WP built in recommendation library).
 		'force_strong_passwords'        => false, // Force strong passwords usage, make password field read-only. Users must use WP provided strong password.
-		'disable_admin_bar_roles'       => [ 'subscriber', 'customer' ], // Disable admin bar for some user roles. Array of WP/WC roles. Empty array to not use this feature.
+		'disable_admin_bar_roles'       => ['subscriber', 'customer'], // Disable admin bar for some user roles. Array of WP/WC roles. Empty array to not use this feature.
 		'restrict_permalinks'           => true, // Restrict Permalinks config access.
 		'restrict_acf'                  => true, // Restrict ACF editing access (Custom Fields menu).
 		'disable_theme_editor'          => true, // Disable WP Theme code editor.

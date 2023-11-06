@@ -11,7 +11,7 @@
  */
 
 // No access outside WP
-defined( 'ABSPATH' ) || die();
+defined('ABSPATH') || die();
 
 /**
  * Fired during plugin activation.
@@ -23,7 +23,8 @@ defined( 'ABSPATH' ) || die();
  * @subpackage Fuerte_Wp/includes
  * @author     Esteban Cuevas <esteban@attitude.cl>
  */
-class Fuerte_Wp_Activator {
+class Fuerte_Wp_Activator
+{
 
 	/**
 	 * Short Description. (use period)
@@ -32,8 +33,8 @@ class Fuerte_Wp_Activator {
 	 *
 	 * @since    1.3.0
 	 */
-	public static function activate() {
-		delete_transient( 'fuertewp_cache_config' );
+	public static function activate()
+	{
+		delete_transient('fuertewp_cache_config');
 	}
-
 }

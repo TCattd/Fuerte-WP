@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use Isolated\Symfony\Component\Finder\Finder;
@@ -15,8 +16,8 @@ return [
 	'finders' => [
 		Finder::create()
 			->files()
-			->ignoreVCS( true )
-			->in( __DIR__ . '/vendor/'),
+			->ignoreVCS(true)
+			->in(__DIR__ . '/vendor/'),
 		Finder::create()->append([
 			'composer.json',
 			'composer.lock',

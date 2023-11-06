@@ -14,7 +14,7 @@
  */
 
 // No access outside WP
-defined( 'ABSPATH' ) || die();
+defined('ABSPATH') || die();
 
 /**
  * Define the internationalization functionality.
@@ -27,7 +27,8 @@ defined( 'ABSPATH' ) || die();
  * @subpackage Fuerte_Wp/includes
  * @author     Esteban Cuevas <esteban@attitude.cl>
  */
-class Fuerte_Wp_i18n {
+class Fuerte_Wp_i18n
+{
 
 
 	/**
@@ -35,16 +36,13 @@ class Fuerte_Wp_i18n {
 	 *
 	 * @since    1.3.0
 	 */
-	public function load_plugin_textdomain() {
+	public function load_plugin_textdomain()
+	{
 
 		load_plugin_textdomain(
 			'fuerte-wp',
 			false,
-			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
+			dirname(dirname(plugin_basename(__FILE__))) . '/languages/'
 		);
-
 	}
-
-
-
 }

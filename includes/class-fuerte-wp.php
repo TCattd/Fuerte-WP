@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The file that defines the core plugin class
  *
@@ -13,7 +14,7 @@
  */
 
 // No access outside WP
-defined( 'ABSPATH' ) || die();
+defined('ABSPATH') || die();
 
 /**
  * The core plugin class.
@@ -29,7 +30,8 @@ defined( 'ABSPATH' ) || die();
  * @subpackage Fuerte_Wp/includes
  * @author     Esteban Cuevas <esteban@attitude.cl>
  */
-class Fuerte_Wp {
+class Fuerte_Wp
+{
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
@@ -70,8 +72,9 @@ class Fuerte_Wp {
 	 *
 	 * @since    1.3.0
 	 */
-	public function __construct() {
-		if ( defined( 'FUERTEWP_VERSION' ) ) {
+	public function __construct()
+	{
+		if (defined('FUERTEWP_VERSION')) {
 			$this->version = FUERTEWP_VERSION;
 		} else {
 			$this->version = '0.0.1';
@@ -102,36 +105,42 @@ class Fuerte_Wp {
 	 * @since    1.3.0
 	 * @access   private
 	 */
-	private function load_dependencies() {
+	private function load_dependencies()
+	{
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-fuerte-wp-loader.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-fuerte-wp-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-fuerte-wp-i18n.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-fuerte-wp-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-fuerte-wp-admin.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-fuerte-wp-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-fuerte-wp-public.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-fuerte-wp-public.php';
 
 		$this->loader = new Fuerte_Wp_Loader();
 
 		/**
 		 * The main Enforcer class
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-fuerte-wp-enforcer.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-fuerte-wp-enforcer.php';
+
+		/**
+		 * Extra classes
+		 */
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-fuerte-wp-two-factor.php';
 	}
 
 	/**
@@ -143,20 +152,22 @@ class Fuerte_Wp {
 	 * @since    1.3.0
 	 * @access   private
 	 */
-	private function set_locale() {
+	private function set_locale()
+	{
 		$plugin_i18n = new Fuerte_Wp_i18n();
 
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+		$this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
 	}
 
 	/**
 	 * Runs the main Enforcer Class at plugins_loaded
 	 */
-	private function run_enforcer() {
+	private function run_enforcer()
+	{
 		$this->enforcer = new Fuerte_Wp_Enforcer();
 
 		// https://codex.wordpress.org/Plugin_API/Action_Reference
-		$this->loader->add_action( 'init', $this->enforcer, 'run' );
+		$this->loader->add_action('init', $this->enforcer, 'run');
 	}
 
 	/**
@@ -166,17 +177,18 @@ class Fuerte_Wp {
 	 * @since    1.3.0
 	 * @access   private
 	 */
-	private function define_admin_hooks() {
-		$plugin_admin = new Fuerte_Wp_Admin( $this->get_plugin_name(), $this->get_version() );
+	private function define_admin_hooks()
+	{
+		$plugin_admin = new Fuerte_Wp_Admin($this->get_plugin_name(), $this->get_version());
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
+		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
 
-		$this->loader->add_action( 'carbon_fields_register_fields', $plugin_admin, 'fuertewp_plugin_options' );
+		$this->loader->add_action('carbon_fields_register_fields', $plugin_admin, 'fuertewp_plugin_options');
 
-		$this->loader->add_action( 'carbon_fields_theme_options_container_saved', $plugin_admin, 'fuertewp_theme_options_saved', 10, 2 );
+		$this->loader->add_action('carbon_fields_theme_options_container_saved', $plugin_admin, 'fuertewp_theme_options_saved', 10, 2);
 
-		$this->loader->add_action( 'plugin_action_links_' . FUERTEWP_PLUGIN_BASE, $plugin_admin, 'add_action_links' );
+		$this->loader->add_action('plugin_action_links_' . FUERTEWP_PLUGIN_BASE, $plugin_admin, 'add_action_links');
 	}
 
 	/**
@@ -186,11 +198,12 @@ class Fuerte_Wp {
 	 * @since    1.3.0
 	 * @access   private
 	 */
-	private function define_public_hooks() {
-		$plugin_public = new Fuerte_Wp_Public( $this->get_plugin_name(), $this->get_version() );
+	private function define_public_hooks()
+	{
+		$plugin_public = new Fuerte_Wp_Public($this->get_plugin_name(), $this->get_version());
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
+		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 	}
 
 	/**
@@ -198,7 +211,8 @@ class Fuerte_Wp {
 	 *
 	 * @since    1.3.0
 	 */
-	public function run() {
+	public function run()
+	{
 		global $fuertewp, $pagenow;
 
 		$this->fuertewp = $fuertewp;
@@ -213,7 +227,8 @@ class Fuerte_Wp {
 	 * @since     1.3.0
 	 * @return    string    The name of the plugin.
 	 */
-	public function get_plugin_name() {
+	public function get_plugin_name()
+	{
 		return $this->plugin_name;
 	}
 
@@ -223,7 +238,8 @@ class Fuerte_Wp {
 	 * @since     1.3.0
 	 * @return    Fuerte_Wp_Loader    Orchestrates the hooks of the plugin.
 	 */
-	public function get_loader() {
+	public function get_loader()
+	{
 		return $this->loader;
 	}
 
@@ -233,8 +249,8 @@ class Fuerte_Wp {
 	 * @since     1.3.0
 	 * @return    string    The version number of the plugin.
 	 */
-	public function get_version() {
+	public function get_version()
+	{
 		return $this->version;
 	}
-
 }
