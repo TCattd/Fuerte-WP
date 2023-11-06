@@ -64,15 +64,16 @@ function fuertewp_includes_autoload()
 		return;
 	}
 
-	if (file_exists(FUERTEWP_PATH . 'build/vendor/autoload.php')) {
-		require_once FUERTEWP_PATH . 'build/vendor/autoload.php';
+	if (file_exists(FUERTEWP_PATH . 'vendor/autoload.php')) {
+		require_once FUERTEWP_PATH . 'vendor/autoload.php';
 
 		// https://github.com/htmlburger/carbon-fields/issues/805#issuecomment-680959592
-		define('FuerteWpDep\Carbon_Fields\URL', FUERTEWP_URL . 'build/vendor/htmlburger/carbon-fields/');
-		define('FuerteWpDep\Carbon_Fields\\COMPACT_INPUT', true);
-		define('FuerteWpDep\Carbon_Field\\COMPACT_INPUT_KEY', 'fuertewp_carbonfields');
+		// https://docs.carbonfields.net/learn/advanced-topics/compacting-input-vars.html
+		define('Carbon_Fields\URL', FUERTEWP_URL . 'vendor/htmlburger/carbon-fields/');
+		define('Carbon_Fields\\COMPACT_INPUT', true);
+		define('Carbon_Field\\COMPACT_INPUT_KEY', 'fuertewp_carbonfields');
 
-		FuerteWpDep\Carbon_Fields\Carbon_Fields::boot();
+		Carbon_Fields\Carbon_Fields::boot();
 	}
 }
 add_action('after_setup_theme', 'fuertewp_includes_autoload', 7);

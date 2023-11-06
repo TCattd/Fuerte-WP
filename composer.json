@@ -24,5 +24,18 @@
 		"post-update-cmd": [
 			"composer dump-autoload"
 		]
+	},
+	"extra": {
+		"strauss": {
+			"target_directory": "vendor-prefixed",
+			"namespace_prefix": "FuerteWpDep\\",
+			"classmap_prefix": "FuerteWpDep_",
+			"constant_prefix": "FuerteWpDep_",
+			"exclude_from_prefix": {
+				"packages": [
+					"htmlburger/carbon-fields"
+				]
+			}
+		}
 	}
 }

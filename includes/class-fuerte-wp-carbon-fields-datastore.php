@@ -1,7 +1,7 @@
 <?php
 
-use FuerteWpDep\Carbon_Fields\Field\Field;
-use FuerteWpDep\Carbon_Fields\Datastore\Datastore;
+use Carbon_Fields\Field\Field;
+use Carbon_Fields\Datastore\Datastore;
 
 /**
  * Carbon Fields Custom Datastore

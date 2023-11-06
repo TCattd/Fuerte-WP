@@ -1,7 +1,7 @@
 <?php
 
-use FuerteWpDep\Carbon_Fields\Container;
-use FuerteWpDep\Carbon_Fields\Field;
+use Carbon_Fields\Container;
+use Carbon_Fields\Field;
 
 /**
  * The admin-specific functionality of the plugin.
