@@ -1,8 +1,7 @@
 .wp-org-assets/fuerte-wp-logo.afdesign
 .wp-org-assets/fuerte-wp-logo.png
 .config-tcattd/*
-build/*
-vendor/*
+build/vendor/*
 deploy.sh
 deploy-notag.sh
 TODO.md
