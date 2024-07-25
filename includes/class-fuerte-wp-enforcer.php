@@ -935,6 +935,9 @@ class Fuerte_Wp_Enforcer
 	 */
 	protected function trigger_updates()
 	{
+		// Log
+		write_log('trigger_updates ran at ' . date('Y-m-d H:i:s'));
+
 		wp_maybe_auto_update();
 	}
 
