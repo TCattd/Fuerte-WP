@@ -910,9 +910,12 @@ class Fuerte_Wp_Enforcer
 	 *
 	 * @return void
 	 */
-	static function register_autoupdate_cron()
+	protected function register_autoupdate_cron()
 	{
-		wp_schedule_event(time(), 'six_hours', 'wp_maybe_auto_update');
+		// Check if event isn't already scheduled
+		if (!wp_next_scheduled('trigger_updates')) {
+			wp_schedule_event(time(), 'six_hours', 'trigger_updates');
+		}
 	}
 
 	/**
@@ -920,9 +923,19 @@ class Fuerte_Wp_Enforcer
 	 *
 	 * @return void
 	 */
-	static function remove_autoupdate_cron()
+	protected function remove_autoupdate_cron()
 	{
-		wp_clear_scheduled_hook('wp_maybe_auto_update');
+		wp_clear_scheduled_hook('trigger_updates');
+	}
+
+	/**
+	 * Do the updates
+	 *
+	 * @return void
+	 */
+	protected function trigger_updates()
+	{
+		wp_maybe_auto_update();
 	}
 
 	// Work in Progress...

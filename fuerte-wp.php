@@ -31,10 +31,10 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
+define('FUERTEWP_PLUGIN_BASE', plugin_basename(__FILE__));
 define('FUERTEWP_VERSION', get_plugin_data(FUERTEWP_PLUGIN_BASE)['Version']);
 define('FUERTEWP_PATH', realpath(plugin_dir_path(__FILE__)) . '/');
 define('FUERTEWP_URL',  trailingslashit(plugin_dir_url(__FILE__)),);
-define('FUERTEWP_PLUGIN_BASE', plugin_basename(__FILE__));
 
 /**
  * Load Fuerte-WP config file if exist

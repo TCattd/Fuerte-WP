@@ -3,7 +3,7 @@
         'name' => 'tcattd/fuerte-wp',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'b8ba2bed256cc11f2dba32cade5d3726bf2650f5',
+        'reference' => 'c44d1b6fea17b0183948e028fcfa1c9c2befbb7b',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'htmlburger/carbon-fields' => array(
-            'pretty_version' => 'v3.6.0',
-            'version' => '3.6.0.0',
-            'reference' => '47f1538cca6cd2860d1b37a040a42c59eb798d76',
+            'pretty_version' => 'v3.6.3',
+            'version' => '3.6.3.0',
+            'reference' => 'd913a5148cb9dc61ed239719c747f4ebb513003f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../htmlburger/carbon-fields',
             'aliases' => array(),
@@ -22,7 +22,7 @@
         'tcattd/fuerte-wp' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'b8ba2bed256cc11f2dba32cade5d3726bf2650f5',
+            'reference' => 'c44d1b6fea17b0183948e028fcfa1c9c2befbb7b',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
