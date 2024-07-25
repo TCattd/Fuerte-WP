@@ -1,6 +1,6 @@
 # Changelog
 
-# 1.5.0 / 2024-07-24
+# 1.5.1 / 2024-07-24
 - Improved auto-updates. Added a new scheduled task to force WordPress to perform the update routine every 6 hours, only when some auto-updates are enabled.
 
 # 1.4.12 / 2023-11-06
