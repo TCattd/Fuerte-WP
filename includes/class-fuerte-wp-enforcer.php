@@ -289,22 +289,41 @@ class Fuerte_Wp_Enforcer
 		/**
 		 * Themes & Plugins auto updates
 		 */
+		$some_updates_enabled = false;
+
 		if (isset($fuertewp['general']['autoupdate_core']) && true === $fuertewp['general']['autoupdate_core']) {
 			add_filter('auto_update_core', '__return_true', PHP_INT_MAX);
 			add_filter('allow_minor_auto_core_updates', '__return_true', PHP_INT_MAX);
 			add_filter('allow_major_auto_core_updates', '__return_true', PHP_INT_MAX);
+
+			$this->register_autoupdate_cron();
+			$some_updates_enabled = true;
 		}
 
 		if (isset($fuertewp['general']['autoupdate_plugins']) && true === $fuertewp['general']['autoupdate_plugins']) {
 			add_filter('auto_update_plugin', '__return_true', PHP_INT_MAX);
+
+			$this->register_autoupdate_cron();
+			$some_updates_enabled = true;
 		}
 
 		if (isset($fuertewp['general']['autoupdate_themes']) && true === $fuertewp['general']['autoupdate_themes']) {
 			add_filter('auto_update_theme', '__return_true', PHP_INT_MAX);
+
+			$this->register_autoupdate_cron();
+			$some_updates_enabled = true;
 		}
 
 		if (isset($fuertewp['general']['autoupdate_translations']) && true === $fuertewp['general']['autoupdate_translations']) {
 			add_filter('autoupdate_translations', '__return_true', PHP_INT_MAX);
+
+			$this->register_autoupdate_cron();
+			$some_updates_enabled = true;
+		}
+
+		if ($some_updates_enabled === false) {
+			// No updates enabled, remove the cron
+			$this->remove_autoupdate_cron();
 		}
 
 		/**
@@ -882,6 +901,32 @@ class Fuerte_Wp_Enforcer
 		if (isset($fuertewp['tweaks']['use_site_logo_login']) && true === $fuertewp['tweaks']['use_site_logo_login']) {
 			return get_bloginfo('name');
 		}
+	}
+
+	/**
+	 * Register autoupdate
+	 * Forces WordPress, via scheduled task, to perform the update routine
+	 * Every 6 hours by default
+	 * Let's use wp_maybe_auto_update()
+	 *
+	 * @return void
+	 */
+	static function register_autoupdate_cron()
+	{
+		// https://developer.wordpress.org/reference/functions/wp_maybe_auto_update/
+		// wp_maybe_auto_update();
+		// Schedule a task to do wp_maybe_auto_update every 6 hours
+		wp_schedule_event(time(), 'six_hours', 'wp_maybe_auto_update');
+	}
+
+	/**
+	 * Remove autoupdate cron
+	 *
+	 * @return void
+	 */
+	static function remove_autoupdate_cron()
+	{
+		wp_clear_scheduled_hook('wp_maybe_auto_update');
 	}
 
 	// Work in Progress...

@@ -62,6 +62,7 @@ class Fuerte_Wp
 
 	public $pagenow;
 	public $fuertewp;
+	protected $enforcer;
 
 	/**
 	 * Define the core functionality of the plugin.
