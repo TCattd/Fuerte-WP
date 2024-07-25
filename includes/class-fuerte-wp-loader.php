@@ -52,7 +52,6 @@ class Fuerte_Wp_Loader
 	 */
 	public function __construct()
 	{
-
 		$this->actions = array();
 		$this->filters = array();
 	}
