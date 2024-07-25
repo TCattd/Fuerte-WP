@@ -907,15 +907,11 @@ class Fuerte_Wp_Enforcer
 	 * Register autoupdate
 	 * Forces WordPress, via scheduled task, to perform the update routine
 	 * Every 6 hours by default
-	 * Let's use wp_maybe_auto_update()
 	 *
 	 * @return void
 	 */
 	static function register_autoupdate_cron()
 	{
-		// https://developer.wordpress.org/reference/functions/wp_maybe_auto_update/
-		// wp_maybe_auto_update();
-		// Schedule a task to do wp_maybe_auto_update every 6 hours
 		wp_schedule_event(time(), 'six_hours', 'wp_maybe_auto_update');
 	}
 
