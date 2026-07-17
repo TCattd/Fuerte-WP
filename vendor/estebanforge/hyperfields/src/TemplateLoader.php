@@ -184,12 +184,26 @@ class TemplateLoader
                 'l10n' => [
                     'selectImage' => __('Select Image', 'api-for-htmx'),
                     'selectFile' => __('Select File', 'api-for-htmx'),
+                    'noImage' => __('No image selected', 'api-for-htmx'),
                     'remove' => __('Remove', 'api-for-htmx'),
                     'addImages' => __('Add Images', 'api-for-htmx'),
                     'clearGallery' => __('Clear Gallery', 'api-for-htmx'),
                     'searchAddress' => __('Search for an address...', 'api-for-htmx'),
                 ],
             ]);
+
+            // Media fields (image, file, media_gallery) use wp.media, which
+            // needs the core media scripts and the media-fields.js handler.
+            if (function_exists('wp_enqueue_media')) {
+                wp_enqueue_media();
+            }
+            wp_enqueue_script(
+                'hyperpress-media-fields',
+                $plugin_url . 'assets/js/media-fields.js',
+                ['hyperpress-conditional-fields'],
+                $version,
+                true
+            );
 
             return; // Done for admin
         }
@@ -213,6 +227,7 @@ class TemplateLoader
             'l10n' => [
                 'selectImage' => __('Select Image', 'api-for-htmx'),
                 'selectFile' => __('Select File', 'api-for-htmx'),
+                'noImage' => __('No image selected', 'api-for-htmx'),
                 'remove' => __('Remove', 'api-for-htmx'),
                 'addImages' => __('Add Images', 'api-for-htmx'),
                 'clearGallery' => __('Clear Gallery', 'api-for-htmx'),

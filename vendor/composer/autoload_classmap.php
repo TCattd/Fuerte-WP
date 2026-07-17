@@ -12,6 +12,7 @@ return array(
     'Automattic\\Jetpack\\Autoloader\\CustomAutoloaderPlugin' => $vendorDir . '/automattic/jetpack-autoloader/src/CustomAutoloaderPlugin.php',
     'Automattic\\Jetpack\\Autoloader\\ManifestGenerator' => $vendorDir . '/automattic/jetpack-autoloader/src/ManifestGenerator.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'HyperFields\\AdminPage' => $vendorDir . '/estebanforge/hyperfields/src/AdminPage.php',
     'HyperFields\\Admin\\Activation' => $vendorDir . '/estebanforge/hyperfields/src/Admin/Activation.php',
     'HyperFields\\Admin\\ExportImportPageConfig' => $vendorDir . '/estebanforge/hyperfields/src/Admin/ExportImportPageConfig.php',
     'HyperFields\\Admin\\ExportImportUI' => $vendorDir . '/estebanforge/hyperfields/src/Admin/ExportImportUI.php',

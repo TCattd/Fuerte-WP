@@ -1,5 +1,18 @@
 # Changelog
 
+# 1.10.0 / 2026-07-10
+- **New Feature**: Bundled the official WordPress Two-Factor plugin (v0.16.0) as a library, with a site-enforced provider policy and crash-safe coexistence with the standalone plugin.
+- Two-Factor providers limited to Email, Authenticator App (`Two_Factor_Totp`), and Recovery Codes (`Two_Factor_Backup_Codes`). Dummy Method (`Two_Factor_Dummy`) stripped site-wide via the `two_factor_providers` filter at priority 20, running after core's `enable_dummy_method_for_debug` so Dummy stays hidden even under `WP_DEBUG`.
+- The upstream `Settings → Two-Factor` screen is hidden: submenu removed at `admin_menu` priority 99, and direct `?page=two-factor-settings` URLs redirect to `options-general.php` (provider policy is code-enforced, not admin-editable).
+- Added an **Enable 2FA** checkbox on the Login Security tab (default ON). Unchecking stops the bundled library from loading. Truthiness logic: only `false / 0 / '0' / 'no' / 'off' / ''` disable it; everything else loads.
+- Added **Enforce 2FA for Admins** checkbox on the Login Security tab (default ON). When enabled, Administrator and Super Admin accounts are challenged with an emailed code at login even without prior setup. Each admin can switch to Authenticator App (TOTP) from their own profile page. Enforced via `two_factor_enabled_providers_for_user` filter (priority 20) — read-only, never persists to user meta, so disabling releases admins immediately. Fuerte super users always bypass enforcement (recovery lever). Conditional logic hides the checkbox when Enable 2FA is off.
+- Added `FUERTEWP_DISABLE_2FA` constant (operator escape hatch, filesystem tier) as a higher-priority off switch than the admin checkboxes.
+- Crash safety: when the standalone Two-Factor plugin is already active (user had it from before Fuerte-WP), `boot()` detects `Two_Factor_Core` already declared via a `class_exists` guard and skips loading the bundled copy. WordPress loads all active plugin main files before `plugins_loaded`, so the standalone always wins the declaration race and no class/function redeclare fatal occurs.
+- The Enable 2FA and Enforce checkboxes are hidden when the standalone plugin is active, replaced with a notice explaining the standalone is running the show.
+- Collision protection: while the bundled copy is active, the standalone plugin's Activate link is hidden and activation is blocked (single-row, bulk, multisite). Super users bypass this after setting `FUERTEWP_DISABLE_2FA`.
+- **Changed**: Moved auto-update settings (WordPress core, Plugins, Themes, Translations, and Update check frequency) from the Main tab to the Updates tab, now grouped under an Auto-Updates heading above the Deferred/Blocked lists.
+- Added 25 regression tests for the Two-Factor integration (provider policy, boot gate precedence, config wiring, truthiness logic, enforcement layer with super-user bypass, public API surface, crash safety).
+
 # 1.9.6 / 2026-06-06
 - **New Feature**: Disable Comments site-wide with a single toggle (Restrictions tab).
 - Closes comments and pings on all post types via `comments_open`/`pings_open` filters.

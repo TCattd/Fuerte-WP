@@ -5,7 +5,7 @@
  * Plugin Name:       Fuerte-WP
  * Plugin URI:        https://github.com/EstebanForge/Fuerte-WP
  * Description:       Stronger WP. Limit access to critical WordPress areas, even other for admins.
- * Version:           1.9.6
+ * Version:           1.10.0
  * Author:            Esteban Cuevas
  * Author URI:        https://actitud.xyz
  * License:           GPL-2.0+
@@ -144,6 +144,18 @@ function fuertewp_check_login_db_version()
 add_action('plugins_loaded', 'fuertewp_check_login_db_version');
 
 /**
+ * Boot the bundled Two-Factor code unless the standalone plugin is active.
+ * Runs early so 2FA providers register before the login flow.
+ *
+ * @since 1.10.0
+ */
+function fuertewp_boot_two_factor()
+{
+    Fuerte_Wp_TwoFactor::get_instance()->boot();
+}
+add_action('plugins_loaded', 'fuertewp_boot_two_factor', 1);
+
+/**
  * Ensure at least one super user is configured during admin_init.
  * This provides a fallback if plugins_loaded didn't work (user not logged in yet).
  *
@@ -172,16 +184,6 @@ function fuertewp_ensure_super_user()
     }
 }
 add_action('admin_init', 'fuertewp_ensure_super_user');
-
-/**
- * Code that runs on plugins uninstallation.
- */
-function uninstall_fuerte_wp()
-{
-    require_once plugin_dir_path(__FILE__)
-        . 'includes/class-fuerte-wp-uninstaller.php';
-    Fuerte_Wp_Uninstaller::uninstall();
-}
 
 /**
  * The core plugin class that is used to define internationalization,

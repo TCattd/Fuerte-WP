@@ -296,6 +296,8 @@ class Fuerte_Wp_Config
             'login_security' => [
                 'login_enable' => $settings['fuertewp_login_enable'] ?? 'enabled',
                 'registration_enable' => $settings['fuertewp_registration_enable'] ?? 'enabled',
+                'two_factor_enable' => $settings['fuertewp_two_factor_enable'] ?? true,
+                'two_factor_enforce' => $settings['fuertewp_two_factor_enforce'] ?? true,
                 'login_max_attempts' => $settings['fuertewp_login_max_attempts'] ?? null,
                 'login_lockout_duration' => $settings['fuertewp_login_lockout_duration'] ?? null,
                 'login_increasing_lockout' => $settings['fuertewp_login_increasing_lockout'] ?? null,
@@ -374,6 +376,8 @@ class Fuerte_Wp_Config
         $config['login_security'] = [
             'login_enable' => get_option('_fuertewp_login_enable', 'enabled'),
             'registration_enable' => get_option('_fuertewp_registration_enable', 'enabled'),
+            'two_factor_enable' => get_option('_fuertewp_two_factor_enable', true),
+            'two_factor_enforce' => get_option('_fuertewp_two_factor_enforce', true),
             'login_max_attempts' => intval(get_option('_fuertewp_login_max_attempts', 5)),
             'login_lockout_duration' => intval(get_option('_fuertewp_login_lockout_duration', 60)),
             'login_increasing_lockout' => get_option('_fuertewp_login_increasing_lockout', false),

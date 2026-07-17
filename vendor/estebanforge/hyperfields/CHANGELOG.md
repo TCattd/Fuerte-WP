@@ -1,5 +1,80 @@
 # Changelog
 
+## [1.4.0] - 2026-07-16
+
+### Changed
+- **Admin CSS realigned with current WordPress checkbox/heading UI** — three scoping fixes in `assets/css/hyperfields-admin.css`, all in service of matching recent WP core rendering rather than fighting it:
+  - Section headings now use the admin text-color token (`var(--hf-color-admin-text)`) instead of the generic frontend text token (`var(--hf-color-text)`), so headings match the surrounding WP admin chrome.
+  - Removed the fixed `width: 18px` / `height: 18px` on `.hyperpress-field-input-wrapper input[type="checkbox"]` and `[type="radio"]`. WordPress 6.9+/7.x renders checkboxes via `appearance: none` with an internally-positioned checkmark; forcing a fixed size distorted that internal positioning and produced an off-center check, especially on mobile. Width/height is now left unset so WP core owns the checkbox appearance; `cursor: pointer` is retained.
+  - Scoped the `.hyperpress-heading-label` rule to `.hyperpress-options-wrap .hyperpress-heading-label`, preventing it from leaking out and overriding unrelated heading markup on pages that share the class name.
+
+## [1.3.5] - 2026-07-07
+
+### Fixed
+- **Empty image-field preview rendered as a tiny white box** — the PHP image-field templates always emitted the `.hyperpress-image-preview` shell (padding + white background + border) but only placed an `<img>` inside when a value existed. With no selection the styled shell collapsed to a small empty square. Both rendering paths now show an empty-state placeholder.
+  - `src/templates/field-image.php` (primary path resolved by `TemplateLoader::getTemplateFile()`) and `src/templates/field-input.php` (legacy `image` switch case, reachable via the `hyperfields/template` filter) now render `<span class="hyperpress-image-placeholder">No image selected</span>` and add an `is-empty` class to the preview div when `$value` is empty.
+  - `assets/js/media-fields.js` keeps the placeholder in sync: `updateSinglePreview()` drops `is-empty` when an image is chosen; `clearSingle()` restores the placeholder span + `is-empty` class instead of leaving an empty hidden div (image branch only; file branch unchanged).
+  - New `.hyperpress-image-preview.is-empty` CSS rule renders a 150×150 dashed-border box with muted placeholder text, matching the populated dimensions so selecting/removing causes no layout shift.
+  - `'noImage' => __('No image selected', 'api-for-htmx')` added to the admin `hyperpressFields.l10n` array in `TemplateLoader::enqueueAssets()` so the JS-restored placeholder is translatable.
+- **VIP/WPCS `EscapeOutput` compliance for the `is-empty` class output** — both template `echo` sites now wrap the class literal in `esc_attr()` as defense-in-depth, even though the output is a hardcoded literal.
+
+## [1.3.4] - 2026-07-07
+
+### Added
+- **`wp.media` handler for image, file, and `media_gallery` fields** — the PHP field templates emitted `.hyperpress-upload-button` / `.hyperpress-remove-button` markup but no JavaScript existed to open the media frame. Only the React path (`react-fields.js` / `ImageField.jsx`) had a working picker; consumers on the plain PHP-template path got dead buttons. New dedicated `assets/js/media-fields.js` (ES6 `class HyperFieldsMedia`, singleton-scoped, event-delegated):
+  - Single-select frame for `image` (stores attachment ID) and `file` (stores URL), with live preview updates and remove-button visibility toggling.
+  - Multi-select frame for `media_gallery` (stores comma-joined IDs), with per-item thumbnail fetch via `wp.media.attachment().fetch()` and per-item removal.
+  - Reads the existing `hyperpressFields.l10n` strings; no new localization surface.
+  - Degrades gracefully: returns early when `wp.media` is undefined.
+- **`wp_enqueue_media()` call in `TemplateLoader::enqueueAssets()`** for admin pages, so the core media scripts load alongside the new handler. Guarded with `function_exists()` (progressive enhancement; the hidden input still submits its value without it).
+
+### Fixed
+- **Double-enqueue of `conditional-fields.js`** — `Assets::enqueueScripts()` registered the script under handle `hyperfields-conditional-fields` while `TemplateLoader::enqueueAssets()` used `hyperpress-conditional-fields`. Same file, two handles, so the script (and its `hyperpressFields` localization) loaded twice on every admin page. Removed the redundant enqueue from `Assets.php`; `TemplateLoader` is now the single source.
+- **Flat-layout fields rendered unstyled** — field templates use two layouts: grid-row (number/text/checkbox/textarea/select) and flat (radio/image/file/separator/heading/html). The flat layout emitted classes with zero CSS rules, so radio groups, image pickers, separators, and headings rendered as raw, unstyled HTML. A `:has(> .hyperpress-field-label)` rule now aligns flat fields to the same 220px label/input grid as the grid-row fields (scoped to flat fields only). Native WP-style rules added for `.hyperpress-radio-vertical`/`-horizontal`, `.hyperpress-image-field`/`-file-field`/`-media-gallery-field` (CSS grid: buttons side by side on row 1, preview wraps below and hugs the image), `.hyperpress-separator`, `.hyperpress-heading-wrapper`, `.hyperpress-html-content`. Mobile: flat fields collapse to a single column under 782px, matching the existing grid-row collapse.
+
+### Docs
+- **Jetpack Autoloader guidance** in `docs/library-bootstrap.md`. Host plugins using `automattic/jetpack-autoloader` must explicitly `require_once` the bootstrap file and call `hyperfields_run_initialization_logic()`, because the Jetpack Autoloader skips Composer autoload `files` entries. Without it, `HYPERFIELDS_PLUGIN_URL` is never defined, `TemplateLoader::enqueueAssets()` bails at its empty-URL guard, and the options page renders with zero styling.
+
+## [1.3.2] - 2026-07-06
+
+### Added
+- **Numeric range enforcement for `number` fields** — revived the dead `Field::$min`/`$max` properties (widened `?int` → `?float`) and wired them end-to-end. `setMin(1.0)->setMax(7.0)->setStep(0.1)` now (a) renders `min`/`max`/`step` as HTML attributes on the input, (b) **clamps the sanitized value server-side** to `[min, max]` so saves can never persist out-of-range data, and (c) reports correct numeric validity via `validateValue()`. Out-of-range values are coerced, never rejected, so the save flow cannot fail on range alone. This is a strict improvement on Carbon Fields, which only emits the HTML attributes and trusts the browser.
+- **Type-aware `setValidation(['min'..'max'])`** — for `number` fields, `min`/`max` are now numeric bounds; for string fields they stay string-length bounds (backward compatible). Removes the dual-meaning confusion that made `min`/`max` unsafe for numbers.
+
+### Fixed
+- **Container save path bypassed validation** — `PostMetaContainer`, `TermMetaContainer`, and `UserMetaContainer` called `sanitizeValue()` but never `validateValue()`, so `wps_validate` and `setValidation` rules were silently ignored for post/term/user meta. Each save loop now runs validation and skips fields that fail (existing meta preserved). Numeric range never triggers a skip because the sanitizer clamps first.
+- **`ReactField::getMin`/`getMax` LSP break** — signatures widened from `?int` to `?float` to match the parent after the `Field` property change. (Note: the bodies still read `toArray()['min']`, which never exists — pre-existing dead code that always returns `null`; the parent getters now take precedence via the property. Tracked for a separate cleanup.)
+
+### Tests
+- `FieldTest::testNumberRangeClampAndAttributes` — covers clamp behavior (below-min, above-max, in-range, non-numeric), float getters, `step` independence, HTML attribute injection into `toArray()`, user-attribute precedence, and non-number field isolation.
+- `FieldTest::testValidationRulesAreTypeAware` — covers numeric `min`/`max` for `number` vs string-length `min`/`max` for `text`.
+- `UserMetaContainerTest::testSaveWrapper` — updated to mock the new `validateValue()` save contract.
+
+## [1.3.1] - 2026-07-06
+
+### Added
+- **Semantic save action on `OptionsPage`** — re-emits WP's Settings-API save as `hyperfields/options_page/after_save` so consumers hook intent, not raw `update_option_{$name}` plumbing. Gated on `$old !== $new`, so `after_save` fires exactly once per real value change, not on every form submit. Argument order is `(new, old, page)` (intentional reversal of WP's `(old, new, option)`) to match "the current state after save" intent. Mirrors Carbon Fields' `theme_options_container_saved` surface for migration-friendliness.
+- **`hyperfields/options_page/pre_save` filter** — let third parties alter sanitized values before WP writes them. Receives `(output, pre_save_snapshot, OptionsPage_instance)`. Filter consumers must treat the `OptionsPage` argument as read-only; mutating it mid-sanitize (e.g. re-calling `registerSettings()`) has undefined behavior.
+
+### Tests
+- `OptionsPageTest` covers `onOptionSaved` no-op gating (identical `$old`/`$new` does not fire `after_save`), the `(new, old, page)` arg order, and the `pre_save` filter seam being applied during sanitize.
+
+## [1.3.0] - 2026-07-03
+
+### Added
+- **New `AdminPage` class** — non-form admin page host for tool/wizard pages (sticky white header with H1, URL-based nav tabs, notice relocation) without the settings-form machinery (`OptionsPage` is still the right choice for settings forms). Additive and fully backward-compatible.
+  - `HyperFields::makeAdminPage($title, $slug)` factory.
+  - `addTab($id, $title, callable $render)`, `setParentSlug()`, `setMenuTitle()`, `setCapability()`, `setPosition()`, `setFooterContent()`.
+  - Tabs render always once at least one is added; active tab read from `?tab=` (defaults to the first). No `<form>`, no `register_setting`, no Save button, no sanitize callback.
+  - Emits the same DOM anchors as `OptionsPage` (`.hyperpress-options-wrap`, `[data-hyperpress-sticky-header]`, `#hyperpress-layout__notice-catcher`), so the sticky-header and notice-relocation JS work unchanged.
+- **Mobile nav-tab dropdown morph** — on viewports `<= 782px`, URL-based nav tabs (used by both `OptionsPage` and `AdminPage`) render as a `<select>` dropdown built from the existing `<a>` links (single source of truth). Active tab is preselected; changing the dropdown navigates to the tab URL. Vanilla JS, show/hide driven purely by CSS.
+
+### Fixed
+- **`TabsField` layout regression** — `.hyperpress-tabs-wrapper { display: flex }` laid the tab nav and content side by side. Now `display: block`; the inner `.nav-tab-wrapper` keeps its flex row.
+- **Sticky-header horizontal scrollbar** — the white-bar bleed pseudo-elements pushed past the viewport on the right. Bleed is now asymmetric: left fills `#wpcontent`'s left padding, right syncs to the new `--hf-content-inset-right` variable so content gets breathing room without the white bar falling short.
+- **Mobile sticky-header gaps** — at `max-width: 782px` the bleed now matches the wrap's own mobile padding (`--hf-header-bleed-x: 16px`), so the white header fills edge-to-edge on small screens.
+- **Notice relocation on `AdminPage`** — the notice-hiding inline style (`.wrap.hyperpress-options-wrap > .notice`) kept relocated notices invisible on non-form pages because the catcher had no isolating parent (OptionsPage gets this for free from its `<form>`). The catcher is now wrapped in `.hyperpress-notice-region`.
+
 ## [1.2.4] - 2026-04-28
 
 ### Added

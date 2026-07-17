@@ -213,40 +213,6 @@ class Fuerte_Wp_Admin
                     ))
             )
             ->addField(
-                Field::make('heading', 'fuertewp_separator_updates', __('Updates', 'fuerte-wp'))
-            )
-            ->addField(
-                Field::make('checkbox', 'fuertewp_autoupdate_core', __('Auto-update WordPress core.', 'fuerte-wp'))
-                    ->setDefault(true)
-                    ->setHelp(__('Auto-update WordPress to the latest stable version.', 'fuerte-wp'))
-            )
-            ->addField(
-                Field::make('checkbox', 'fuertewp_autoupdate_plugins', __('Auto-update Plugins.', 'fuerte-wp'))
-                    ->setDefault(true)
-                    ->setHelp(__('Auto-update Plugins to their latest stable version.', 'fuerte-wp'))
-            )
-            ->addField(
-                Field::make('checkbox', 'fuertewp_autoupdate_themes', __('Auto-update Themes.', 'fuerte-wp'))
-                    ->setDefault(true)
-                    ->setHelp(__('Auto-update Themes to their latest stable version.', 'fuerte-wp'))
-            )
-            ->addField(
-                Field::make('checkbox', 'fuertewp_autoupdate_translations', __('Auto-update Translations.', 'fuerte-wp'))
-                    ->setDefault(true)
-                    ->setHelp(__('Auto-update Translations to their latest stable version.', 'fuerte-wp'))
-            )
-            ->addField(
-                Field::make('select', 'fuertewp_autoupdate_frequency', __('Update check frequency', 'fuerte-wp'))
-                    ->setOptions([
-                        'six_hours' => __('Every 6 hours', 'fuerte-wp'),
-                        'twelve_hours' => __('Every 12 hours', 'fuerte-wp'),
-                        'daily' => __('Every 24 hours', 'fuerte-wp'),
-                        'twodays' => __('Every 48 hours', 'fuerte-wp'),
-                    ])
-                    ->setDefault('twelve_hours')
-                    ->setHelp(__('How often to check for and apply updates.', 'fuerte-wp'))
-            )
-            ->addField(
                 Field::make('heading', 'fuertewp_separator_tweaks', __('Tweaks', 'fuerte-wp'))
             )
             ->addField(
@@ -336,7 +302,34 @@ class Fuerte_Wp_Admin
                 Field::make('checkbox', 'fuertewp_registration_enable', __('Enable Registration Protection', 'fuerte-wp'))
                     ->setDefault(true)
                     ->setHelp(__('Enable registration attempt limiting and bot blocking. Uses same settings as login security.', 'fuerte-wp'))
-            )
+            );
+
+        if (Fuerte_Wp_TwoFactor::standalone_is_active()) {
+            // Standalone Two-Factor plugin is the active source: defer to it.
+            // Hide the bundled-library toggle (it would have no effect — boot()
+            // bails before loading the lib) and surface a notice instead.
+            $login_section->addField(
+                Field::make('html', 'fuertewp_two_factor_standalone_notice', __('Two-Factor', 'fuerte-wp'))
+                    ->setHtml('<p>' . esc_html__('The standalone Two-Factor plugin is active. Your existing Two-Factor setup is running unchanged; the bundled library is not loaded. Deactivate the standalone plugin to manage Two-Factor here.', 'fuerte-wp') . '</p>')
+            );
+        } else {
+            $login_section->addField(
+                Field::make('checkbox', 'fuertewp_two_factor_enable', __('Enable 2FA', 'fuerte-wp'))
+                    ->setDefault(true)
+                    ->setHelp(__('Enable the bundled Two-Factor official WP library (Email, Authenticator App, Recovery Codes). Unchecking stops the library from loading.', 'fuerte-wp'))
+            );
+            $login_section->addField(
+                Field::make('checkbox', 'fuertewp_two_factor_enforce', __('Enforce 2FA for Admins', 'fuerte-wp'))
+                    ->setDefault(true)
+                    ->setConditionalLogic([
+                        'relation' => 'AND',
+                        ['field' => 'fuertewp_two_factor_enable', 'value' => true, 'compare' => '='],
+                    ])
+                    ->setHelp(__('Force two-factor for Administrator and Super Admin accounts. They are challenged with an emailed code at login by default — no setup needed. Each admin can switch to Authenticator App (TOTP) from their own profile page (Users → Profile). Fuerte super users always bypass enforcement, so they can reach admin to disable it if needed. Ultimate recovery: set FUERTEWP_DISABLE_2FA in wp-config-fuerte.php.', 'fuerte-wp'))
+            );
+        }
+
+        $login_section
             ->addField(
                 Field::make('heading', 'fuertewp_login_separator_settings', __('Login Attempt Settings', 'fuerte-wp'))
             )
@@ -688,6 +681,40 @@ class Fuerte_Wp_Admin
         // Deferred Updates Tab
         $deferred_section = $page->addSectionToTab('deferred_updates', 'deferred_section', __('Deferred Updates', 'fuerte-wp'));
         $deferred_section
+            ->addField(
+                Field::make('heading', 'fuertewp_separator_updates', __('Auto-Updates', 'fuerte-wp'))
+            )
+            ->addField(
+                Field::make('checkbox', 'fuertewp_autoupdate_core', __('Auto-update WordPress core.', 'fuerte-wp'))
+                    ->setDefault(true)
+                    ->setHelp(__('Auto-update WordPress to the latest stable version.', 'fuerte-wp'))
+            )
+            ->addField(
+                Field::make('checkbox', 'fuertewp_autoupdate_plugins', __('Auto-update Plugins.', 'fuerte-wp'))
+                    ->setDefault(true)
+                    ->setHelp(__('Auto-update Plugins to their latest stable version.', 'fuerte-wp'))
+            )
+            ->addField(
+                Field::make('checkbox', 'fuertewp_autoupdate_themes', __('Auto-update Themes.', 'fuerte-wp'))
+                    ->setDefault(true)
+                    ->setHelp(__('Auto-update Themes to their latest stable version.', 'fuerte-wp'))
+            )
+            ->addField(
+                Field::make('checkbox', 'fuertewp_autoupdate_translations', __('Auto-update Translations.', 'fuerte-wp'))
+                    ->setDefault(true)
+                    ->setHelp(__('Auto-update Translations to their latest stable version.', 'fuerte-wp'))
+            )
+            ->addField(
+                Field::make('select', 'fuertewp_autoupdate_frequency', __('Update check frequency', 'fuerte-wp'))
+                    ->setOptions([
+                        'six_hours' => __('Every 6 hours', 'fuerte-wp'),
+                        'twelve_hours' => __('Every 12 hours', 'fuerte-wp'),
+                        'daily' => __('Every 24 hours', 'fuerte-wp'),
+                        'twodays' => __('Every 48 hours', 'fuerte-wp'),
+                    ])
+                    ->setDefault('twelve_hours')
+                    ->setHelp(__('How often to check for and apply updates.', 'fuerte-wp'))
+            )
             ->addField(
                 Field::make('html', 'fuertewp_deferred_header', __('Deferred Updates Information', 'fuerte-wp'))
                     ->addArg('help_is_html', true)

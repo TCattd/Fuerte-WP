@@ -18,6 +18,16 @@ define('FUERTEWP_DISABLE', false);
 define('FUERTEWP_FORCE', false);
 
 /**
+ * Disable Fuerte-WP's bundled Two-Factor entirely: stops loading the bundled
+ * provider code (not just per-role enforcement). This is the escape hatch
+ * that lets a super user activate the standalone Two-Factor plugin without
+ * a class-redeclare fatal. Super users always bypass 2FA enforcement
+ * regardless of this setting. Recovery lever for lockouts and for switching
+ * to the standalone plugin.
+ */
+define('FUERTEWP_DISABLE_2FA', false);
+
+/**
  * Edit this configuration array and set up as you like.
  */
 $fuertewp = [
@@ -52,6 +62,8 @@ $fuertewp = [
         // Login Security Enable/Disable
         'login_enable' => 'enabled', // Enable login attempt limiting and IP blocking
         'registration_enable' => 'enabled', // Enable registration attempt limiting and bot blocking
+        'two_factor_enable' => true, // Enable bundled Two-Factor lib (Email, Authenticator App, Recovery Codes)
+        'two_factor_enforce' => true, // Force Email 2FA for admins/super-admins (opt-out; per-user TOTP via profile)
 
         // Rate Limiting & Lockouts
         'login_max_attempts' => 5, // Number of failed attempts before lockout (3-10)

@@ -41,6 +41,7 @@ class ComposerStaticInit280712ceda1ca80d5fa39c713f713c43
         'Automattic\\Jetpack\\Autoloader\\CustomAutoloaderPlugin' => __DIR__ . '/..' . '/automattic/jetpack-autoloader/src/CustomAutoloaderPlugin.php',
         'Automattic\\Jetpack\\Autoloader\\ManifestGenerator' => __DIR__ . '/..' . '/automattic/jetpack-autoloader/src/ManifestGenerator.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'HyperFields\\AdminPage' => __DIR__ . '/..' . '/estebanforge/hyperfields/src/AdminPage.php',
         'HyperFields\\Admin\\Activation' => __DIR__ . '/..' . '/estebanforge/hyperfields/src/Admin/Activation.php',
         'HyperFields\\Admin\\ExportImportPageConfig' => __DIR__ . '/..' . '/estebanforge/hyperfields/src/Admin/ExportImportPageConfig.php',
         'HyperFields\\Admin\\ExportImportUI' => __DIR__ . '/..' . '/estebanforge/hyperfields/src/Admin/ExportImportUI.php',

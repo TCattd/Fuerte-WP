@@ -1,152 +1,155 @@
-# Project Overview
+# Fuerte-WP — Agent Knowledge Base
 
-Fuerte-WP is a WordPress security plugin that limits access to critical WordPress areas, even for administrator users. It enforces security restrictions and provides administrative controls to manage WordPress installations more securely.
+**Updated:** 2026-07-17
 
-## Architecture
+## OVERVIEW
+WordPress security plugin. Limits access to critical WP areas, even for admins. Enforces restrictions, manages 2FA, auto-updates, login security, email controls.
 
-### Core Components
+- **Type:** `wordpress-plugin` (single-file entry: `fuerte-wp.php`)
+- **Version:** 1.10.0 (in `composer.json` + plugin header)
+- **Requires:** PHP 8.1+, WordPress 6.4+ (tested to 6.9)
+- **License:** GPL-2.0+
+- **Author:** Esteban Cuevas `<esteban@attitude.cl>`
 
-1. **Main Plugin File** (`fuerte-wp.php:1`): Plugin initialization, autoloading, and activation/deactivation hooks
-2. **Core Class** (`includes/class-fuerte-wp.php:33`): Main plugin orchestrator that manages loaders and hooks
-3. **Enforcer** (`includes/class-fuerte-wp-enforcer.php:20`): Security enforcement engine that applies all restrictions and rules
-4. **Admin Interface** (`admin/class-fuerte-wp-admin.php`): WordPress admin panel and settings using Carbon Fields
-5. **Data Storage** (`includes/class-fuerte-wp-carbon-fields-datastore.php`): Custom datastore for configuration
+## STACK
+- **PHP** 8.1+ (strict_types implied by WPCS; `defined('ABSPATH') || die()` guard pattern)
+- **Composer** for autoloading + 1 runtime dep: `estebanforge/hyperfields` (admin UI framework, prefixed under `FuerteWpDep\` via Strauss into `vendor-prefixed/`)
+- **HyperFields** (`vendor/estebanforge/hyperfields/`) replaces the former Carbon Fields; admin settings tabs are built on it
+- **Bundled Two-Factor lib** at `includes/two-factor/` (regenerated from upstream, DO NOT EDIT)
+- **Pest 4** + **Brain Monkey 2** + **PHPUnit 12** for tests
+- **php-cs-fixer** for formatting
 
-### Key Architecture Patterns
-
-- **Singleton Pattern**: Enforcer class uses singleton pattern via `get_instance()` method
-- **Loader System**: `Fuerte_Wp_Loader` class manages all WordPress hooks and filters
-- **Configuration Management**: Supports both database options and file-based configuration (`wp-config-fuerte.php`)
-- **Transient Caching**: Configuration is cached using WordPress transients for performance
-- **Cronjob-based Updates**: Auto-updates are managed via WordPress cronjobs with configurable frequency
-
-### Configuration System
-
-The plugin supports two configuration methods:
-1. **Database Configuration**: Stored via Carbon Fields theme options
-2. **File Configuration**: Via `wp-config-fuerte.php` in WordPress root directory (overrides database)
-
-Configuration structure:
-```php
-$fuertewp = [
-    'status' => 'enabled',
-    'super_users' => ['email@domain.com'],
-    'general' => [
-        'access_denied_message' => 'Access denied.',
-        'recovery_email' => '',
-        'sender_email_enable' => true,
-        'sender_email' => '',
-        'autoupdate_core' => true,
-        'autoupdate_plugins' => true,
-        'autoupdate_themes' => true,
-        'autoupdate_translations' => true,
-        'autoupdate_frequency' => 'twelve_hours', // six_hours, twelve_hours, daily, twodays
-    ],
-    'tweaks' => [...],
-    'restrictions' => [...],
-    'emails' => [...],
-    'restricted_scripts' => [...],
-    'restricted_pages' => [...],
-    'removed_menus' => [...],
-    'removed_submenus' => [...],
-    'removed_adminbar_menus' => [...]
-];
+## STRUCTURE
+```
+fuerte-wp.php                      # Entry: constants, config load, autoload bootstrap
+includes/
+  class-fuerte-wp.php              # Core orchestrator (loads deps, wires hooks, runs enforcer)
+  class-fuerte-wp-enforcer.php     # Security engine (singleton) — ALL restrictions/rules
+  class-fuerte-wp-config.php       # Config loader (file > DB), transient-cached
+  class-fuerte-wp-hook-manager.php # Static hook registration + conditional gating
+  class-fuerte-wp-helper.php       # is_super_user(), IP/CIDR utilities
+  class-fuerte-wp-two-factor.php   # Wrapper: boots bundled Two-Factor lib
+  class-fuerte-wp-auto-update-manager.php
+  class-fuerte-wp-login-manager.php / -logger / -url-hider
+  class-fuerte-wp-loader.php       # Hook queue (actions/filters)
+  class-fuerte-wp-logger.php
+  two-factor/                      # SYNCED UPSTREAM LIB — never edit
+  helpers.php                      # Procedural helpers
+  views/                           # PHP view partials
+admin/
+  class-fuerte-wp-admin.php        # HyperFields-based admin UI (tabs, checkboxes)
+  css/ js/ partials/
+public/                            # Frontend-facing hooks (mostly no-op, kept for structure)
+config-sample/wp-config-fuerte.php # Sample file-config + escape-hatch docs
+tests/
+  unit/*.php                       # Pest unit tests (Brain Monkey mocks)
+  Integration/*.php
+  bootstrap.php                    # Test bootstrap (mind the hardcoded api.php path, see Gotchas)
+  wordpress-mocks.php
+scripts/
+  sync-two-factor.sh               # Re-pull bundled Two-Factor lib
+  build-release.sh / deploy.sh / deploy-readme-only.sh
+  bump-version.sh
+languages/                         # .pot + es_CL/es_ES translations
+docs/                              # Bundling, deployment, FAQ, server rewrites
 ```
 
-## Auto-Update System
+## COMMANDS
+Run from `src/app/plugins/fuerte-wp/` (NOT the docker repo root — that `composer.json` manages WP core).
 
-### Cronjob-Based Updates
-The auto-update system uses WordPress cronjobs instead of direct filters:
-- **Cron Hook**: `fuertewp_trigger_updates`
-- **Frequency Options**: 6 hours, 12 hours, 24 hours, or 48 hours (configurable)
-- **Method**: `Fuerte_Wp_Enforcer::trigger_updates()` applies filters dynamically during execution
-- **Benefits**: More controlled update timing, reduces server load during normal page requests
+| Action | Command |
+|---|---|
+| Install dev deps | `composer install` |
+| Install prod deps (no dev) | `composer production` |
+| Run tests | `composer test` |
+| Tests with coverage | `composer test:coverage` |
+| Lint one file | `php -l includes/<file>.php` |
+| Format | `composer cs:fix` |
+| Re-sync Two-Factor lib | `composer sync-two-factor` |
+| Bump version | `composer version-bump` |
+| Deploy (prod build + SVN) | `composer deploy` |
 
-### Update Process
-1. Configuration is read from database or file
-2. Cronjob is registered with specified frequency
-3. During cron execution, filters are temporarily applied
-4. `wp_maybe_auto_update()` is called to perform updates
-5. Filters are automatically removed after execution
+In the Docker dev env (from repo root): `./wp <command>` proxies WP-CLI into the container.
 
-## Development Commands
+## CONFIGURATION SYSTEM (critical to understand)
+Two sources, one normalization, transient-cached. **File wins over database.**
 
-### Setup and Dependencies
-```bash
-# Install dependencies (Carbon Fields)
-composer install
+1. **File** (`wp-config-fuerte.php` in `ABSPATH`): defines a `$fuertewp` array. Loaded by `fuerte-wp.php` before boot.
+2. **Database** (`fuertewp_settings` option, persisted by HyperFields admin UI): normalized by `Fuerte_Wp_Config::normalize_settings()`.
 
-# Update dependencies
-composer update
-```
+Flow (`Fuerte_Wp_Config::get_config()`):
+- Transient key `fuertewp_config` is checked first (cache).
+- Cache bypassed on settings page or via `$bypass_cache=true`.
+- `load_from_file()` → if empty, `load_from_database()`.
+- **Gotcha:** after editing enforcer/config logic that reads the normalized array, bust the cache: `wp eval 'delete_transient("fuertewp_config");'` or the stale value persists.
 
-### Deployment
-```bash
-# Deploy with version tag (creates SVN tag)
-./deploy.sh
+Escape hatches (defined in `wp-config.php` or `wp-config-fuerte.php`):
+- `FUERTEWP_DISABLE` (true) — plugin returns early, never boots.
+- `FUERTEWP_FORCE` (true) — enforce restrictions even for super users.
+- `FUERTEWP_DISABLE_2FA` (truthy) — skip bundled Two-Factor lib load.
 
-# Deploy without version tag (updates trunk only)
-./deploy-notag.sh
-```
+Config shape (normalized): `$fuertewp['general']`, `['super_users']`, `['tweaks']`, `['restrictions']`, `['emails']`, `['restricted_scripts']`, `['restricted_pages']`, `['removed_menus']`, `['removed_submenus']`, `['removed_adminbar_menus']`, `['login_security']`.
 
-### Development Notes
-- Plugin uses Carbon Fields for admin interface (`vendor/htmlburger/carbon-fields`)
-- Autoloading is handled via Composer
-- Configuration validation happens in `Fuerte_Wp_Enforcer::config_setup()`
-- Plugin self-protects from deactivation by non-super users
-- Auto-updates use cronjobs for better performance and control
+## SUPER USERS
+`Fuerte_Wp_Helper::is_super_user($user, $respect_force)` — match by **email** (case-insensitive) against `$fuertewp['super_users']`. Super users bypass restrictions unless `FUERTEWP_FORCE`. This is the recovery lever; document it in `config-sample/`.
 
-## Security Features Implementation
+## TWO-FACTOR (bundled)
+Wrapper `includes/class-fuerte-wp-two-factor.php`, class `Fuerte_Wp_TwoFactor`. Key invariants:
+- `boot()` runs on `plugins_loaded` priority 1. Loads the bundled lib **only if** `Two_Factor_Core` is not already declared, the standalone plugin isn't active, and `FUERTEWP_DISABLE_2FA` is not truthy. Exactly one copy ever runs (avoids class-redeclare fatal).
+- **Provider policy:** `DISABLED_PROVIDERS` constant (`Two_Factor_Dummy`) strips via `two_factor_providers` filter at priority 20. Enabled: Email, TOTP, Backup Codes.
+- **Enforcement (admins):** read-only. `enforce_email_for_admins()` injects Email via `two_factor_enabled_providers_for_user` filter at priority 20. **Never writes user meta** — disabling enforcement instantly releases admins.
+- **Super-user bypass:** `is_enforced_user()` checks `is_super_user()` first. Super users never get auto-enforced.
+- **Admin toggle:** `login_security.two_factor_enable` (default on) and `two_factor_enforce` (default on).
+- Never edit `includes/two-factor/` — regenerate via `composer sync-two-factor`.
 
-### Core Security Controls
-- **Super User System**: Users bypass restrictions based on email addresses
-- **Access Control**: Blocks access to sensitive WordPress admin areas
-- **Menu/Plugin Restrictions**: Removes admin menu items and blocks plugin access
-- **File Editing**: Disables theme/plugin editors via `DISALLOW_FILE_EDIT`
-- **REST API Controls**: Restricts REST API access and disables application passwords
+## EMAIL MANAGEMENT
+Hooked in `Fuerte_Wp_Hook_Manager::register_email_hooks()`:
+- `wp_mail_from` / `wp_mail_from_name` — sender rewrite (gated on `general.sender_email_enable`).
+- `recovery_mode_email` — redirect to configured recovery address.
+- Notification filters (gated by `emails[...]` toggles): fatal_error, automatic_updates, comment_awaiting_moderation, comment_has_been_published, user_reset_their_password, user_confirm_personal_data_export_request, new_user_created.
+- **2FA token emails are NOT intercepted** — `Two_Factor_Email::send_code()` calls `wp_mail()` directly.
 
-### Email Management
-- **Recovery Email**: Redirects WordPress recovery emails to configured address
-- **Sender Email**: Customizes WordPress email sender to match domain
-- **Notification Filtering**: Disables various WordPress admin notifications
+`Fuerte_Wp_Enforcer::sender_email_address()`: empty `sender_email` config falls back to `no-reply@<home_url host>`. Treat empty strings as unset (fixed 1.10.0).
 
-### Auto Updates (Cronjob-Based)
-- **Configurable Frequency**: Users can choose update check intervals
-- **Selective Updates**: Core, plugins, themes, and translations can be enabled independently
-- **Cron Management**: Automatic registration and cleanup of scheduled tasks
-- **Performance**: Updates run in background without affecting page load times
+## AUTO-UPDATES (cron-based, not direct filters)
+- Cron hook `fuertewp_trigger_updates`, configurable frequency (6h/12h/24h/48h).
+- `Fuerte_Wp_Enforcer::trigger_updates()` applies update filters during cron, calls `wp_maybe_auto_update()`, removes filters after.
+- Per-type toggles: core, plugins, themes, translations.
 
-## Testing Environment
+## CODING STANDARDS
+- **WordPress Coding Standards.** Follow existing patterns; don't hybridize.
+- **Indent:** tabs (see `.editorconfig`). YML uses 2 spaces.
+- **Files:** `defined('ABSPATH') || die()` guard at top of every PHP include.
+- **Naming:** `class-fuerte-wp-*.php` filenames, `Fuerte_Wp_*` classes, `snake_case` methods/functions, `StudlyCaps` classes.
+- **Hooks:** registered via the loader (`Fuerte_Wp_Loader`) or `Fuerte_Wp_Hook_Manager::add_hook()`; WordPress hook naming (`fuertewp_<thing>_<action>`).
+- **i18n:** text domain `fuerte-wp`, use WP i18n functions.
+- **Security:** escape all output (`esc_url`/`esc_html`/`esc_attr`), nonce all forms, capability checks on admin actions.
+- **PHPDoc:** required on all public methods.
 
-The plugin includes development constants in the config file:
-```php
-define('FUERTEWP_DISABLE', false);    // Enable/disable plugin
-define('FUERTEWP_FORCE', false);      // Force restrictions even for super users
-```
+## WHERE TO LOOK
+- **Entry/bootstrap:** `fuerte-wp.php`
+- **Orchestration:** `includes/class-fuerte-wp.php`
+- **All security rules:** `includes/class-fuerte-wp-enforcer.php`
+- **Config logic:** `includes/class-fuerte-wp-config.php`
+- **Hook wiring:** `includes/class-fuerte-wp-hook-manager.php`
+- **2FA wrapper:** `includes/class-fuerte-wp-two-factor.php`
+- **Admin UI:** `admin/class-fuerte-wp-admin.php`
+- **Tests:** `tests/unit/` (Pest)
 
-## File Structure Conventions
+## NOTES / GOTCHAS
+1. **Never edit `includes/two-factor/`** — regenerated by `scripts/sync-two-factor.sh`. Policy lives in the wrapper.
+2. **`vendor/` is committed** (WP host has no Composer). Dev deps must be installed before `composer test`. Production checkouts use `composer production` (`--no-dev`).
+3. **Config is transient-cached.** After changing enforcer/config logic, run `delete_transient('fuertewp_config')` in the running site or the old value persists.
+4. **`FUERTEWP_DISABLE_2FA` is process-global in tests.** The test that defines it MUST run last in the file.
+5. **`tests/bootstrap.php`** hardcodes `vendor/brain/monkey/inc/api.php` — won't exist in `--no-dev` checkouts. Add a `file_exists` guard if tests run from prod.
+6. **Bundled Two-Factor lib ≈ standalone plugin** (6 global functions + `Two_Factor_Core`). Loading both = fatal. The `class_exists` guard in `boot()` is load-bearing.
+7. **File-config dead toggle:** when `wp-config-fuerte.php` exists, admin checkboxes render but don't save. Affects every field, not just 2FA. Separate refactor.
+8. **Mailpit dev mail:** `wp_mail()` under PHP-FPM requires the catchmail wrapper + FPM pool NOT to override `GEM_PATH` to a stale Ruby version. See the docker repo's `php-conf/`.
+9. `is_enforced_user()` matches literal role slug `'administrator'`. Renamed custom admin roles are missed on multisite.
+10. The `disable_*_emails` filter names registered by fuerte-wp are custom; verify they map to real WP core hooks before relying on them (separate pre-existing issue).
 
-- **Classes**: Follow WordPress plugin coding standards
-- **Hooks**: All hooks registered via the loader system
-- **Internationalization**: Uses WordPress i18n functions with text domain 'fuerte-wp'
-- **Security**: All user input properly escaped and validated
-- **Admin Interface**: Uses Carbon Fields for consistent UI components
-
-## Important Implementation Details
-
-1. **Self-Protection**: Plugin cannot be deactivated by non-super users and hides its admin interface
-2. **Configuration Caching**: Uses transients with version-based cache invalidation
-3. **Apache Integration**: Automatically adds .htaccess rules for upload directory security
-4. **Elementor Compatibility**: Handles conflicts with Elementor page builder
-5. **WordPress Version Compatibility**: Supports WordPress 6.0+ and PHP 7.3+
-6. **Cronjob Updates**: Auto-updates run via scheduled tasks for better performance
-
-## Code Style Guidelines
-
-- Follow WordPress Coding Standards
-- Use proper escaping functions (`esc_url()`, `esc_html()`, etc.)
-- Implement proper capability checks
-- Use WordPress hooks and filters appropriately
-- Maintain backward compatibility where possible
-- Use descriptive method and variable names
-- Add proper PHPDoc comments for all public methods
+## OTHER CONTEXT FILES
+- `CLAUDE.md` → symlink to `AGENTS.md` (this file).
+- `GEMINI.md` → exists (check for divergence).
+- Repo-level `AGENTS.md` (at docker repo root) covers the Docker/infra side, not this plugin.
+- `.codegraph/` index present — use codegraph tools for structural queries.

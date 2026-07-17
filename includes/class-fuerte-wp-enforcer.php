@@ -978,9 +978,15 @@ class Fuerte_Wp_Enforcer
     {
         global $fuertewp;
 
-        $sender_email_address
-            = $fuertewp['general']['sender_email']
-            ?? 'no-reply@' . parse_url(home_url())['host'];
+        $sender_email_address = $fuertewp['general']['sender_email'] ?? '';
+
+        // Treat an empty/whitespace sender as "unset" so the host-derived
+        // fallback applies. Without this, PHPMailer receives From: '' and
+        // rejects the address (Invalid address (From)), silently dropping
+        // every mail including 2FA verification codes.
+        if (trim($sender_email_address) === '') {
+            $sender_email_address = 'no-reply@' . parse_url(home_url())['host'];
+        }
 
         // Remove www from hostname
         return str_replace('www.', '', $sender_email_address);
@@ -1240,8 +1246,9 @@ class Fuerte_Wp_Enforcer
     /**
      * Disable comments: close comments on all post types.
      *
-     * @param bool $open    Whether comments are open.
-     * @param int  $post_id Post ID.
+     * @param bool $open Whether comments are open.
+     * @param int $post_id Post ID.
+     *
      * @return bool
      */
     public static function disable_comments_status($open, $post_id)
@@ -1252,8 +1259,9 @@ class Fuerte_Wp_Enforcer
     /**
      * Disable pings.
      *
-     * @param bool $open    Whether pings are open.
-     * @param int  $post_id Post ID.
+     * @param bool $open Whether pings are open.
+     * @param int $post_id Post ID.
+     *
      * @return bool
      */
     public static function disable_pings_status($open, $post_id)
@@ -1265,7 +1273,8 @@ class Fuerte_Wp_Enforcer
      * Empty existing comments array.
      *
      * @param array $comments Comments array.
-     * @param int   $post_id  Post ID.
+     * @param int $post_id Post ID.
+     *
      * @return array
      */
     public static function disable_comments_array($comments, $post_id)
@@ -1276,8 +1285,9 @@ class Fuerte_Wp_Enforcer
     /**
      * Return zero for comment count.
      *
-     * @param int $count   Comment count.
+     * @param int $count Comment count.
      * @param int $post_id Post ID.
+     *
      * @return int
      */
     public static function disable_comments_number($count, $post_id)
@@ -1289,11 +1299,13 @@ class Fuerte_Wp_Enforcer
      * Remove X-Pingback header.
      *
      * @param array $headers HTTP headers.
+     *
      * @return array
      */
     public static function remove_pingback_header($headers)
     {
         unset($headers['X-Pingback']);
+
         return $headers;
     }
 
@@ -1340,14 +1352,16 @@ class Fuerte_Wp_Enforcer
     /**
      * Block REST API comment endpoints.
      *
-     * @param mixed           $result  Response data.
-     * @param WP_REST_Server  $server  Server instance.
+     * @param mixed $result Response data.
+     * @param WP_REST_Server $server Server instance.
      * @param WP_REST_Request $request Request instance.
+     *
      * @return mixed
      */
     public static function disable_rest_comments($result, $server, $request)
     {
         $route = $request->get_route();
+
         if (strpos($route, '/wp/v2/comments') !== false) {
             return new WP_Error(
                 'rest_comment_disabled',
@@ -1355,6 +1369,7 @@ class Fuerte_Wp_Enforcer
                 ['status' => 403]
             );
         }
+
         return $result;
     }
 
@@ -1362,6 +1377,7 @@ class Fuerte_Wp_Enforcer
      * Remove wp.newComment from XML-RPC methods.
      *
      * @param array $methods XML-RPC methods.
+     *
      * @return array
      */
     public static function disable_xmlrpc_comments($methods)
@@ -1374,6 +1390,7 @@ class Fuerte_Wp_Enforcer
         unset($methods['wp.getCommentCount']);
         unset($methods['wp.getCommentStatusList']);
         unset($methods['pingback.ping']);
+
         return $methods;
     }
 
@@ -1381,11 +1398,13 @@ class Fuerte_Wp_Enforcer
      * Remove comments column from admin list tables.
      *
      * @param array $columns Table columns.
+     *
      * @return array
      */
     public static function disable_comments_list_column($columns)
     {
         unset($columns['comments']);
+
         return $columns;
     }
 

@@ -1,7 +1,7 @@
 === Fuerte-WP ===
 Contributors: tcattd
 Tags: security, maintenance, auto-updates, admin control, updates management, login security
-Stable tag: 1.9.6
+Stable tag: 1.10.0
 Requires at least: 6.4
 Tested up to: 6.9
 Requires PHP: 8.1

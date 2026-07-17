@@ -1,7 +1,7 @@
 {
 	"name": "estebanforge/fuerte-wp",
 	"description": "Stronger & Safer WordPress",
-	"version": "1.9.6",
+	"version": "1.10.0",
 	"license": "GPL-2.0",
 	"type": "wordpress-plugin",
 	"homepage": "https://github.com/EstebanForge/Fuerte-WP",
@@ -46,6 +46,9 @@
 		],
 		"version-bump": [
 			"bash scripts/bump-version.sh"
+		],
+		"sync-two-factor": [
+			"bash scripts/sync-two-factor.sh"
 		],
 		"deploy": [
 			"@production",

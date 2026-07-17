@@ -72,9 +72,19 @@
    ========================================== */
 
 .hyperpress-options-wrap {
-    margin: 0.5rem 1rem 0 0;
+    margin: 0.5rem var(--hf-content-inset-right, 1rem) 0 0;
+    /* Bleed matches #wpcontent { padding-left: 20px } in WP admin: the left
+     * gap between the admin menu and the content. The right side needs no
+     * bleed (content already reaches the viewport), so a symmetric negative
+     * bleed would push past the viewport and create a horizontal scrollbar.
+     * See https://css-tricks.com/how-to-get-sticky-and-full-bleed-elements-to-play-well-together/
+     *
+     * --hf-content-inset-right keeps content off the viewport edge; the
+     * sticky-header ::below bleeds by the same amount so the white bar still
+     * reaches the edge. Override per-page if needed. */
     --hf-header-bleed-x: 20px;
     --hf-header-bleed-top: 8px;
+    --hf-content-inset-right: 1rem;
 }
 
 .hyperpress-options-wrap h1 {
@@ -107,7 +117,7 @@
     position: absolute;
     z-index: -1;
     top: calc(-1 * var(--hf-header-bleed-top));
-    right: calc(-1 * var(--hf-header-bleed-x));
+    right: calc(-1 * var(--hf-content-inset-right, 1rem));
     bottom: 0;
     left: calc(-1 * var(--hf-header-bleed-x));
     background: var(--hf-color-white);
@@ -134,12 +144,62 @@
     align-items: flex-end;
 }
 
+/* Mobile dropdown morph of the nav tabs. JS builds a <div.hyperpress-nav-
+ * -select-region> sibling that carries the same white bleed bar as the
+ * desktop nav, with the <select.hyperpress-nav-select> centered inside it.
+ * Desktop hides the whole region; the mobile media query reverses both. */
+.hyperpress-options-wrap .hyperpress-nav-select-region {
+    display: none;
+    position: relative;
+    z-index: 1;
+    margin: 0 0 20px;
+    padding: 12px 0;
+    background: var(--hf-color-transparent);
+    border-bottom: 1px solid var(--hf-color-admin-border);
+}
+
+.hyperpress-options-wrap .hyperpress-nav-select-region::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: calc(-1 * var(--hf-header-bleed-x));
+    right: 0;
+    background: var(--hf-color-white);
+}
+
+.hyperpress-options-wrap .hyperpress-nav-select {
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    padding: 8px 32px 8px 12px;
+    border: 1px solid var(--hf-color-admin-border-strong);
+    border-radius: 4px;
+    background: var(--hf-color-white);
+    color: var(--hf-color-admin-text);
+    font-size: 14px;
+    line-height: 1.4;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: var(--hf-select-arrow-icon);
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+.hyperpress-options-wrap .hyperpress-nav-select:focus {
+    outline: none;
+    border-color: var(--hf-color-primary);
+    box-shadow: 0 0 0 1px var(--hf-color-primary);
+}
+
 .hyperpress-options-wrap .nav-tab-wrapper.hyperpress-nav-tab-wrapper::before {
     content: "";
     position: absolute;
     z-index: -1;
     top: 0;
-    right: calc(-1 * var(--hf-header-bleed-x));
+    right: calc(-1 * var(--hf-content-inset-right, 1rem));
     bottom: 0;
     left: calc(-1 * var(--hf-header-bleed-x));
     background: var(--hf-color-white);
@@ -171,6 +231,55 @@
 }
 
 .hyperpress-options-wrap .hyperpress-nav-tab-wrapper .hyperpress-nav-tab.nav-tab.nav-tab-active {
+    color: var(--hf-color-admin-text);
+    border-bottom-color: var(--hf-color-admin-accent);
+    background: var(--hf-color-transparent);
+}
+
+
+/* TabsField modern style (no OptionsPage wrapper). Mirrors the modern look
+ * used by .hyperpress-options-wrap .hyperpress-nav-tab-wrapper for plain
+ * TabsField consumers. CSS variables are defined on :root so no scope needed.
+ */
+.hyperpress-tabs-wrapper > .nav-tab-wrapper {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 20px;
+    padding: 0;
+    background: var(--hf-color-transparent);
+    border-bottom: 1px solid var(--hf-color-admin-border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 28px;
+    align-items: flex-end;
+}
+
+.hyperpress-tabs-wrapper > .nav-tab-wrapper .nav-tab {
+    margin: 0;
+    padding: 14px 0 15px;
+    min-width: 50px;
+    border: none;
+    border-bottom: 3px solid var(--hf-color-transparent);
+    background: var(--hf-color-transparent);
+    color: var(--hf-color-admin-text-muted);
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.hyperpress-tabs-wrapper > .nav-tab-wrapper .nav-tab:hover {
+    color: var(--hf-color-admin-accent);
+    background: var(--hf-color-transparent);
+}
+
+.hyperpress-tabs-wrapper > .nav-tab-wrapper .nav-tab:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.hyperpress-tabs-wrapper > .nav-tab-wrapper .nav-tab.nav-tab-active {
     color: var(--hf-color-admin-text);
     border-bottom-color: var(--hf-color-admin-accent);
     background: var(--hf-color-transparent);
@@ -245,12 +354,8 @@
 }
 
 .hyperpress-tabs-wrapper {
-    display: flex;
-    gap: 4px;
+    display: block;
     margin-bottom: 24px;
-    border-bottom: 1px solid var(--hf-color-border);
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
 }
 
 .hyperpress-tab {
@@ -313,7 +418,7 @@
     padding-bottom: 12px;
     font-size: 18px;
     font-weight: 600;
-    color: var(--hf-color-text);
+    color: var(--hf-color-admin-text);
     border-bottom: 1px solid var(--hf-color-border-light);
 }
 
@@ -362,9 +467,11 @@
 .hyperpress-field-input-wrapper input[type="checkbox"],
 .hyperpress-field-input-wrapper input[type="radio"] {
     margin: 0;
-    width: 18px;
-    height: 18px;
     cursor: pointer;
+    /* Width/height intentionally unset: WordPress 6.9+/7.x renders checkboxes
+     * via appearance:none with an internally-positioned checkmark. Forcing a
+     * fixed size distorts that internal positioning (off-center check),
+     * especially on mobile. Let WP core own the checkbox appearance. */
 }
 
 .hyperpress-field-input-wrapper .description {
@@ -458,6 +565,200 @@
     background: var(--hf-color-bg-secondary);
     border-radius: 4px;
     border: 1px solid var(--hf-color-border);
+}
+
+/* ==========================================
+   Flat-field alignment (radio, image, select, textarea, etc.)
+   Fields without a .hyperpress-field-row emit the label as a DIRECT
+   child of .hyperpress-field-wrapper. Align them label-left/input-right
+   so they match the grid-row fields (number/text/checkbox) and the
+   settings page reads consistently, like a native WP form-table.
+   The :has() scope avoids grid-row fields, whose label is nested under
+   .hyperpress-field-row (not a direct child of the wrapper).
+   ========================================== */
+
+.hyperpress-field-wrapper:has(> .hyperpress-field-label) {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.hyperpress-field-wrapper:has(> .hyperpress-field-label) > .hyperpress-field-label {
+    font-weight: 600;
+    font-size: 14px;
+    padding-top: 4px;
+}
+
+.hyperpress-field-wrapper:has(> .hyperpress-field-label) > .hyperpress-field-input {
+    min-width: 0;
+}
+
+/* ==========================================
+   Radio & Checkbox Groups
+   ========================================== */
+
+.hyperpress-radio-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hyperpress-radio-horizontal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.hyperpress-radio-vertical label,
+.hyperpress-radio-horizontal label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    line-height: 1.4;
+    cursor: pointer;
+}
+
+.hyperpress-radio-vertical input[type="radio"],
+.hyperpress-radio-horizontal input[type="radio"] {
+    margin: 0;
+}
+
+/* ==========================================
+   Image / File / Media Fields
+   ========================================== */
+
+.hyperpress-image-field,
+.hyperpress-file-field,
+.hyperpress-media-gallery-field {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    align-items: center;
+    gap: 8px 10px;
+    width: fit-content;
+    max-width: 100%;
+}
+
+/* Buttons sit side by side on row 1, each at its natural size. The preview
+ * spans both columns on row 2 and shrinks to hug its image. */
+.hyperpress-image-field > .hyperpress-upload-button,
+.hyperpress-file-field > .hyperpress-upload-button {
+    grid-row: 1;
+    grid-column: 1;
+}
+
+.hyperpress-image-field > .hyperpress-remove-button,
+.hyperpress-file-field > .hyperpress-remove-button {
+    grid-row: 1;
+    grid-column: 2;
+}
+
+.hyperpress-image-field > .hyperpress-image-preview,
+.hyperpress-file-field > .hyperpress-file-preview,
+.hyperpress-media-gallery-field > .hyperpress-gallery-preview {
+    grid-row: 2;
+    grid-column: 1 / -1;
+}
+
+.hyperpress-image-field > .button,
+.hyperpress-file-field > .button,
+.hyperpress-gallery-button,
+.hyperpress-clear-gallery-button,
+.hyperpress-geocode-button {
+    margin: 0;
+}
+
+.hyperpress-image-preview,
+.hyperpress-file-preview,
+.hyperpress-gallery-preview {
+    padding: 4px;
+    background: var(--hf-color-white);
+    border: 1px solid var(--hf-color-admin-border);
+    border-radius: 4px;
+    justify-self: start;
+    width: fit-content;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Empty-state placeholder for image fields without a selection. Keeps the
+ * preview box a legible size instead of collapsing to a tiny white square. */
+.hyperpress-image-preview.is-empty {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 150px;
+    background: var(--hf-color-bg-secondary);
+    border-style: dashed;
+    border-color: var(--hf-color-admin-border-strong);
+    color: var(--hf-color-admin-text-subtle);
+}
+
+.hyperpress-image-placeholder {
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: center;
+    padding: 8px;
+}
+
+.hyperpress-image-preview img,
+.hyperpress-file-preview img,
+.hyperpress-gallery-item img {
+    display: block;
+    max-width: 150px;
+    max-height: 150px;
+    width: auto;
+    height: auto;
+}
+
+.hyperpress-file-url {
+    margin: 0;
+    word-break: break-all;
+    font-size: 13px;
+    color: var(--hf-color-admin-text-muted);
+}
+
+/* ==========================================
+   Separator / Heading / HTML fields
+   ========================================== */
+
+.hyperpress-separator-wrapper {
+    margin: 8px 0;
+}
+
+.hyperpress-separator {
+    border: none;
+    border-top: 1px solid var(--hf-color-admin-border);
+    margin: 0;
+}
+
+.hyperpress-heading-wrapper {
+    margin: 4px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--hf-color-admin-border);
+}
+
+.hyperpress-options-wrap .hyperpress-heading-label {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--hf-color-admin-text);
+}
+
+.hyperpress-html-field {
+    margin: 0;
+}
+
+.hyperpress-html-content {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--hf-color-admin-text-muted);
+}
+
+.hyperpress-html-content p {
+    margin: 0 0 12px;
 }
 
 /* ==========================================
@@ -722,7 +1023,15 @@
 @media (max-width: 782px) {
     .hyperpress-options-wrap {
         margin: 0;
-        padding: 16px;
+        padding: 16px 16px 16px 7px;
+        /* On mobile #wpcontent's left geometry differs from desktop; the wrap
+         * padding and bleed below are tuned empirically so the sticky header
+         * fills the full width edge-to-edge on both sides. On mobile the
+         * content inset is the wrap's own 16px padding (not a margin), so the
+         * header ::before bleeds by the same amount on both axes. */
+        --hf-header-bleed-x: 16px;
+        --hf-header-bleed-top: 16px;
+        --hf-content-inset-right: 16px;
     }
 
     .hyperpress-options-wrap h1 {
@@ -740,6 +1049,12 @@
         gap: 12px;
     }
 
+    /* Flat fields collapse to a single column on mobile too. */
+    .hyperpress-field-wrapper:has(> .hyperpress-field-label) {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
     .hyperpress-field-label {
         padding-top: 0;
     }
@@ -749,18 +1064,71 @@
         overflow-x: auto;
     }
 
+    /* Hide the tab bar on mobile; the JS-built dropdown takes over. */
     .hyperpress-options-wrap .nav-tab-wrapper.hyperpress-nav-tab-wrapper {
-        flex-wrap: nowrap;
-        gap: 0 20px;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        display: none;
     }
 
-    .hyperpress-options-wrap .hyperpress-nav-tab-wrapper .hyperpress-nav-tab.nav-tab {
-        font-size: 14px;
+    /* Show the dropdown region; its ::before bleeds both sides on mobile so
+     * the white bar fills the full width like the header above it. */
+    .hyperpress-options-wrap .hyperpress-nav-select-region {
+        display: block;
     }
 
-    .hyperpress-options-wrap .subsubsub.hyperpress-subsubsub {
+    .hyperpress-options-wrap .hyperpress-nav-select-region::before {
+        right: calc(-1 * var(--hf-header-bleed-x));
+    }
+
+    
+/* TabsField modern style (no OptionsPage wrapper). Mirrors the modern look
+ * used by .hyperpress-options-wrap .hyperpress-nav-tab-wrapper for plain
+ * TabsField consumers. CSS variables are defined on :root so no scope needed.
+ */
+.hyperpress-tabs-wrapper > .nav-tab-wrapper {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 20px;
+    padding: 0;
+    background: var(--hf-color-transparent);
+    border-bottom: 1px solid var(--hf-color-admin-border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 28px;
+    align-items: flex-end;
+}
+
+.hyperpress-tabs-wrapper > .nav-tab-wrapper .nav-tab {
+    margin: 0;
+    padding: 14px 0 15px;
+    min-width: 50px;
+    border: none;
+    border-bottom: 3px solid var(--hf-color-transparent);
+    background: var(--hf-color-transparent);
+    color: var(--hf-color-admin-text-muted);
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.hyperpress-tabs-wrapper > .nav-tab-wrapper .nav-tab:hover {
+    color: var(--hf-color-admin-accent);
+    background: var(--hf-color-transparent);
+}
+
+.hyperpress-tabs-wrapper > .nav-tab-wrapper .nav-tab:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.hyperpress-tabs-wrapper > .nav-tab-wrapper .nav-tab.nav-tab-active {
+    color: var(--hf-color-admin-text);
+    border-bottom-color: var(--hf-color-admin-accent);
+    background: var(--hf-color-transparent);
+}
+
+.hyperpress-options-wrap .subsubsub.hyperpress-subsubsub {
         padding: 12px 0;
         margin-bottom: 20px;
         overflow-x: auto;

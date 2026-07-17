@@ -67,17 +67,17 @@
         },
         {
             "name": "estebanforge/hyperfields",
-            "version": "1.2.4",
-            "version_normalized": "1.2.4.0",
+            "version": "1.4.0",
+            "version_normalized": "1.4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EstebanForge/HyperFields.git",
-                "reference": "ce3f0f9afd9a4f3f138b9cc7ffce5fa35eead2fb"
+                "reference": "3c96e2a6d0c9c4d610e4f3d86e611f4a67a70e82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EstebanForge/HyperFields/zipball/ce3f0f9afd9a4f3f138b9cc7ffce5fa35eead2fb",
-                "reference": "ce3f0f9afd9a4f3f138b9cc7ffce5fa35eead2fb",
+                "url": "https://api.github.com/repos/EstebanForge/HyperFields/zipball/3c96e2a6d0c9c4d610e4f3d86e611f4a67a70e82",
+                "reference": "3c96e2a6d0c9c4d610e4f3d86e611f4a67a70e82",
                 "shasum": ""
             },
             "require": {
@@ -91,7 +91,7 @@
                 "pestphp/pest": "^4",
                 "phpunit/phpunit": "^12"
             },
-            "time": "2026-04-28T18:04:38+00:00",
+            "time": "2026-07-16T22:41:42+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -117,7 +117,7 @@
             "description": "HyperFields: A powerful custom field system for WordPress, providing metaboxes, options pages, and conditional logic.",
             "support": {
                 "issues": "https://github.com/EstebanForge/HyperFields/issues",
-                "source": "https://github.com/EstebanForge/HyperFields/tree/1.2.4"
+                "source": "https://github.com/EstebanForge/HyperFields/tree/1.4.0"
             },
             "install-path": "../estebanforge/hyperfields"
         }
