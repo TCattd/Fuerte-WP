@@ -7,12 +7,12 @@ WordPress security plugin. Limits access to critical WP areas, even for admins. 
 
 - **Type:** `wordpress-plugin` (single-file entry: `fuerte-wp.php`)
 - **Version:** 1.10.0 (in `composer.json` + plugin header)
-- **Requires:** PHP 8.1+, WordPress 6.4+ (tested to 6.9)
+- **Requires:** PHP 8.2+, WordPress 6.5+ (tested to 6.9)
 - **License:** GPL-2.0+
 - **Author:** Esteban Cuevas `<esteban@attitude.cl>`
 
 ## STACK
-- **PHP** 8.1+ (strict_types implied by WPCS; `defined('ABSPATH') || die()` guard pattern)
+- **PHP** 8.2+ (strict_types implied by WPCS; `defined('ABSPATH') || die()` guard pattern)
 - **Composer** for autoloading + 1 runtime dep: `estebanforge/hyperfields` (admin UI framework, prefixed under `FuerteWpDep\` via Strauss into `vendor-prefixed/`)
 - **HyperFields** (`vendor/estebanforge/hyperfields/`) replaces the former Carbon Fields; admin settings tabs are built on it
 - **Bundled Two-Factor lib** at `includes/two-factor/` (regenerated from upstream, DO NOT EDIT)

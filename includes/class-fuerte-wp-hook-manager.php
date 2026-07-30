@@ -225,12 +225,12 @@ class Fuerte_Wp_Hook_Manager
 
         // XML-RPC restrictions
         if (isset(self::$config['restrictions']['disable_xmlrpc']) && self::$config['restrictions']['disable_xmlrpc']) {
-            self::add_hook('xmlrpc_enabled', '__return_false', 10, true);
+            self::add_hook('xmlrpc_enabled', '__return_false');
         }
 
         // Application passwords
-        if (isset(self::$config['rest_api']['disable_app_passwords']) && self::$config['rest_api']['disable_app_passwords']) {
-            self::add_hook('wp_is_application_passwords_available', '__return_false', 10, true);
+        if (isset(self::$config['restrictions']['restapi_disable_app_passwords']) && self::$config['restrictions']['restapi_disable_app_passwords']) {
+            self::add_hook('wp_is_application_passwords_available', '__return_false');
         }
 
         // Disable comments frontend hooks

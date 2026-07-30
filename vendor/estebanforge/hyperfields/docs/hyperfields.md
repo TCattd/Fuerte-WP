@@ -1,7 +1,7 @@
 # HyperFields — API Reference
 
 **Note on Helper Functions:**
-This documentation uses the `hf_` prefix for helper functions (e.g. `hf_get_field()`), which are the canonical names for the HyperFields plugin. For backward compatibility, `hp_` prefixed aliases (e.g. `hp_get_field()`) are also available and function identically.
+This documentation uses the `hf_` prefix for helper functions (e.g. `hf_get_field()`), which are the canonical names for the HyperFields plugin.
 
 ## API Reference
 
@@ -14,7 +14,7 @@ Developer-focused API for saving and retrieving field values across posts, users
 - Helper factories available: `hf_option_page()`, `hf_field()`, `hf_tabs()`, `hf_repeater()`, `hf_section()`.
 - Retrieval/update helpers: `hf_get_field()`, `hf_update_field()`, `hf_delete_field()`.
 
-Source: `includes/helpers.php`
+Source: `src/helpers.php`
 
 ## Getting and Saving Values
 
@@ -45,7 +45,50 @@ Supported `$source` forms (auto-resolved):
 - Options: `'option'|'options'` or `['type' => 'option', 'option_group' => '...']`
 - `null`: falls back to current post if inside The Loop; otherwise options
 
-See: `hf_resolve_field_context()` in `includes/helpers.php`.
+See: `hf_resolve_field_context()` in `src/helpers.php`.
+
+### Cache Invalidation on Save
+
+When HyperFields persists a value it clears cached representations that can
+go stale: transients and the OPcache. This is automatic and runs once per
+**real** change (no-op writes are filtered upstream), wired to the semantic
+save actions (`options_page/after_save`, `settings/after_save`, the
+`post/term/user` meta-container saved actions, and `import/after`).
+
+Transient clearing is **backend-aware** (this matters on Redis/Memcached):
+
+- No external object cache: transients live in `wp_options` as `_transient_*`
+  rows; a direct SQL DELETE clears them.
+- Persistent object cache: transients live ONLY in the cache under the
+  `transient` / `site-transient` groups, so they are cleared surgically with
+  `wp_cache_flush_group()`. No DB rows exist, so a DB DELETE would be a no-op.
+
+Requires WordPress 6.5+ (guarantees `wp_cache_flush_group()`).
+
+Filters:
+
+| Filter | Default | Controls |
+| --- | --- | --- |
+| `hyperfields/cache/auto_invalidate` | `true` | Master switch. `false` disables everything. |
+| `hyperfields/cache/flush_transients` | `true` | Backend-aware transient clear (DB purge or group flush). |
+| `hyperfields/cache/flush_object_cache` | `false` | Opt-in full `wp_cache_flush()`. The documented anti-pattern; use only on a persistent backend that lacks group-flush support. |
+| `hyperfields/cache/reset_opcache` | `true` | `opcache_reset()` when the extension is available. |
+
+Disable everything:
+
+```php
+add_filter('hyperfields/cache/auto_invalidate', '__return_false');
+```
+
+Flush manually (cron, migrations, importers that bypass the save actions):
+
+```php
+HyperFields\CacheInvalidator::flush();
+// or
+hf_flush_hyperfields_cache();
+```
+
+Manual flush still honors the per-layer filters.
 
 ## Sanitization
 

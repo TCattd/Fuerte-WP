@@ -1,5 +1,12 @@
 # Changelog
 
+# 1.11.0 / 2026-07-30
+- **Bug Fix**: The "Disable App Passwords" restriction was a no-op. `Fuerte_Wp_Hook_Manager` read a non-existent config key (`rest_api.disable_app_passwords`) instead of the normalized `restrictions.restapi_disable_app_passwords`, so the `wp_is_application_passwords_available` filter was never registered and application passwords stayed enabled regardless of the checkbox. Now actually disables application passwords site-wide.
+- **Bug Fix**: The App Passwords and XML-RPC restriction hooks were registered at the wrong filter priority (1 instead of 10). Root cause: an argument-shape error in the `add_hook()` wrapper — `add_hook($hook, '__return_false', 10, true)` passed `10` into the `$method` slot and `true` (coerced to 1) into `$priority`. Functionally harmless for `__return_false`, now registered at the default priority 10.
+- **Changed**: Bundled HyperFields library updated from 1.4.0 to 1.5.0. HyperFields 1.5.0 adds automatic cache invalidation on settings saves: `CacheInvalidator` clears stale transients and resets OPcache whenever a real value change is persisted, is object-cache-aware (uses `wp_cache_flush_group()` on persistent backends, direct DB purge otherwise), and is controllable via `hyperfields/cache/*` filters (on by default; full `wp_cache_flush()` is an explicit opt-in).
+- **Note**: HyperFields 1.5.0 raises its own runtime minimum to WordPress 6.5+ and PHP 8.2+. fuerte-wp's declared header still reads `Requires at least: 6.4` / `Requires PHP: 8.1`; update the header to match before release, or 1.11.0 will advertise support for environments the bundled dependency no longer runs on.
+- Added 7 regression tests covering the App Passwords config-key path, the filter-priority argument-shape fix, the XML-RPC priority, the source-of-truth decision to ignore the legacy `rest_api` file-config key, and the migrated file-config namespace (`tests/unit/HookManagerTest.php`, `tests/unit/FileConfigFormatTest.php`).
+
 # 1.10.0 / 2026-07-10
 - **New Feature**: Bundled the official WordPress Two-Factor plugin (v0.16.0) as a library, with a site-enforced provider policy and crash-safe coexistence with the standalone plugin.
 - Two-Factor providers limited to Email, Authenticator App (`Two_Factor_Totp`), and Recovery Codes (`Two_Factor_Backup_Codes`). Dummy Method (`Two_Factor_Dummy`) stripped site-wide via the `two_factor_providers` filter at priority 20, running after core's `enable_dummy_method_for_debug` so Dummy stays hidden even under `WP_DEBUG`.

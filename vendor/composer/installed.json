@@ -1,88 +1,22 @@
 {
     "packages": [
         {
-            "name": "automattic/jetpack-autoloader",
-            "version": "v2.12.0",
-            "version_normalized": "2.12.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Automattic/jetpack-autoloader.git",
-                "reference": "632b69cfc73ed5505f2b03165e7f68d414d0da12"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Automattic/jetpack-autoloader/zipball/632b69cfc73ed5505f2b03165e7f68d414d0da12",
-                "reference": "632b69cfc73ed5505f2b03165e7f68d414d0da12",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.1 || ^2.0"
-            },
-            "require-dev": {
-                "automattic/jetpack-changelogger": "^3.3.11",
-                "yoast/phpunit-polyfills": "1.1.0"
-            },
-            "time": "2023-09-28T18:33:34+00:00",
-            "type": "composer-plugin",
-            "extra": {
-                "class": "Automattic\\Jetpack\\Autoloader\\CustomAutoloaderPlugin",
-                "autotagger": true,
-                "mirror-repo": "Automattic/jetpack-autoloader",
-                "branch-alias": {
-                    "dev-trunk": "2.12.x-dev"
-                },
-                "changelogger": {
-                    "link-template": "https://github.com/Automattic/jetpack-autoloader/compare/v${old}...v${new}"
-                },
-                "version-constants": {
-                    "::VERSION": "src/AutoloadGenerator.php"
-                }
-            },
-            "installation-source": "dist",
-            "autoload": {
-                "psr-4": {
-                    "Automattic\\Jetpack\\Autoloader\\": "src"
-                },
-                "classmap": [
-                    "src/AutoloadGenerator.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "description": "Creates a custom autoloader for a plugin or theme.",
-            "keywords": [
-                "autoload",
-                "autoloader",
-                "composer",
-                "jetpack",
-                "plugin",
-                "wordpress"
-            ],
-            "support": {
-                "source": "https://github.com/Automattic/jetpack-autoloader/tree/v2.12.0"
-            },
-            "install-path": "../automattic/jetpack-autoloader"
-        },
-        {
             "name": "estebanforge/hyperfields",
-            "version": "1.4.0",
-            "version_normalized": "1.4.0.0",
+            "version": "1.5.0",
+            "version_normalized": "1.5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EstebanForge/HyperFields.git",
-                "reference": "3c96e2a6d0c9c4d610e4f3d86e611f4a67a70e82"
+                "reference": "f3fa1ef71c83b0df22b3d4b1e5a7e8926c69859f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EstebanForge/HyperFields/zipball/3c96e2a6d0c9c4d610e4f3d86e611f4a67a70e82",
-                "reference": "3c96e2a6d0c9c4d610e4f3d86e611f4a67a70e82",
+                "url": "https://api.github.com/repos/EstebanForge/HyperFields/zipball/f3fa1ef71c83b0df22b3d4b1e5a7e8926c69859f",
+                "reference": "f3fa1ef71c83b0df22b3d4b1e5a7e8926c69859f",
                 "shasum": ""
             },
             "require": {
-                "automattic/jetpack-autoloader": "^2",
-                "php": ">=8.1"
+                "php": ">=8.2"
             },
             "require-dev": {
                 "brain/monkey": "^2",
@@ -91,13 +25,11 @@
                 "pestphp/pest": "^4",
                 "phpunit/phpunit": "^12"
             },
-            "time": "2026-07-16T22:41:42+00:00",
+            "time": "2026-07-30T22:34:11+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
                 "files": [
-                    "includes/helpers.php",
-                    "includes/backward-compatibility.php",
                     "bootstrap.php"
                 ],
                 "psr-4": {
@@ -117,7 +49,7 @@
             "description": "HyperFields: A powerful custom field system for WordPress, providing metaboxes, options pages, and conditional logic.",
             "support": {
                 "issues": "https://github.com/EstebanForge/HyperFields/issues",
-                "source": "https://github.com/EstebanForge/HyperFields/tree/1.4.0"
+                "source": "https://github.com/EstebanForge/HyperFields/tree/1.5.0"
             },
             "install-path": "../estebanforge/hyperfields"
         }

@@ -1,8 +1,8 @@
 <?php return array(
     'root' => array(
         'name' => 'estebanforge/fuerte-wp',
-        'pretty_version' => '1.10.0',
-        'version' => '1.10.0.0',
+        'pretty_version' => '1.11.0',
+        'version' => '1.11.0.0',
         'reference' => null,
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
@@ -10,18 +10,9 @@
         'dev' => false,
     ),
     'versions' => array(
-        'automattic/jetpack-autoloader' => array(
-            'pretty_version' => 'v2.12.0',
-            'version' => '2.12.0.0',
-            'reference' => '632b69cfc73ed5505f2b03165e7f68d414d0da12',
-            'type' => 'composer-plugin',
-            'install_path' => __DIR__ . '/../automattic/jetpack-autoloader',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
         'estebanforge/fuerte-wp' => array(
-            'pretty_version' => '1.10.0',
-            'version' => '1.10.0.0',
+            'pretty_version' => '1.11.0',
+            'version' => '1.11.0.0',
             'reference' => null,
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
@@ -29,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'estebanforge/hyperfields' => array(
-            'pretty_version' => '1.4.0',
-            'version' => '1.4.0.0',
-            'reference' => '3c96e2a6d0c9c4d610e4f3d86e611f4a67a70e82',
+            'pretty_version' => '1.5.0',
+            'version' => '1.5.0.0',
+            'reference' => 'f3fa1ef71c83b0df22b3d4b1e5a7e8926c69859f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../estebanforge/hyperfields',
             'aliases' => array(),

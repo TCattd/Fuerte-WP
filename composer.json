@@ -1,7 +1,7 @@
 {
 	"name": "estebanforge/fuerte-wp",
 	"description": "Stronger & Safer WordPress",
-	"version": "1.10.0",
+	"version": "1.11.0",
 	"license": "GPL-2.0",
 	"type": "wordpress-plugin",
 	"homepage": "https://github.com/EstebanForge/Fuerte-WP",
@@ -15,7 +15,7 @@
 		"issues": "https://github.com/EstebanForge/Fuerte-WP/issues"
 	},
 	"require": {
-		"php": ">=8.1",
+		"php": ">=8.2",
 		"estebanforge/hyperfields": "^1"
 	},
 	"require-dev": {

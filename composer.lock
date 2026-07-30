@@ -4,87 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "82244adcb350f7079cffa130bcf1e6ca",
+    "content-hash": "5dc29bf87727d08bdeb2bb764e556724",
     "packages": [
         {
-            "name": "automattic/jetpack-autoloader",
-            "version": "v2.12.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Automattic/jetpack-autoloader.git",
-                "reference": "632b69cfc73ed5505f2b03165e7f68d414d0da12"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Automattic/jetpack-autoloader/zipball/632b69cfc73ed5505f2b03165e7f68d414d0da12",
-                "reference": "632b69cfc73ed5505f2b03165e7f68d414d0da12",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.1 || ^2.0"
-            },
-            "require-dev": {
-                "automattic/jetpack-changelogger": "^3.3.11",
-                "yoast/phpunit-polyfills": "1.1.0"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "Automattic\\Jetpack\\Autoloader\\CustomAutoloaderPlugin",
-                "autotagger": true,
-                "mirror-repo": "Automattic/jetpack-autoloader",
-                "branch-alias": {
-                    "dev-trunk": "2.12.x-dev"
-                },
-                "changelogger": {
-                    "link-template": "https://github.com/Automattic/jetpack-autoloader/compare/v${old}...v${new}"
-                },
-                "version-constants": {
-                    "::VERSION": "src/AutoloadGenerator.php"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Automattic\\Jetpack\\Autoloader\\": "src"
-                },
-                "classmap": [
-                    "src/AutoloadGenerator.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "description": "Creates a custom autoloader for a plugin or theme.",
-            "keywords": [
-                "autoload",
-                "autoloader",
-                "composer",
-                "jetpack",
-                "plugin",
-                "wordpress"
-            ],
-            "support": {
-                "source": "https://github.com/Automattic/jetpack-autoloader/tree/v2.12.0"
-            },
-            "time": "2023-09-28T18:33:34+00:00"
-        },
-        {
             "name": "estebanforge/hyperfields",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EstebanForge/HyperFields.git",
-                "reference": "3c96e2a6d0c9c4d610e4f3d86e611f4a67a70e82"
+                "reference": "f3fa1ef71c83b0df22b3d4b1e5a7e8926c69859f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EstebanForge/HyperFields/zipball/3c96e2a6d0c9c4d610e4f3d86e611f4a67a70e82",
-                "reference": "3c96e2a6d0c9c4d610e4f3d86e611f4a67a70e82",
+                "url": "https://api.github.com/repos/EstebanForge/HyperFields/zipball/f3fa1ef71c83b0df22b3d4b1e5a7e8926c69859f",
+                "reference": "f3fa1ef71c83b0df22b3d4b1e5a7e8926c69859f",
                 "shasum": ""
             },
             "require": {
-                "automattic/jetpack-autoloader": "^2",
-                "php": ">=8.1"
+                "php": ">=8.2"
             },
             "require-dev": {
                 "brain/monkey": "^2",
@@ -96,8 +33,6 @@
             "type": "library",
             "autoload": {
                 "files": [
-                    "includes/helpers.php",
-                    "includes/backward-compatibility.php",
                     "bootstrap.php"
                 ],
                 "psr-4": {
@@ -117,9 +52,9 @@
             "description": "HyperFields: A powerful custom field system for WordPress, providing metaboxes, options pages, and conditional logic.",
             "support": {
                 "issues": "https://github.com/EstebanForge/HyperFields/issues",
-                "source": "https://github.com/EstebanForge/HyperFields/tree/1.4.0"
+                "source": "https://github.com/EstebanForge/HyperFields/tree/1.5.0"
             },
-            "time": "2026-07-16T22:41:42+00:00"
+            "time": "2026-07-30T22:34:11+00:00"
         }
     ],
     "packages-dev": [
@@ -3434,16 +3369,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v7.4.14",
+            "version": "v7.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "92f58bc4bf97a92ed1b9f367f0cd44f20bde0e87"
+                "reference": "088ec6fe0ef6819cbc301174093b6bfa4ad26930"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/92f58bc4bf97a92ed1b9f367f0cd44f20bde0e87",
-                "reference": "92f58bc4bf97a92ed1b9f367f0cd44f20bde0e87",
+                "url": "https://api.github.com/repos/symfony/console/zipball/088ec6fe0ef6819cbc301174093b6bfa4ad26930",
+                "reference": "088ec6fe0ef6819cbc301174093b6bfa4ad26930",
                 "shasum": ""
             },
             "require": {
@@ -3508,7 +3443,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v7.4.14"
+                "source": "https://github.com/symfony/console/tree/v7.4.15"
             },
             "funding": [
                 {
@@ -3528,7 +3463,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-16T11:50:14+00:00"
+            "time": "2026-07-27T13:51:00+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -3754,16 +3689,16 @@
         },
         {
             "name": "symfony/polyfill-intl-grapheme",
-            "version": "v1.38.1",
+            "version": "v1.41.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-grapheme.git",
-                "reference": "e9247d281d694a5120554d9afaf54e070e88a603"
+                "reference": "bb899c1db0aa8127dc3afe8cda4a67eb24915f8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-grapheme/zipball/e9247d281d694a5120554d9afaf54e070e88a603",
-                "reference": "e9247d281d694a5120554d9afaf54e070e88a603",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-grapheme/zipball/bb899c1db0aa8127dc3afe8cda4a67eb24915f8d",
+                "reference": "bb899c1db0aa8127dc3afe8cda4a67eb24915f8d",
                 "shasum": ""
             },
             "require": {
@@ -3812,7 +3747,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-grapheme/tree/v1.38.1"
+                "source": "https://github.com/symfony/polyfill-intl-grapheme/tree/v1.41.0"
             },
             "funding": [
                 {
@@ -3832,7 +3767,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-26T05:58:03+00:00"
+            "time": "2026-07-28T08:25:59+00:00"
         },
         {
             "name": "symfony/polyfill-intl-normalizer",
@@ -4158,16 +4093,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v7.4.13",
+            "version": "v7.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "961683010db3b27ec6ebcd7308e6e1ee8fa7ffde"
+                "reference": "e394af32256bf9e7bf80849d95e589167c10097b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/961683010db3b27ec6ebcd7308e6e1ee8fa7ffde",
-                "reference": "961683010db3b27ec6ebcd7308e6e1ee8fa7ffde",
+                "url": "https://api.github.com/repos/symfony/string/zipball/e394af32256bf9e7bf80849d95e589167c10097b",
+                "reference": "e394af32256bf9e7bf80849d95e589167c10097b",
                 "shasum": ""
             },
             "require": {
@@ -4225,7 +4160,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v7.4.13"
+                "source": "https://github.com/symfony/string/tree/v7.4.15"
             },
             "funding": [
                 {
@@ -4245,7 +4180,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-23T15:23:29+00:00"
+            "time": "2026-07-28T07:33:02+00:00"
         },
         {
             "name": "ta-tikoma/phpunit-architecture-test",
