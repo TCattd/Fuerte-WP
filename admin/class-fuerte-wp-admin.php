@@ -38,6 +38,10 @@ class Fuerte_Wp_Admin
 
         // Register saved hook for HyperFields
         add_action('hf_options_page_saved', [$this, 'handle_settings_saved'], 10, 2);
+
+        // Milestone review-ask notice.
+        add_action('admin_notices', [$this, 'maybe_show_review_notice']);
+        add_action('admin_init', [$this, 'handle_review_dismissal']);
     }
 
     /**
@@ -932,6 +936,9 @@ class Fuerte_Wp_Admin
         // Invalidate cache
         Fuerte_Wp_Config::invalidate_cache();
 
+        // Prime the milestone review-ask on meaningful config changes.
+        $this->detect_review_milestone();
+
         // Flush rewrite rules if login URL might have changed
         if (isset($data['fuertewp_custom_login_slug']) || isset($data['fuertewp_login_url_hiding_enabled'])) {
             flush_rewrite_rules(true);
@@ -970,5 +977,161 @@ class Fuerte_Wp_Admin
         ];
 
         return array_merge($links, $fuertewp_link);
+    }
+
+    /**
+     * Detect a meaningful configuration milestone and prime the review-ask.
+     *
+     * Fires on settings save. Records the first supply-chain milestone reached
+     * (a blocked or deferred update) so the review-ask notice can celebrate it
+     * once, to a super user, dismissible. One-shot per site.
+     *
+     * @since 1.11.0
+     */
+    private function detect_review_milestone(): void
+    {
+        // Already recorded a milestone; the notice is one-shot per site.
+        $existing = get_option('fuertewp_review_milestone', false);
+
+        if (!empty($existing)) {
+            return;
+        }
+
+        $milestone = '';
+
+        if (
+            !empty(Fuerte_Wp_Config::get('blocked_plugins', []))
+            || !empty(Fuerte_Wp_Config::get('blocked_themes', []))
+        ) {
+            $milestone = 'blocked_update';
+        } elseif (
+            !empty(Fuerte_Wp_Config::get('deferred_plugins', []))
+            || !empty(Fuerte_Wp_Config::get('deferred_themes', []))
+        ) {
+            $milestone = 'deferred_update';
+        }
+
+        if ($milestone === '') {
+            return;
+        }
+
+        update_option(
+            'fuertewp_review_milestone',
+            ['milestone' => $milestone, 'at' => time()],
+            false
+        );
+    }
+
+    /**
+     * Interval after which a dismissed/seen review-ask may resurface.
+     *
+     * ~180 days means at most once or twice a year per super user.
+     *
+     * @since 1.11.0
+     *
+     * @return int Seconds.
+     */
+    private function review_snooze_seconds(): int
+    {
+        return 180 * DAY_IN_SECONDS;
+    }
+
+    /**
+     * Render the milestone review-ask notice.
+     *
+     * Gated to super users, on the Fuerte settings page or the plugins list.
+     * Snoozes for ~180 days on show, so it surfaces at most once or twice a year.
+     *
+     * @since 1.11.0
+     */
+    public function maybe_show_review_notice(): void
+    {
+        $record = get_option('fuertewp_review_milestone', false);
+
+        if (empty($record) || !is_array($record) || empty($record['milestone'])) {
+            return;
+        }
+
+        $user_id = get_current_user_id();
+
+        if (!$user_id || !Fuerte_Wp_Helper::is_super_user()) {
+            return;
+        }
+
+        // Snooze: at most once every ~6 months per super user (once or twice a year).
+        $snoozed_until = (int) get_user_meta($user_id, 'fuertewp_review_snooze', true);
+
+        if ($snoozed_until > 0 && time() < $snoozed_until) {
+            return;
+        }
+
+        // Only on the Fuerte settings page or the plugins list. Never site-wide.
+        $screen = get_current_screen();
+
+        if (!$screen) {
+            return;
+        }
+        $on_settings = strpos($screen->id, 'fuerte-wp') !== false;
+        $on_plugins = $screen->id === 'plugins';
+
+        if (!$on_settings && !$on_plugins) {
+            return;
+        }
+
+        // Showing it now re-snoozes for the full interval so it never nags.
+        update_user_meta($user_id, 'fuertewp_review_snooze', time() + $this->review_snooze_seconds());
+
+        $labels = [
+            'blocked_update' => __('Nice, you blocked your first plugin update.', 'fuerte-wp'),
+            'deferred_update' => __('Nice, you deferred your first plugin update.', 'fuerte-wp'),
+        ];
+        $label = $labels[$record['milestone']] ?? __('Nice, Fuerte-WP is protecting your site.', 'fuerte-wp');
+
+        $review_url = 'https://wordpress.org/support/plugin/fuerte-wp/reviews/#new-post';
+        $dismiss_url = wp_nonce_url(
+            add_query_arg('fuertewp_review_dismiss', '1'),
+            'fuertewp_review_dismiss',
+            'fuertewp_review_nonce'
+        );
+
+        echo '<div class="notice notice-info">';
+        echo '<p>';
+        echo '<strong>' . esc_html__('Fuerte-WP', 'fuerte-wp') . '</strong>. ';
+        echo esc_html($label) . ' ';
+        echo esc_html__('If it is helping, a quick review on WordPress.org helps others find it.', 'fuerte-wp');
+        echo ' <a href="' . esc_url($review_url) . '" target="_blank" rel="noopener noreferrer">' . esc_html__('Leave a review', 'fuerte-wp') . '</a>';
+        echo ' &middot; <a href="' . esc_url($dismiss_url) . '">' . esc_html__('Maybe later', 'fuerte-wp') . '</a>';
+        echo '</p>';
+        echo '</div>';
+    }
+
+    /**
+     * Handle the per-user dismissal of the review-ask notice.
+     *
+     * @since 1.11.0
+     */
+    public function handle_review_dismissal(): void
+    {
+        if (!isset($_GET['fuertewp_review_dismiss']) || '1' !== $_GET['fuertewp_review_dismiss']) {
+            return;
+        }
+
+        if (
+            !isset($_GET['fuertewp_review_nonce'])
+            || !wp_verify_nonce(sanitize_key($_GET['fuertewp_review_nonce']), 'fuertewp_review_dismiss')
+        ) {
+            return;
+        }
+
+        $user_id = get_current_user_id();
+
+        if (!$user_id) {
+            return;
+        }
+
+        update_user_meta($user_id, 'fuertewp_review_snooze', time() + $this->review_snooze_seconds());
+
+        wp_safe_redirect(remove_query_arg(['fuertewp_review_dismiss', 'fuertewp_review_nonce']));
+        exit;
     }
 }

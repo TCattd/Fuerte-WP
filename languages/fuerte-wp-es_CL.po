@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Fuerte-WP 1.4.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Fuerte-WP\n"
 "POT-Creation-Date: 2022-07-22T17:03:22+00:00\n"
-"PO-Revision-Date: 2022-07-25 11:24-0400\n"
+"PO-Revision-Date: 2022-07-22 14:36-0400\n"
 "Last-Translator: Esteban Cuevas <esteban@attitude.cl>\n"
 "Language-Team: \n"
 "Language: es\n"
@@ -387,3 +387,27 @@ msgstr "Uno por línea. Menús de la Barra de Admin a ser removidos. Uso: <i>adm
 #: admin/class-fuerte-wp-admin.php:436
 msgid "<a href=\"%s\">Settings</a>"
 msgstr "<a href=\"%s\">Ajustes</a>"
+
+#: admin/class-fuerte-wp-admin.php:1079
+msgid "Nice, you blocked your first plugin update."
+msgstr "¡Bien! Has bloqueado tu primera actualización de plugin."
+
+#: admin/class-fuerte-wp-admin.php:1080
+msgid "Nice, you deferred your first plugin update."
+msgstr "¡Bien! Has aplazado tu primera actualización de plugin."
+
+#: admin/class-fuerte-wp-admin.php:1082
+msgid "Nice, Fuerte-WP is protecting your site."
+msgstr "¡Bien! Fuerte-WP ya está protegiendo tu sitio."
+
+#: admin/class-fuerte-wp-admin.php:1095
+msgid "If it is helping, a quick review on WordPress.org helps others find it."
+msgstr "Si te resulta útil, una breve reseña en WordPress.org ayuda a otros a encontrarlo."
+
+#: admin/class-fuerte-wp-admin.php:1096
+msgid "Leave a review"
+msgstr "Deja una reseña"
+
+#: admin/class-fuerte-wp-admin.php:1097
+msgid "Maybe later"
+msgstr "Quizás más tarde"

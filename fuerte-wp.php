@@ -5,7 +5,7 @@
  * Plugin Name:       Fuerte-WP
  * Plugin URI:        https://github.com/EstebanForge/Fuerte-WP
  * Description:       Stronger WP. Limit access to critical WordPress areas, even other for admins.
- * Version:           1.11.0
+ * Version:           1.11.1
  * Author:            Esteban Cuevas
  * Author URI:        https://actitud.xyz
  * License:           GPL-2.0+
@@ -13,7 +13,7 @@
  * Text Domain:       fuerte-wp
  * Domain Path:       /languages
  * Requires at least: 6.5
- * Tested up to:      6.9
+ * Tested up to:      7.0
  * Requires PHP:      8.2
  *
  * @link              https://actitud.xyz
@@ -192,8 +192,7 @@ add_action('admin_init', 'fuertewp_ensure_super_user');
 // Load logger first to ensure it's always available for debugging
 require plugin_dir_path(__FILE__) . 'includes/class-fuerte-wp-logger.php';
 
-// Initialize logger immediately - only enable when WP_DEBUG is true
-Fuerte_Wp_Logger::enable(defined('WP_DEBUG') && WP_DEBUG);
+// Initialize logger immediately - logs when WP_DEBUG or FUERTEWP_DEBUG is true.
 Fuerte_Wp_Logger::init_from_constant();
 
 require plugin_dir_path(__FILE__) . 'includes/class-fuerte-wp.php';

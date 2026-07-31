@@ -6,6 +6,7 @@ This folder contains comprehensive documentation for the Fuerte-WP plugin.
 
 ### User Documentation
 - **[FAQ.md](FAQ.md)** - Frequently Asked Questions about Fuerte-WP functionality and usage
+- **[DEBUG-LOGGING.md](DEBUG-LOGGING.md)** - How to enable/disable Fuerte-WP debug logging (`WP_DEBUG` / `FUERTEWP_DEBUG`)
 
 ### Developer Documentation
 - **[DEPLOYMENT.md](DEPLOYMENT.md)** - Complete deployment guide with best practices

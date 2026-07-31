@@ -176,16 +176,20 @@ class Fuerte_Wp_Logger
     }
 
     /**
-     * Enable logging via WordPress constant.
-     * Call this during plugin initialization if you want to use a constant.
+     * Enable logging based on debug constants.
+     *
+     * Logging is enabled when WP_DEBUG is true OR when the plugin-specific
+     * FUERTEWP_DEBUG constant is true. Either constant truthy enables it.
      *
      * @since 1.7.0
      */
     public static function init_from_constant()
     {
-        if (defined('FUERTEWP_DEBUG_LOGGING') && FUERTEWP_DEBUG_LOGGING) {
-            self::enable(true);
-        }
+        // Log when WP_DEBUG is true OR the plugin-specific FUERTEWP_DEBUG is true.
+        $wp_debug = defined('WP_DEBUG') && WP_DEBUG;
+        $plugin_debug = defined('FUERTEWP_DEBUG') && FUERTEWP_DEBUG;
+
+        self::enable($wp_debug || $plugin_debug);
 
         if (defined('FUERTEWP_LOG_PREFIX')) {
             self::set_prefix(FUERTEWP_LOG_PREFIX);

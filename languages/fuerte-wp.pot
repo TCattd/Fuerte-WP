@@ -1,391 +1,1105 @@
-# Copyright (C) 2021 Esteban Cuevas
+# Copyright (C) 2026 Esteban Cuevas
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Fuerte-WP 1.4.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Fuerte-WP\n"
-"Last-Translator: Esteban Cuevas <esteban@attitude.cl>\n"
-"Language: es\n"
+"Project-Id-Version: Fuerte-WP 1.11.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/fuerte-wp\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-07-22T17:03:22+00:00\n"
+"POT-Creation-Date: 2026-07-31T17:32:42+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.6.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: fuerte-wp\n"
 
 #. Plugin Name of the plugin
-#: admin/class-fuerte-wp-admin.php:121
+#: fuerte-wp.php
+#: admin/class-fuerte-wp-admin.php:150
+#: admin/class-fuerte-wp-admin.php:1093
 msgid "Fuerte-WP"
 msgstr ""
 
 #. Plugin URI of the plugin
+#: fuerte-wp.php
 msgid "https://github.com/EstebanForge/Fuerte-WP"
 msgstr ""
 
 #. Description of the plugin
+#: fuerte-wp.php
 msgid "Stronger WP. Limit access to critical WordPress areas, even other for admins."
 msgstr ""
 
 #. Author of the plugin
+#: fuerte-wp.php
 msgid "Esteban Cuevas"
 msgstr ""
 
 #. Author URI of the plugin
+#: fuerte-wp.php
 msgid "https://actitud.xyz"
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:124
-msgid "Main Options"
+#: admin/class-fuerte-wp-admin.php:142
+msgid "Configuration File Mode"
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:125
-msgid "Enable Fuerte-WP."
+#: admin/class-fuerte-wp-admin.php:143
+msgid "Fuerte-WP is currently configured via wp-config-fuerte.php file. Some settings may be read-only."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:128
-msgid "Check the option to enable Fuerte-WP."
+#: admin/class-fuerte-wp-admin.php:155
+msgid "Main"
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:130
-msgid "Super Administrators."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:132
-msgid "Users that will not be affected by Fuerte-WP rules. Only administrators emails are listed here."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:134
-msgid "General"
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:136
-msgid "Access denied message."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:138
-msgid "General access denied message shown to non super users."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:140
-msgid "Recovery email."
-msgstr ""
-
-#. translators: %s: site domain
-#: admin/class-fuerte-wp-admin.php:144
-msgid "Admin recovery email. If empty, dev@%s will be used.<br/>This email will receive fatal errors from WP, and not the administration email in the General Settings. Check <a href=\"https://make.wordpress.org/core/2019/04/16/fatal-error-recovery-mode-in-5-2/\" target=\"_blank\">fatal error recovery mode</a>."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:146
-msgid "Use a different sender email."
-msgstr ""
-
-#. translators: %s: link to general options
-#: admin/class-fuerte-wp-admin.php:149
-msgid "Use a different email (than the <a href=\"%s\">administrator one</a>) for all emails that WordPress sends."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:151
-msgid "Sender email."
-msgstr ""
-
-#. translators: %s: site domain
-#: admin/class-fuerte-wp-admin.php:165
-msgid "Default site sender email. If empty, no-reply@%1$s will be used.<br/>Emails sent by WP will use this email address. Make sure to check your <a href=\"https://mxtoolbox.com/SPFRecordGenerator.aspx?domain=%1$s&prefill=true\" target=\"_blank\">SPF Records</a> to avoid WP emails going to spam."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:167
-msgid "Updates"
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:169
-msgid "Auto-update WordPress core."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:172
-msgid "Auto-update WordPress to the latest stable version."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:174
-msgid "Auto-update Plugins."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:177
-msgid "Auto-update Plugins to their latest stable version."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:179
-msgid "Auto-update Themes."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:182
-msgid "Auto-update Themes to their latest stable version."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:184
-msgid "Auto-update Translations."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:187
-msgid "Auto-update Translations to their latest stable version."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:189
-msgid "Tweaks"
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:191
-msgid "Use site logo at login."
-msgstr ""
-
-#. translators: %s: customizer URL
-#: admin/class-fuerte-wp-admin.php:195
-msgid "Use your site logo, uploaded via <a href=\"%s\" target=\"_blank\">Customizer > Site Identity</a>, for WordPress login page."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:198
+#: admin/class-fuerte-wp-admin.php:156
+#: admin/class-fuerte-wp-admin.php:232
 msgid "E-mails"
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:200
-msgid "<p>Here you can enable or disable several WordPress built in emails. <strong>Mark</strong> the ones you want to be <strong>enabled</strong>.</p><p><a href=\"https://github.com/johnbillion/wp_mail\" target=\"_blank\">Check here</a> for full documentation of all automated emails WordPress sends."
+#: admin/class-fuerte-wp-admin.php:157
+#: admin/class-fuerte-wp-admin.php:294
+msgid "Login Security"
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:202
-msgid "Fatal Error."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:205
-msgid "Receipt: site admin or recovery email address (main options)."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:207
-msgid "Automatic updates."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:210
-#: admin/class-fuerte-wp-admin.php:215
-#: admin/class-fuerte-wp-admin.php:225
-#: admin/class-fuerte-wp-admin.php:230
-#: admin/class-fuerte-wp-admin.php:235
-msgid "Receipt: site admin."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:212
-msgid "Comment awaiting moderation."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:217
-msgid "Comment has been published."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:220
-msgid "Receipt: post author."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:222
-msgid "User reset their password."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:227
-msgid "User confirm personal data export request."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:232
-msgid "New user created."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:237
-msgid "Network: new site created."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:240
-#: admin/class-fuerte-wp-admin.php:245
-#: admin/class-fuerte-wp-admin.php:250
-msgid "Receipt: network admin."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:242
-msgid "Network: new user site registered."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:247
-msgid "Network: new site activated."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:253
+#: admin/class-fuerte-wp-admin.php:158
+#: admin/class-fuerte-wp-admin.php:501
 msgid "REST API"
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:255
-msgid "<p>REST API restrictions.</p>"
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:257
-msgid "Restrict REST API usage to logged in users only."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:260
-msgid "Modern WordPress depends on his REST API. The entire new editor, Gutenberg, uses it. And many more usage instances are common the WP core. You should not disable the REST API entirely, or WordPress will brake. This is the second best option: limit his usage to only logged in users. <a href=\"https://developer.wordpress.org/rest-api/frequently-asked-questions/\" target=\"_blank\">Learn more</a>."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:262
-msgid "Disable app passwords."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:265
-msgid "Disable generation of App Passwords, used for the REST API. <a href=\"https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/\" target=\"_blank\">Check here</a> for more info."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:269
+#: admin/class-fuerte-wp-admin.php:159
+#: admin/class-fuerte-wp-admin.php:522
 msgid "Restrictions"
 msgstr ""
 
+#: admin/class-fuerte-wp-admin.php:160
+msgid "Advanced"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:161
+msgid "IP Lists"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:162
+msgid "Logins"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:163
+msgid "Updates"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:166
+msgid "Main Options"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:169
+msgid "Super Administrators."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:172
+msgid "Users that will not be affected by Fuerte-WP rules. Format: Username [email]. Search to find users, then click to select."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:175
+msgid "General"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:178
+msgid "Access denied message."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:180
+msgid "General access denied message shown to non super users."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:183
+msgid "Recovery email."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:188
+#, php-format
+msgid "Admin recovery email. If empty, dev@%s will be used.<br/>This email will receive fatal errors from WP, and not the administration email in the General Settings. Check <a href=\"https://make.wordpress.org/core/2019/04/16/fatal-error-recovery-mode-in-5-2/\" target=\"_blank\">fatal error recovery mode</a>."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:193
+msgid "Use a different sender email."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:197
+#, php-format
+msgid "Use a different email (than the <a href=\"%s\">administrator one</a>) for all emails that WordPress sends."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:202
+msgid "Sender email."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:215
+#, php-format
+msgid "Default site sender email. If empty, no-reply@%1$s will be used.<br/>Emails sent by WP will use this email address. Make sure to check your <a href=\"https://mxtoolbox.com/SPFRecordGenerator.aspx?domain=%1$s&prefill=true\" target=\"_blank\">SPF Records</a> to avoid WP emails going to spam."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:220
+msgid "Tweaks"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:223
+msgid "Use site logo at login."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:227
+#, php-format
+msgid "Use your site logo, uploaded via <a href=\"%s\" target=\"_blank\">Customizer > Site Identity</a>, for WordPress login page."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:235
+#: admin/class-fuerte-wp-admin.php:504
+#: admin/class-fuerte-wp-admin.php:623
+msgid "Note:"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:237
+msgid "<p>Here you can enable or disable several WordPress built in emails. <strong>Mark</strong> the ones you want to be <strong>enabled</strong>.</p><p><a href=\"https://github.com/johnbillion/wp_mail\" target=\"_blank\">Check here</a> for full documentation of all automated emails WordPress sends.</p>"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:243
+msgid "Fatal Error."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:245
+msgid "Receipt: site admin or recovery email address (main options)."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:248
+msgid "Automatic updates."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:250
+#: admin/class-fuerte-wp-admin.php:255
+#: admin/class-fuerte-wp-admin.php:265
 #: admin/class-fuerte-wp-admin.php:270
-msgid "Disable XML-RPC API."
+#: admin/class-fuerte-wp-admin.php:275
+msgid "Receipt: site admin."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:253
+msgid "Comment awaiting moderation."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:258
+msgid "Comment has been published."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:260
+msgid "Receipt: post author."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:263
+msgid "User reset their password."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:268
+msgid "User confirm personal data export request."
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:273
-msgid "Disable the old and insecure XML-RPC API in WordPress. <a href=\"https://blog.wpscan.com/is-wordpress-xmlrpc-a-security-problem/\" target=\"_blank\">Learn more</a>."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:275
-msgid "Disable admin creation/edition."
+msgid "New user created."
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:278
-msgid "Disable the creation of new admin accounts and the editing of existing admin accounts."
+msgid "Network: new site created."
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:280
-msgid "Disable weak passwords."
+#: admin/class-fuerte-wp-admin.php:285
+#: admin/class-fuerte-wp-admin.php:290
+msgid "Receipt: network admin."
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:283
-msgid "Disable the use of weak passwords. User can't uncheck \"Confirm use of weak password\". Let users type their own password, but must be somewhat secure (following WP built in recommendation library)."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:285
-msgid "Force strong passwords."
+msgid "Network: new user site registered."
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:288
-msgid "Force strong passwords usage, making password field read-only. Users must use WordPress provided strong password."
+msgid "Network: new site activated."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:290
-msgid "Disable admin bar for roles."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:293
-msgid "Disable WordPress admin bar for selected roles."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:295
-msgid "Restrict Permalinks configuration."
+#: admin/class-fuerte-wp-admin.php:297
+msgid "Login Security Information"
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:298
-msgid "Restrict Permalinks configuration access."
+msgid "Enable login attempt limiting to protect your site from brute force attacks."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:300
-msgid "Restrict ACF fields editing."
+#: admin/class-fuerte-wp-admin.php:301
+msgid "Enable Login Security"
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:303
-msgid "Restrict Advanced Custom Fields editing access in the backend (Custom Fields menu)."
+msgid "Enable login attempt limiting and IP blocking."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:305
-msgid "Disable Theme Editor."
+#: admin/class-fuerte-wp-admin.php:306
+#: admin/class-fuerte-wp-admin.php:708
+msgid "Enable Registration Protection"
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:308
-msgid "Disables the built in Theme code editor."
+msgid "Enable registration attempt limiting and bot blocking. Uses same settings as login security."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:310
-msgid "Disable Plugin Editor."
+#: admin/class-fuerte-wp-admin.php:316
+msgid "Two-Factor"
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:313
-msgid "Disables the built in Plugin code editor."
+#: admin/class-fuerte-wp-admin.php:317
+msgid "The standalone Two-Factor plugin is active. Your existing Two-Factor setup is running unchanged; the bundled library is not loaded. Deactivate the standalone plugin to manage Two-Factor here."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:315
-msgid "Disable Theme install."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:318
-msgid "Disables installation of new Themes."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:320
-msgid "Disable Plugin install."
+#: admin/class-fuerte-wp-admin.php:321
+msgid "Enable 2FA"
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:323
-msgid "Disables installation of new Plugins."
+msgid "Enable the bundled Two-Factor official WP library (Email, Authenticator App, Recovery Codes). Unchecking stops the library from loading."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:325
-msgid "Disable Customizer CSS Editor."
+#: admin/class-fuerte-wp-admin.php:326
+msgid "Enforce 2FA for Admins"
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:328
-msgid "Disables Customizer Additional CSS Editor."
+#: admin/class-fuerte-wp-admin.php:332
+msgid "Force two-factor for Administrator and Super Admin accounts. They are challenged with an emailed code at login by default — no setup needed. Each admin can switch to Authenticator App (TOTP) from their own profile page (Users → Profile). Fuerte super users always bypass enforcement, so they can reach admin to disable it if needed. Ultimate recovery: set FUERTEWP_DISABLE_2FA in wp-config-fuerte.php."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:331
-msgid "Advanced Restrictions"
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:333
-msgid "<p>Only for power users. Leave a field blank to not use those restrictions.</p>"
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:335
-msgid "Restricted Scripts."
+#: admin/class-fuerte-wp-admin.php:338
+msgid "Login Attempt Settings"
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:341
+msgid "Maximum Login Attempts"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:345
+msgid "Number of failed attempts before lockout (3-10)."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:348
+msgid "Lockout Duration (minutes)"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:352
+msgid "How long to lock out after max attempts (5-1440 minutes)."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:355
+msgid "Increasing Lockout Duration"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:357
+msgid "Increase lockout duration exponentially (2x, 4x, 8x, etc.) with each lockout."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:360
+msgid "IP Detection"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:363
+msgid "Custom IP Headers"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:365
+msgid "Comma-separated list of custom IP headers (e.g., HTTP_X_FORWARDED_FOR). Useful for Cloudflare, Sucuri, or other proxy/CDN services."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:368
+msgid "GDPR Compliance"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:371
+msgid "GDPR Privacy Notice"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:374
+#: includes/class-fuerte-wp-login-manager.php:438
+msgid "By proceeding you understand and give your consent that your IP address and browser information might be processed by the security plugins installed on this site."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:375
+msgid "Privacy notice displayed below the login form. Default message will be shown if left empty."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:378
+msgid "Data Retention"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:381
+msgid "Data Retention (days)"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:385
+msgid "Number of days to keep login logs (1-365). Old records are automatically deleted."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:388
+msgid "Login URL Hiding"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:391
+msgid "Enable Login URL Hiding"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:393
+msgid "Hide the default wp-login.php URL to protect against brute force attacks."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:396
+msgid "Custom Login Slug"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:398
+msgid "Custom slug for accessing the login page (e.g., \"secure-login\"). Avoid common names like \"login\" or \"admin\"."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:405
+msgid "Login URL Type"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:407
+msgid "Query Parameter (?your-slug)"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:408
+msgid "Pretty URL (/your-slug/)"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:411
+msgid "Query Parameter: https://yoursite.com/?your-slug | Pretty URL: https://yoursite.com/your-slug/"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:419
+msgid "Your New Login URL:"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:477
+msgid "Invalid Login Redirect"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:479
+msgid "Home Page with 404 Error"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:480
+msgid "Custom URL Redirect"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:483
+msgid "Where to redirect users who try to access the login page directly."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:490
+msgid "Custom Redirect URL"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:492
+msgid "Enter the full URL where invalid login attempts should be redirected. Can be any internal or external URL."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:506
+msgid "<p>REST API restrictions.</p>"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:509
+msgid "Restrict REST API usage to logged in users only."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:512
+msgid "Modern WordPress depends on his REST API. The entire new editor, Gutenberg, uses it. And many more usage instances are common the WP core. You should not disable the REST API entirely, or WordPress will brake. This is the second best option: limit his usage to only logged in users. <a href=\"https://developer.wordpress.org/rest-api/frequently-asked-questions/\" target=\"_blank\">Learn more</a>."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:515
+msgid "Disable app passwords."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:518
+msgid "Disable generation of App Passwords, used for the REST API. <a href=\"https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/\" target=\"_blank\">Check here</a> for more info."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:525
+msgid "Disable XML-RPC API."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:528
+msgid "Disable the old and insecure XML-RPC API in WordPress. <a href=\"https://blog.wpscan.com/is-wordpress-xmlrpc-a-security-problem/\" target=\"_blank\">Learn more</a>."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:531
+msgid "Enable htaccess security rules"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:534
+msgid "Disable the usage of /wp-admin/install.php wizard, and the execution of php files inside /wp-content/uploads/ folder, by adding restrictions on the htaccess file on the server. If you are using Nginx, please, <a href=\"https://github.com/EstebanForge/Fuerte-WP/blob/master/docs/SERVER-REWRITE-RULES.md\" target=\"_blank\">Add them manually</a>."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:537
+msgid "Disable admin creation/edition."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:539
+msgid "Disable the creation of new admin accounts and the editing of existing admin accounts."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:542
+msgid "Disable weak passwords."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:544
+msgid "Disable the use of weak passwords. User can't uncheck \"Confirm use of weak password\". Let users type their own password, but must be somewhat secure (following WP built in recommendation library)."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:547
+msgid "Force strong passwords."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:549
+msgid "Force strong passwords usage, making password field read-only. Users must use WordPress provided strong password."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:552
+msgid "Disable admin bar for roles."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:555
+msgid "Disable WordPress admin bar for selected roles."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:558
+msgid "Restrict Permalinks configuration."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:560
+msgid "Restrict Permalinks configuration access."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:563
+msgid "Restrict ACF fields editing."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:565
+msgid "Restrict Advanced Custom Fields editing access in the backend (Custom Fields menu)."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:568
+msgid "Disable Theme Editor."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:570
+msgid "Disables the built in Theme code editor."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:573
+msgid "Disable Plugin Editor."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:575
+msgid "Disables the built in Plugin code editor."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:578
+msgid "Disable Theme install."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:580
+msgid "Disables installation of new Themes."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:583
+msgid "Disable Plugin install."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:585
+msgid "Disables installation of new Plugins."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:588
+msgid "Disable Comments."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:590
+msgid "Disable comments site-wide. Closes comments on all post types, hides comment admin UI, removes comment feeds, and blocks REST API/XML-RPC comment endpoints."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:593
+msgid "Disable Customizer CSS Editor."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:595
+msgid "Disables Customizer Additional CSS Editor."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:620
+msgid "Advanced Restrictions"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:625
+msgid "<p>Only for power users. Leave a field blank to not use those restrictions.</p>"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:628
+msgid "Restricted Scripts."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:632
 msgid "One per line. Restricted scripts by file name.<br>These file names will be checked against <a href=\"https://codex.wordpress.org/Global_Variables\" target=\"_blank\">$pagenow</a>, and also will be thrown into <a href=\"https://developer.wordpress.org/reference/functions/remove_menu_page/\" target=\"_blank\">remove_menu_page</a>.<br/>You can comment a line with // to not use it."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:343
+#: admin/class-fuerte-wp-admin.php:635
 msgid "Restricted Pages."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:359
+#: admin/class-fuerte-wp-admin.php:639
 msgid "One per line. Restricted pages by \"page\" URL variable.<br/>In wp-admin, checks for URLs like: <i>admin.php?page=</i>"
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:361
+#: admin/class-fuerte-wp-admin.php:642
 msgid "Removed Menus."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:367
-msgid "One per line. Menus to be removed. Use menu <i>slug</i>.<br/>These slugs will be thrown into <a href=\"https://developer.wordpress.org/reference/functions/remove_menu_page/\" target=\"_blank\">remove_menu_page</a>."
+#: admin/class-fuerte-wp-admin.php:645
+msgid "Pick admin menus to hide and block. Each selection removes the menu and blocks direct URL access for plugin pages and single-purpose core screens. <strong>[Missing]</strong> items are saved but no longer registered, deselect to clean up. Posts, Pages, Dashboard, and Profile are hide-only; use the manual field below to block those."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:369
+#: admin/class-fuerte-wp-admin.php:648
+msgid "Removed Menus (manual slugs)."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:651
+msgid "Precision escape hatch. Extra menu slugs to remove, one per line. Use for menus that do not appear in the list above (they may register only on a sub-screen), or to block the Posts/Pages/CPT <code>edit.php</code> family. Combined with your selections above and de-duplicated."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:654
 msgid "Removed Submenus."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:377
-msgid "One per line. Submenus to be removed. Use: <i>parent-menu-slug<strong>|</strong>submenu-slug</i>, separared with a pipe.<br/>These will be thrown into <a href=\"https://developer.wordpress.org/reference/functions/remove_submenu_page/\" target=\"_blank\">remove_submenu_page</a>."
+#: admin/class-fuerte-wp-admin.php:657
+msgid "Pick submenus to hide and block, using <i>parent|child</i> keys. Each selection removes the submenu and blocks direct URL access for plugin children. <strong>[Missing]</strong> items are saved but no longer registered."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:379
+#: admin/class-fuerte-wp-admin.php:660
+msgid "Removed Submenus (manual slugs)."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:663
+msgid "Precision escape hatch. Extra submenu slugs to remove, one per line as <i>parent-slug|child-slug</i>. Combined with your selections above and de-duplicated."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:666
 msgid "Removed Admin Bar menus."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:384
-msgid "One per line. Admin bar menus to be removed. Use: <i>adminbar-item-node-id</i>.<br/>These nodes will be thrown into <a href=\"https://developer.wordpress.org/reference/classes/wp_admin_bar/remove_node/#finding-toolbar-node-ids\" target=\"_blank\">remove_node</a>. Check the docs on how to find an admin bar node id."
+#: admin/class-fuerte-wp-admin.php:669
+msgid "Pick admin bar nodes to remove. If the list looks empty, the bar is captured on next page load; saved nodes still show as <strong>[Missing]</strong> and remain removable. Type a node id in the manual field if you need one not listed."
 msgstr ""
 
-#. translators: %s: plugin settings URL
-#: admin/class-fuerte-wp-admin.php:436
+#: admin/class-fuerte-wp-admin.php:672
+msgid "Removed Admin Bar menus (manual node ids)."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:675
+msgid "Precision escape hatch. Extra admin bar node ids to remove, one per line. See the WordPress docs on <a href=\"https://developer.wordpress.org/reference/classes/wp_admin_bar/remove_node/#finding-toolbar-node-ids\" target=\"_blank\">finding toolbar node ids</a>. Combined with your selections above and de-duplicated."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:679
+msgid "IP & User Lists"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:682
+msgid "IP Whitelist & Blacklist"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:684
+msgid "Manage IP addresses and ranges that are allowed or blocked."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:684
+msgid "Supports single IPs, IPv4/IPv6 addresses, and CIDR notation (e.g., 192.168.1.0/24)."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:687
+msgid "Username Whitelist"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:689
+msgid "One username per line. Only these users can log in (leave empty for no restriction)."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:692
+#: admin/class-fuerte-wp-admin.php:700
+msgid "Username Blacklist"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:695
+msgid "Block Common Admin Usernames"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:697
+msgid "Automatically block common admin usernames like \"admin\", \"administrator\", \"root\"."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:702
+msgid "One username per line. These usernames cannot register or log in."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:705
+msgid "Registration Protection"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:710
+msgid "Apply username blacklist to user registrations."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:714
+msgid "Failed Logins"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:717
+msgid "Failed Login Attempts"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:722
+msgid "Deferred Updates"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:725
+msgid "Auto-Updates"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:728
+msgid "Auto-update WordPress core."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:730
+msgid "Auto-update WordPress to the latest stable version."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:733
+msgid "Auto-update Plugins."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:735
+msgid "Auto-update Plugins to their latest stable version."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:738
+msgid "Auto-update Themes."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:740
+msgid "Auto-update Themes to their latest stable version."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:743
+msgid "Auto-update Translations."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:745
+msgid "Auto-update Translations to their latest stable version."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:748
+msgid "Update check frequency"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:750
+msgid "Every 6 hours"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:751
+msgid "Every 12 hours"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:752
+msgid "Every 24 hours"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:753
+msgid "Every 48 hours"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:756
+msgid "How often to check for and apply updates."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:759
+msgid "Deferred Updates Information"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:761
+msgid "Prevent specific plugins or themes from auto-updating. When auto-updates are enabled, deferred items will be excluded from automatic updates but can still be manually updated. Blocked items will be completely prevented from ALL updates (both automatic and manual)."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:764
+msgid "Deferred Plugins"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:767
+msgid "Plugins to Defer"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:769
+msgid "Selected plugins will NOT auto-update. Useful for plugins that may have compatibility issues with newer versions."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:772
+msgid "Deferred Themes"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:775
+msgid "Themes to Defer"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:777
+msgid "Selected themes will NOT auto-update. Useful for themes with customizations that might be affected by updates."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:780
+msgid "Blocked Plugins"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:783
+msgid "Plugins to Block"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:785
+msgid "Selected plugins will be completely blocked from ALL updates (automatic and manual). Use with caution - updates will not be available for these plugins."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:788
+msgid "Blocked Themes"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:791
+msgid "Themes to Block"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:793
+msgid "Selected themes will be completely blocked from ALL updates (automatic and manual). Use with caution - updates will not be available for these themes."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:826
+msgid "Are you sure you want to clear all login logs?"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:827
+msgid "Are you sure you want to reset all lockouts?"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:828
+msgid "Loading..."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:829
+msgid "An error occurred"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:844
+msgid "Total Lockouts"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:848
+msgid "Active Lockouts"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:852
+msgid "Failed Today"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:856
+msgid "Failed This Week"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:864
+msgid "Export CSV"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:867
+msgid "Clear All Logs"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:870
+msgid "Reset All Lockouts"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:876
+msgid "Loading failed login attempts..."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:972
+#, php-format
 msgid "<a href=\"%s\">Settings</a>"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:1079
+msgid "Nice, you blocked your first plugin update."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:1080
+msgid "Nice, you deferred your first plugin update."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:1082
+msgid "Nice, Fuerte-WP is protecting your site."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:1095
+msgid "If it is helping, a quick review on WordPress.org helps others find it."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:1096
+msgid "Leave a review"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:1097
+msgid "Maybe later"
+msgstr ""
+
+#: includes/class-fuerte-wp-csv-exporter.php:214
+#, php-format
+msgid "Row %d: Empty IP/range"
+msgstr ""
+
+#: includes/class-fuerte-wp-csv-exporter.php:223
+#, php-format
+msgid "Row %d: %s"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:214
+#: includes/class-fuerte-wp-enforcer.php:235
+#: includes/class-fuerte-wp-enforcer.php:256
+#: includes/class-fuerte-wp-enforcer.php:284
+#: includes/class-fuerte-wp-enforcer.php:309
+#: includes/class-fuerte-wp-enforcer.php:346
+#: includes/class-fuerte-wp-enforcer.php:377
+#: includes/class-fuerte-wp-enforcer.php:1590
+msgid "Insufficient permissions"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:221
+msgid "Login logs cleared successfully"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:242
+msgid "Lockouts reset successfully"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:290
+#: includes/class-fuerte-wp-enforcer.php:321
+msgid "Invalid list type"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:317
+msgid "IP or range is required"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:332
+msgid "IP added successfully"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:352
+msgid "Invalid ID"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:359
+msgid "Failed to remove IP"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:363
+msgid "IP removed successfully"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:398
+msgid "Date/Time"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:399
+msgid "IP Address"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:400
+msgid "Username"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:401
+msgid "Status"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:402
+msgid "User Agent"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:403
+msgid "Actions"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:409
+msgid "No failed login attempts found."
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:434
+msgid "Unblock"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:772
+msgid "Plugin installation is restricted on this site."
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:782
+msgid "Theme installation is restricted on this site."
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:1358
+msgid "Comments are closed."
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:1408
+msgid "Comments are disabled."
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:1537
+#, php-format
+msgid "<strong>%d</strong> attempt remaining."
+msgid_plural "<strong>%d</strong> attempts remaining."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-fuerte-wp-enforcer.php:1556
+msgid "You do not have sufficient permissions to perform this action."
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:1577
+msgid "IP address unlocked successfully."
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:1598
+msgid "Invalid parameters"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:1624
+#, php-format
+msgid "Unblocked IP %s for user %s"
+msgstr ""
+
+#: includes/class-fuerte-wp-enforcer.php:1630
+msgid "No active lockout found for this entry"
+msgstr ""
+
+#: includes/class-fuerte-wp-helper.php:584
+msgid "Core"
+msgstr ""
+
+#: includes/class-fuerte-wp-helper.php:584
+msgid "Plugin"
+msgstr ""
+
+#: includes/class-fuerte-wp-helper.php:702
+msgid "Missing"
+msgstr ""
+
+#: includes/class-fuerte-wp-login-manager.php:207
+msgid "IP address blocked"
+msgstr ""
+
+#: includes/class-fuerte-wp-login-manager.php:211
+msgid "Your IP address has been blocked from accessing this site."
+msgstr ""
+
+#: includes/class-fuerte-wp-login-manager.php:217
+msgid "Username blocked"
+msgstr ""
+
+#: includes/class-fuerte-wp-login-manager.php:221
+#: includes/class-fuerte-wp-login-manager.php:513
+msgid "This username is not allowed."
+msgstr ""
+
+#: includes/class-fuerte-wp-login-manager.php:232
+#, php-format
+msgid "Locked out for %d seconds"
+msgstr ""
+
+#. translators: %d: minutes
+#: includes/class-fuerte-wp-login-manager.php:238
+#, php-format
+msgid "You are locked out. Try again in %d minutes."
+msgstr ""
+
+#: includes/class-fuerte-wp-login-manager.php:278
+#, php-format
+msgid "Too many failed login attempts. Please try again in %s."
+msgstr ""
+
+#: includes/class-fuerte-wp-login-manager.php:310
+msgid "Login failed"
+msgstr ""
+
+#: includes/class-fuerte-wp-login-manager.php:339
+#, php-format
+msgid "Exceeded %d failed login attempts"
+msgstr ""
+
+#: includes/class-fuerte-wp-login-manager.php:365
+msgid "Login successful"
+msgstr ""
+
+#: includes/class-fuerte-wp-login-manager.php:393
+msgid "Locked Out"
+msgstr ""
+
+#: includes/class-fuerte-wp-login-manager.php:395
+#, php-format
+msgid "You are locked out due to too many failed login attempts. Try again in %d minutes."
+msgstr ""
+
+#: includes/class-fuerte-wp-login-manager.php:409
+msgid "Warning"
+msgstr ""
+
+#: includes/class-fuerte-wp-login-manager.php:411
+#, php-format
+msgid "You have %d login attempt remaining."
+msgid_plural "You have %d login attempts remaining."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-fuerte-wp-login-manager.php:477
+#, php-format
+msgid "Too many registration attempts. Please try again in %s."
+msgstr ""
+
+#: includes/class-fuerte-wp-login-manager.php:492
+msgid "Too many registration attempts from this IP address. Registration temporarily blocked."
+msgstr ""
+
+#: includes/class-fuerte-wp-login-manager.php:502
+msgid "Registration of this username is not allowed."
+msgstr ""
+
+#: includes/class-fuerte-wp-login-manager.php:737
+#, php-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-fuerte-wp-login-manager.php:741
+#, php-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-fuerte-wp-two-factor.php:550
+msgid "Fuerte-WP already provides Two-Factor authentication. To use the standalone Two-Factor plugin instead, an operator with filesystem access must set FUERTEWP_DISABLE_2FA to true in wp-config-fuerte.php (or wp-config.php) so Fuerte-WP stops loading its bundled copy, then activate the standalone plugin."
 msgstr ""

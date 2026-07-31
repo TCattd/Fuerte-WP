@@ -387,3 +387,27 @@ msgstr "Uno por línea. Menús de la Barra de Admin a ser removidos. Uso: <i>adm
 #: admin/class-fuerte-wp-admin.php:436
 msgid "<a href=\"%s\">Settings</a>"
 msgstr "<a href=\"%s\">Ajustes</a>"
+
+#: admin/class-fuerte-wp-admin.php:1079
+msgid "Nice, you blocked your first plugin update."
+msgstr "¡Bien! Has bloqueado tu primera actualización de plugin."
+
+#: admin/class-fuerte-wp-admin.php:1080
+msgid "Nice, you deferred your first plugin update."
+msgstr "¡Bien! Has aplazado tu primera actualización de plugin."
+
+#: admin/class-fuerte-wp-admin.php:1082
+msgid "Nice, Fuerte-WP is protecting your site."
+msgstr "¡Bien! Fuerte-WP ya está protegiendo tu sitio."
+
+#: admin/class-fuerte-wp-admin.php:1095
+msgid "If it is helping, a quick review on WordPress.org helps others find it."
+msgstr "Si te resulta útil, una breve reseña en WordPress.org ayuda a otros a encontrarlo."
+
+#: admin/class-fuerte-wp-admin.php:1096
+msgid "Leave a review"
+msgstr "Deja una reseña"
+
+#: admin/class-fuerte-wp-admin.php:1097
+msgid "Maybe later"
+msgstr "Quizás más tarde"
