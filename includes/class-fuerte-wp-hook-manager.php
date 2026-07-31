@@ -191,6 +191,13 @@ class Fuerte_Wp_Hook_Manager
      */
     private static function register_admin_hooks()
     {
+        // Capture the full admin-bar node set BEFORE removal so the settings
+        // multiselect can list removable nodes. Priority 900 < removal 999:
+        // WP fires ascending, so capture precedes removal. Always registered
+        // (the callback self-gates to the settings page for super users).
+        // See docs/MENU_VISIBILITY_PLAN.md defect D1.
+        self::add_hook('admin_bar_menu', 'Fuerte_Wp_Enforcer', 'capture_adminbar_nodes', 900, true);
+
         // Menu and admin bar restrictions - skip for super users
         if (!Fuerte_Wp_Helper::bypasses_restrictions() && self::should_register_restriction_hooks()) {
             self::add_hook('admin_menu', 'Fuerte_Wp_Enforcer', 'remove_menus', 999, true);

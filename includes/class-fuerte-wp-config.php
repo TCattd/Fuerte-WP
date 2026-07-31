@@ -280,13 +280,25 @@ class Fuerte_Wp_Config
                 'disable_customizer_css' => $settings['fuertewp_restrictions_disable_customizer_css'] ?? true,
                 'disable_comments' => $settings['fuertewp_restrictions_disable_comments'] ?? true,
             ],
-            'advanced_restrictions' => [
-                'restricted_scripts' => self::parse_textarea($settings['fuertewp_restricted_scripts'] ?? null),
-                'restricted_pages' => self::parse_textarea($settings['fuertewp_restricted_pages'] ?? null),
-                'removed_menus' => self::parse_textarea($settings['fuertewp_removed_menus'] ?? null),
-                'removed_submenus' => self::parse_textarea($settings['fuertewp_removed_submenus'] ?? null),
-                'removed_adminbar_menus' => self::parse_textarea($settings['fuertewp_removed_adminbar_menus'] ?? null),
-            ],
+            // Advanced restrictions are flat top-level keys because the enforcer
+            // reads them there (remove_menus, apply_page_restrictions,
+            // remove_adminbar_menus). Before 1.11.0 they were nested under
+            // 'advanced_restrictions', which silently dropped saved values on
+            // installs without legacy Carbon Fields data. Regression fix.
+            'restricted_scripts' => self::parse_textarea($settings['fuertewp_restricted_scripts'] ?? null),
+            'restricted_pages' => self::parse_textarea($settings['fuertewp_restricted_pages'] ?? null),
+            'removed_menus' => self::merge_manual(
+                self::parse_textarea($settings['fuertewp_removed_menus'] ?? null),
+                self::parse_textarea($settings['fuertewp_removed_menus_manual'] ?? null)
+            ),
+            'removed_submenus' => self::merge_manual(
+                self::parse_textarea($settings['fuertewp_removed_submenus'] ?? null),
+                self::parse_textarea($settings['fuertewp_removed_submenus_manual'] ?? null)
+            ),
+            'removed_adminbar_menus' => self::merge_manual(
+                self::parse_textarea($settings['fuertewp_removed_adminbar_menus'] ?? null),
+                self::parse_textarea($settings['fuertewp_removed_adminbar_menus_manual'] ?? null)
+            ),
             'ip_lists' => [
                 'username_whitelist' => self::parse_textarea($settings['fuertewp_username_whitelist'] ?? null),
                 'block_default_users' => $settings['fuertewp_block_default_users'] ?? false,
@@ -343,6 +355,35 @@ class Fuerte_Wp_Config
         }
 
         return $value;
+    }
+
+    /**
+     * Merge a multiselect array with a manual textarea list, de-duplicated.
+     *
+     * Both inputs are accepted pre-parsed (parse_textarea output): a string
+     * (legacy textarea save) or an array (multiselect), or null. Returns a
+     * trimmed, non-empty, de-duplicated array. Used for the three removed_*
+     * keys so a manual escape-hatch list combines with the discovered
+     * multiselect selections.
+     *
+     * @since 1.11.0
+     *
+     * @param mixed $multiselect Parsed multiselect selections.
+     * @param mixed $manual Parsed manual textarea lines.
+     *
+     * @return array
+     */
+    private static function merge_manual($multiselect, $manual)
+    {
+        $multiselect = is_array($multiselect) ? $multiselect : [];
+        $manual = is_array($manual) ? $manual : [];
+
+        $merged = array_merge($multiselect, $manual);
+        $merged = array_map('trim', $merged);
+        $merged = array_filter($merged, 'strlen');
+        $merged = array_unique(array_values($merged));
+
+        return $merged;
     }
 
     /**

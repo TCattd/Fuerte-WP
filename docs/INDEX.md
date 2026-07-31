@@ -10,6 +10,7 @@ This folder contains comprehensive documentation for the Fuerte-WP plugin.
 ### Developer Documentation
 - **[DEPLOYMENT.md](DEPLOYMENT.md)** - Complete deployment guide with best practices
 - **[COMPOSER_COMMANDS.md](COMPOSER_COMMANDS.md)** - Available composer scripts and development workflows
+- **[MENU_VISIBILITY_PLAN.md](MENU_VISIBILITY_PLAN.md)** - Plan: discovery-driven admin menu hide & block for non-super-admins
 - **[TWO_FACTOR_BUNDLING.md](TWO_FACTOR_BUNDLING.md)** - Two-factor integration: bundling strategy (decision made, peer-reviewed)
 - **[../CLAUDE.md](../CLAUDE.md)** - Project architecture, coding standards, and development guidelines
 

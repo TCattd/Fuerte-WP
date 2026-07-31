@@ -89,7 +89,7 @@ Fuerte-WP's Auto-Update Management System provides comprehensive control over Wo
 - **Super User Control**: Designate who has full maintenance access while restricting others
 - **Role-Based Permissions**: Granular control over what different admin roles can modify
 - **Plugin & Theme Management**: Prevent other admins from installing unstable plugins or untested updates
-- **Menu Management**: Hide sensitive WordPress settings from inexperienced administrators
+- **Menu Management**: Hide sensitive WordPress settings from inexperienced administrators via a searchable auto-discovered list of every registered menu, submenu, and admin-bar node. One selection both hides and blocks direct-URL access (narrowed to avoid over-blocking the Posts/Pages/CPT family).
 - **User Account Protection**: Protect maintenance accounts from being modified by other admins
 
 ### 📊 Maintenance Command Center

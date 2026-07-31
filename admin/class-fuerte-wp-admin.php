@@ -592,6 +592,27 @@ class Fuerte_Wp_Admin
             );
 
         // Advanced Restrictions Tab
+        // Build discovered + stale-merged options for the multiselects. Discovery
+        // reads the live $GLOBALS at settings render time, where the viewing
+        // super user sees the full menu universe. merge_menu_options adds a
+        // [Missing] entry for saved slugs no longer registered.
+        $removed_menu_options = Fuerte_Wp_Helper::merge_menu_options(
+            Fuerte_Wp_Helper::discover_admin_menus(),
+            Fuerte_Wp_Config::get('removed_menus', [])
+        );
+        $removed_submenu_options = Fuerte_Wp_Helper::merge_menu_options(
+            Fuerte_Wp_Helper::discover_admin_submenus(),
+            Fuerte_Wp_Config::get('removed_submenus', [])
+        );
+        $captured_adminbar = get_transient('fuertewp_adminbar_nodes');
+        $adminbar_discovered = is_array($captured_adminbar)
+            ? $captured_adminbar
+            : Fuerte_Wp_Helper::discover_adminbar_nodes($GLOBALS['wp_admin_bar'] ?? null);
+        $removed_adminbar_options = Fuerte_Wp_Helper::merge_menu_options(
+            $adminbar_discovered,
+            Fuerte_Wp_Config::get('removed_adminbar_menus', [])
+        );
+
         $advanced_section = $page->addSectionToTab('advanced_restrictions', 'advanced_section', __('Advanced Restrictions', 'fuerte-wp'));
         $advanced_section
             ->addField(
@@ -614,25 +635,40 @@ class Fuerte_Wp_Admin
                     ->setHelp(__('One per line. Restricted pages by "page" URL variable.<br/>In wp-admin, checks for URLs like: <i>admin.php?page=</i>', 'fuerte-wp'))
             )
             ->addField(
-                Field::make('textarea', 'fuertewp_removed_menus', __('Removed Menus.', 'fuerte-wp'))
-                    ->addArg('rows', 4)
-                    ->addArg('help_is_html', true)
-                    ->setDefault("backwpup\ncheck-email-status\nlimit-login-attempts\nenvato-market")
-                    ->setHelp(__('One per line. Menus to be removed. Use menu <i>slug</i>.<br/>These slugs will be thrown into <a href="https://developer.wordpress.org/reference/functions/remove_menu_page/" target="_blank">remove_menu_page</a>.', 'fuerte-wp'))
+                Field::make('multiselect', 'fuertewp_removed_menus', __('Removed Menus.', 'fuerte-wp'))
+                    ->setOptions($removed_menu_options)
+                    ->setEnhanced(true)
+                    ->setHelp(__('Pick admin menus to hide and block. Each selection removes the menu and blocks direct URL access for plugin pages and single-purpose core screens. <strong>[Missing]</strong> items are saved but no longer registered, deselect to clean up. Posts, Pages, Dashboard, and Profile are hide-only; use the manual field below to block those.', 'fuerte-wp'))
             )
             ->addField(
-                Field::make('textarea', 'fuertewp_removed_submenus', __('Removed Submenus.', 'fuerte-wp'))
-                    ->addArg('rows', 4)
+                Field::make('textarea', 'fuertewp_removed_menus_manual', __('Removed Menus (manual slugs).', 'fuerte-wp'))
+                    ->addArg('rows', 3)
                     ->addArg('help_is_html', true)
-                    ->setDefault("options-general.php|updraftplus\noptions-general.php|limit-login-attempts\noptions-general.php|mainwp_child_tab\noptions-general.php|wprocket\ntools.php|export.php\ntools.php|transients-manager\ntools.php|pw-transients-manager\ntools.php|better-search-replace")
-                    ->setHelp(__('One per line. Submenus to be removed. Use: <i>parent-menu-slug<strong>|</strong>submenu-slug</i>, separared with a pipe.<br/>These will be thrown into <a href="https://developer.wordpress.org/reference/functions/remove_submenu_page/" target="_blank">remove_submenu_page</a>.', 'fuerte-wp'))
+                    ->setHelp(__('Precision escape hatch. Extra menu slugs to remove, one per line. Use for menus that do not appear in the list above (they may register only on a sub-screen), or to block the Posts/Pages/CPT <code>edit.php</code> family. Combined with your selections above and de-duplicated.', 'fuerte-wp'))
             )
             ->addField(
-                Field::make('textarea', 'fuertewp_removed_adminbar_menus', __('Removed Admin Bar menus.', 'fuerte-wp'))
-                    ->addArg('rows', 4)
+                Field::make('multiselect', 'fuertewp_removed_submenus', __('Removed Submenus.', 'fuerte-wp'))
+                    ->setOptions($removed_submenu_options)
+                    ->setEnhanced(true)
+                    ->setHelp(__('Pick submenus to hide and block, using <i>parent|child</i> keys. Each selection removes the submenu and blocks direct URL access for plugin children. <strong>[Missing]</strong> items are saved but no longer registered.', 'fuerte-wp'))
+            )
+            ->addField(
+                Field::make('textarea', 'fuertewp_removed_submenus_manual', __('Removed Submenus (manual slugs).', 'fuerte-wp'))
+                    ->addArg('rows', 3)
                     ->addArg('help_is_html', true)
-                    ->setDefault("wp-logo\ntm-suspend\nupdraft_admin_node")
-                    ->setHelp(__('One per line. Admin bar menus to be removed. Use: <i>adminbar-item-node-id</i>.<br/>These nodes will be thrown into <a href="https://developer.wordpress.org/reference/classes/wp_admin_bar/remove_node/#finding-toolbar-node-ids" target="_blank">remove_node</a>. Check the docs on how to find an admin bar node id.', 'fuerte-wp'))
+                    ->setHelp(__('Precision escape hatch. Extra submenu slugs to remove, one per line as <i>parent-slug|child-slug</i>. Combined with your selections above and de-duplicated.', 'fuerte-wp'))
+            )
+            ->addField(
+                Field::make('multiselect', 'fuertewp_removed_adminbar_menus', __('Removed Admin Bar menus.', 'fuerte-wp'))
+                    ->setOptions($removed_adminbar_options)
+                    ->setEnhanced(true)
+                    ->setHelp(__('Pick admin bar nodes to remove. If the list looks empty, the bar is captured on next page load; saved nodes still show as <strong>[Missing]</strong> and remain removable. Type a node id in the manual field if you need one not listed.', 'fuerte-wp'))
+            )
+            ->addField(
+                Field::make('textarea', 'fuertewp_removed_adminbar_menus_manual', __('Removed Admin Bar menus (manual node ids).', 'fuerte-wp'))
+                    ->addArg('rows', 3)
+                    ->addArg('help_is_html', true)
+                    ->setHelp(__('Precision escape hatch. Extra admin bar node ids to remove, one per line. See the WordPress docs on <a href="https://developer.wordpress.org/reference/classes/wp_admin_bar/remove_node/#finding-toolbar-node-ids" target="_blank">finding toolbar node ids</a>. Combined with your selections above and de-duplicated.', 'fuerte-wp'))
             );
 
         // IP & User Lists Tab

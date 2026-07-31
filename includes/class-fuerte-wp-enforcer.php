@@ -718,20 +718,30 @@ class Fuerte_Wp_Enforcer
             $this->access_denied();
         }
 
-        // Restricted scripts
+        // Derive block vectors: explicit restricted_* plus hide selections,
+        // routed by slug type (core script -> $pagenow, foreign -> ?page=).
+        // This is what makes one selection both hide AND block.
+        $vectors = Fuerte_Wp_Helper::derive_block_vectors(
+            $fuertewp['removed_menus'] ?? [],
+            $fuertewp['removed_submenus'] ?? [],
+            $fuertewp['restricted_scripts'] ?? [],
+            $fuertewp['restricted_pages'] ?? []
+        );
+
+        // Restricted scripts (explicit + derived hide selections)
         if (
-            isset($fuertewp['restricted_scripts']) &&
-            in_array($pagenow, $fuertewp['restricted_scripts']) &&
+            !empty($vectors['scripts']) &&
+            in_array($pagenow, $vectors['scripts'], true) &&
             !wp_doing_ajax()
         ) {
             $this->access_denied();
         }
 
-        // Restricted pages
+        // Restricted pages (explicit + derived hide selections)
         if (
-            isset($fuertewp['restricted_pages']) &&
+            !empty($vectors['pages']) &&
             isset($_REQUEST['page']) &&
-            in_array($_REQUEST['page'], $fuertewp['restricted_pages']) &&
+            in_array($_REQUEST['page'], $vectors['pages'], true) &&
             !wp_doing_ajax()
         ) {
             $this->access_denied();
@@ -1093,6 +1103,36 @@ class Fuerte_Wp_Enforcer
 
             define('UPDRAFTPLUS_ADMINBAR_DISABLE', true);
         }
+    }
+
+    /**
+     * Capture the full admin-bar node set for the settings multiselect.
+     *
+     * Runs at admin_bar_menu priority 900, BEFORE Fuerte removes nodes at 999,
+     * so blocked nodes stay findable. WordPress fires actions in ascending
+     * priority order: capture (900) precedes removal (999). Using 9999 (as an
+     * earlier draft proposed) is wrong, it runs after removal and would capture
+     * an already-stripped bar. See docs/MENU_VISIBILITY_PLAN.md defect D1.
+     *
+     * Scoped to the Fuerte settings page for the configuring super user so we
+     * do not write a transient on every admin load.
+     *
+     * @since 1.11.0
+     *
+     * @param \WP_Admin_Bar $wp_admin_bar Admin bar instance.
+     */
+    public static function capture_adminbar_nodes($wp_admin_bar)
+    {
+        if (!is_admin() || !Fuerte_Wp_Helper::is_super_user()) {
+            return;
+        }
+
+        if (!isset($_GET['page']) || strpos($_GET['page'], 'fuerte-wp') === false) {
+            return;
+        }
+
+        $nodes = Fuerte_Wp_Helper::discover_adminbar_nodes($wp_admin_bar);
+        set_transient('fuertewp_adminbar_nodes', $nodes, DAY_IN_SECONDS);
     }
 
     /**

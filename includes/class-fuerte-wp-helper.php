@@ -23,6 +23,51 @@ defined('ABSPATH') || die();
 class Fuerte_Wp_Helper
 {
     /**
+     * WordPress core admin-menu slugs. Used to tag discovered items Core vs foreign.
+     *
+     * Sourced from wp-admin/menu.php top-level entries. Query-string variants
+     * such as edit.php?post_type=page are matched by their strtok() base.
+     *
+     * @since 1.11.0
+     */
+    public const CORE_MENU_SLUGS = [
+        'index.php',
+        'edit.php',
+        'upload.php',
+        'edit.php?post_type=page',
+        'edit-comments.php',
+        'themes.php',
+        'plugins.php',
+        'users.php',
+        'tools.php',
+        'options-general.php',
+        'profile.php',
+        'link-manager.php',
+    ];
+
+    /**
+     * Single-purpose core scripts safe to block by bare $pagenow.
+     *
+     * EXCLUDES the edit.php family (Posts / Pages / CPTs share the script, so
+     * a $pagenow block hits siblings) AND index.php (the dashboard redirect
+     * target; blocking it strands non-super users at /wp-admin) AND profile.php
+     * (every user needs their own profile). Hide-only for those. See
+     * docs/MENU_VISIBILITY_PLAN.md defect D3.
+     *
+     * @since 1.11.0
+     */
+    public const AUTO_BLOCKABLE_CORE_SLUGS = [
+        'plugins.php',
+        'users.php',
+        'themes.php',
+        'tools.php',
+        'edit-comments.php',
+        'options-general.php',
+        'upload.php',
+        'link-manager.php',
+    ];
+
+    /**
      * Check if the current user (or a given user) is a super user.
      *
      * Case-insensitive email matching against the configured super_users list.
@@ -466,5 +511,276 @@ class Fuerte_Wp_Helper
         }
 
         return implode(':', $ipv6_parts);
+    }
+
+    /**
+     * Is the given slug a WordPress core admin-menu slug?
+     *
+     * Matches the full slug and the strtok($slug, '?') base so query-string
+     * variants (edit.php?post_type=page) classify correctly.
+     *
+     * @since 1.11.0
+     *
+     * @param string $slug Menu slug from $GLOBALS['menu'][n][2].
+     *
+     * @return bool
+     */
+    public static function is_core_menu_slug($slug)
+    {
+        $slug = (string) $slug;
+        $base = strtok($slug, '?');
+
+        return in_array($slug, self::CORE_MENU_SLUGS, true)
+            || in_array($base, self::CORE_MENU_SLUGS, true);
+    }
+
+    /**
+     * Is the given slug a single-purpose core script safe to block by $pagenow?
+     *
+     * False for the edit.php family, index.php, and profile.php (hide-only).
+     *
+     * @since 1.11.0
+     *
+     * @param string $slug Menu slug.
+     *
+     * @return bool
+     */
+    public static function is_auto_blockable_core_slug($slug)
+    {
+        $slug = (string) $slug;
+        $base = strtok($slug, '?');
+
+        return in_array($slug, self::AUTO_BLOCKABLE_CORE_SLUGS, true)
+            || in_array($base, self::AUTO_BLOCKABLE_CORE_SLUGS, true);
+    }
+
+    /**
+     * Discover registered top-level admin menus from $GLOBALS['menu'].
+     *
+     * Returns [slug => "[Core|Plugin] Title (capability)"]. Safe to call at
+     * settings-page render time, where the viewing super user sees the full
+     * universe (core plus every plugin/theme menu they can access).
+     *
+     * @since 1.11.0
+     *
+     * @return array<string,string>
+     */
+    public static function discover_admin_menus()
+    {
+        $menus = [];
+
+        if (!isset($GLOBALS['menu']) || !is_array($GLOBALS['menu'])) {
+            return $menus;
+        }
+
+        foreach ($GLOBALS['menu'] as $item) {
+            if (!is_array($item) || !isset($item[2])) {
+                continue;
+            }
+
+            $slug = (string) $item[2];
+            $title = isset($item[0]) ? wp_strip_all_tags((string) $item[0]) : $slug;
+            $cap = isset($item[1]) ? (string) $item[1] : '';
+            $tag = self::is_core_menu_slug($slug) ? __('Core', 'fuerte-wp') : __('Plugin', 'fuerte-wp');
+            $menus[$slug] = $cap !== ''
+                ? sprintf('[%s] %s (%s)', $tag, $title, $cap)
+                : sprintf('[%s] %s', $tag, $title);
+        }
+
+        return $menus;
+    }
+
+    /**
+     * Discover registered admin submenus from $GLOBALS['submenu'].
+     *
+     * Returns ["parent|child" => "Parent > Child (capability)"].
+     *
+     * @since 1.11.0
+     *
+     * @return array<string,string>
+     */
+    public static function discover_admin_submenus()
+    {
+        $submenus = [];
+
+        if (!isset($GLOBALS['submenu']) || !is_array($GLOBALS['submenu'])) {
+            return $submenus;
+        }
+
+        foreach ($GLOBALS['submenu'] as $parent_slug => $children) {
+            if (!is_array($children)) {
+                continue;
+            }
+
+            foreach ($children as $item) {
+                if (!is_array($item) || !isset($item[2])) {
+                    continue;
+                }
+
+                $parent = (string) $parent_slug;
+                $child = (string) $item[2];
+                $title = isset($item[0]) ? wp_strip_all_tags((string) $item[0]) : $child;
+                $cap = isset($item[1]) ? (string) $item[1] : '';
+                $key = $parent . '|' . $child;
+                $submenus[$key] = $cap !== ''
+                    ? sprintf('%s > %s (%s)', $parent, $title, $cap)
+                    : sprintf('%s > %s', $parent, $title);
+            }
+        }
+
+        return $submenus;
+    }
+
+    /**
+     * Discover admin-bar node IDs from a populated WP_Admin_Bar.
+     *
+     * Must be called during admin_bar_menu, before Fuerte removes nodes.
+     * Returns [node_id => "Title"]. Root nodes and their children are listed.
+     *
+     * @since 1.11.0
+     *
+     * @param \WP_Admin_Bar|null $wp_admin_bar Admin bar instance.
+     *
+     * @return array<string,string>
+     */
+    public static function discover_adminbar_nodes($wp_admin_bar)
+    {
+        $nodes = [];
+
+        if (!$wp_admin_bar || !method_exists($wp_admin_bar, 'get_nodes')) {
+            return $nodes;
+        }
+
+        $all = $wp_admin_bar->get_nodes();
+
+        if (!is_array($all)) {
+            return $nodes;
+        }
+
+        foreach ($all as $id => $node) {
+            if (!is_object($node)) {
+                continue;
+            }
+
+            $title = isset($node->title) ? wp_strip_all_tags((string) $node->title) : (string) $id;
+
+            if ($title === '') {
+                $title = (string) $id;
+            }
+
+            $nodes[(string) $id] = $title;
+        }
+
+        return $nodes;
+    }
+
+    /**
+     * Merge discovered menu options with currently-saved values.
+     *
+     * HyperFields renders only the options it is given, so a saved slug that
+     * is no longer discovered (e.g. a plugin was uninstalled) would silently
+     * vanish on the next save. This adds a [Missing] entry for every saved
+     * slug absent from the discovered set, so nothing is silently dropped and
+     * the admin can deselect it. Used at field-build time.
+     *
+     * @since 1.11.0
+     *
+     * @param array<string,string> $discovered Slug => label from discovery.
+     * @param array<int,string> $saved Currently saved slugs.
+     *
+     * @return array<string,string>
+     */
+    public static function merge_menu_options(array $discovered, array $saved)
+    {
+        foreach ($saved as $slug) {
+            $slug = trim((string) $slug);
+
+            if ($slug === '' || array_key_exists($slug, $discovered)) {
+                continue;
+            }
+
+            $discovered[$slug] = sprintf('[%s] %s', __('Missing', 'fuerte-wp'), $slug);
+        }
+
+        return $discovered;
+    }
+
+    /**
+     * Derive block vectors from hide selections plus explicit restricted_* lists.
+     *
+     * One selection both hides and blocks, routed by slug type to avoid
+     * over-blocking:
+     * - Single-purpose core scripts (themes.php, tools.php, ...) -> block by
+     *   bare $pagenow.
+     * - The edit.php family, index.php, profile.php -> hide-only (defect D3).
+     *   Blocking them by $pagenow would hit siblings or strand non-super users.
+     * - Foreign plugin/theme pages -> block by ?page=.
+     * - Submenus: a core child (.php file under a core parent, e.g.
+     *   tools.php|export.php) loads as $pagenow; a foreign child (e.g.
+     *   options-general.php|wprocket) loads as ?page= (defect D2).
+     *
+     * Explicit restricted_scripts / restricted_pages are always honored as-is.
+     *
+     * @since 1.11.0
+     *
+     * @param array $removed_menus Hidden top-level menus.
+     * @param array $removed_submenus Hidden submenus (parent|child).
+     * @param array $restricted_scripts Explicit $pagenow blocks.
+     * @param array $restricted_pages Explicit ?page= blocks.
+     *
+     * @return array{scripts:array<int,string>,pages:array<int,string>}
+     */
+    public static function derive_block_vectors(array $removed_menus, array $removed_submenus, array $restricted_scripts, array $restricted_pages)
+    {
+        $scripts = array_values($restricted_scripts);
+        $pages = array_values($restricted_pages);
+
+        foreach ($removed_menus as $slug) {
+            $slug = trim((string) $slug);
+
+            if ($slug === '' || strpos($slug, '//') === 0) {
+                continue;
+            }
+
+            if (self::is_auto_blockable_core_slug($slug)) {
+                $scripts[] = strtok($slug, '?');
+            } elseif (self::is_core_menu_slug($slug)) {
+                // edit.php family, index.php, profile.php: hide-only.
+                continue;
+            } else {
+                $pages[] = $slug;
+            }
+        }
+
+        foreach ($removed_submenus as $item) {
+            $item = trim((string) $item);
+
+            if ($item === '') {
+                continue;
+            }
+
+            $parts = array_map('trim', explode('|', $item));
+            $child = $parts[1] ?? '';
+            $parent = $parts[0] ?? '';
+
+            if ($child === '') {
+                continue;
+            }
+
+            // Core admin children are .php files under a core parent and load
+            // directly via $pagenow. Foreign children load as ?page=child.
+            $is_core_child = self::is_core_menu_slug($parent) && substr($child, -4) === '.php';
+
+            if ($is_core_child) {
+                $scripts[] = $child;
+            } else {
+                $pages[] = $child;
+            }
+        }
+
+        return [
+            'scripts' => array_values(array_unique($scripts)),
+            'pages' => array_values(array_unique($pages)),
+        ];
     }
 }

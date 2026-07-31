@@ -6,7 +6,6 @@
 WordPress security plugin. Limits access to critical WP areas, even for admins. Enforces restrictions, manages 2FA, auto-updates, login security, email controls.
 
 - **Type:** `wordpress-plugin` (single-file entry: `fuerte-wp.php`)
-- **Version:** 1.10.0 (in `composer.json` + plugin header)
 - **Requires:** PHP 8.2+, WordPress 6.5+ (tested to 6.9)
 - **License:** GPL-2.0+
 - **Author:** Esteban Cuevas `<esteban@attitude.cl>`

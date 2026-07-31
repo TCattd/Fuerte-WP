@@ -287,6 +287,18 @@ Always ensure your email is in the Super Users list.
 
 **File Settings**: Edit or delete the `wp-config-fuerte.php` file.
 
+### **How does the menu/submenu/admin-bar visibility feature work?**
+
+The **Advanced** tab lists every registered admin menu, submenu, and admin-bar node as a searchable multiselect (populated live from WordPress). Pick an item and it is both hidden from the sidebar AND blocked on direct URL access for non-super users. One selection does both.
+
+Notes:
+
+- **Posts, Pages, Dashboard, and Profile are hide-only.** Blocking the `edit.php` family by `$pagenow` would also hit Pages and custom post types; blocking `index.php` would strand users at `/wp-admin`; blocking `profile.php` blocks their own profile. To block those, add a manual entry in the escape-hatch textarea below each multiselect.
+- **Saved items that vanish show as `[Missing]`.** If you hid a plugin's menu and later uninstalled the plugin, the slug stays selected and is labeled `[Missing]` so nothing is silently lost. Deselect to clean up.
+- **The escape-hatch textareas** combine with your multiselect picks (de-duplicated) for menus that register only on a sub-screen, or to block the Posts/Pages/CPT family.
+- **AJAX and admin-post endpoints are not blocked** by hide+block; this stops page rendering only. A plugin's own `wp_ajax_*` handlers keep working.
+- **Super users always bypass** these restrictions unless `FUERTEWP_FORCE` is defined.
+
 ---
 
 ## Troubleshooting

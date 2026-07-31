@@ -155,6 +155,10 @@ function esc_url($url) {
     return filter_var($url, FILTER_SANITIZE_URL);
 }
 
+function wp_strip_all_tags($string, $remove_breaks = false) {
+    return strip_tags($string);
+}
+
 // WordPress plugin/theme functions
 function get_plugins() {
     return [
