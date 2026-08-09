@@ -1,5 +1,9 @@
 # Changelog
 
+# 1.11.2 / 2026-08-09
+- **Changed**: Bundled HyperFields library updated from 1.5.1 to 1.5.2. Dependency-only release; no plugin code changes. Synced `composer.lock` and `vendor/composer/installed.*`.
+- **Security (upstream)**: HyperFields 1.5.2 hardens the save handlers Fuerte-WP's admin tabs rely on. Save paths now require a verified form-origin nonce (the legacy user/term meta paths that accepted a weaker check), unslash posted values before validation so sanitization sees the real input, let a multiselect submit an empty selection via a hidden sentinel (a stored value can now actually be removed) and filter submitted multiselect values against the allowed option keys, and compile `AND`/`OR` conditional-logic relations into boolean groups instead of flattening them. The association-field lookup is also bounded (skips row counting, considers all post statuses so a draft/private association is no longer silently dropped on save). No Fuerte-WP action needed; the hardened saves apply automatically.
+
 # 1.11.1 / 2026-08-04
 - **Changed**: Logger activation is now a single explicit OR gate in `Fuerte_Wp_Logger::init_from_constant()`. Logging runs only when `WP_DEBUG` is true OR the plugin-specific `FUERTEWP_DEBUG` constant is true. Previously the gate was split across two call sites: the bootstrap called `enable(WP_DEBUG)` and `init_from_constant()` could only flip it ON for `FUERTEWP_DEBUG`, never off. Functionally equivalent but order-dependent and implicit. The OR is now visible in one place; the redundant `enable(WP_DEBUG)` line is removed from `fuerte-wp.php`.
 - **Note**: Logging ships OFF by default. On a standard install `WP_DEBUG` is false and `FUERTEWP_DEBUG` is undefined, so nothing is logged unless a site operator explicitly enables either constant in `wp-config.php`.

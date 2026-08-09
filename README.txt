@@ -1,7 +1,7 @@
 === Fuerte-WP | WordPress Security, Auto-Updates and Admin Control ===
 Contributors: tcattd
 Tags: security, auto-updates, two-factor, login-security, maintenance
-Stable tag: 1.11.1
+Stable tag: 1.11.2
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 8.2
@@ -235,28 +235,6 @@ Yes. Define a `$fuertewp` array in `wp-config-fuerte.php` inside your `ABSPATH` 
 5. Discovery-driven admin menu and access control management
 
 == Changelog ==
-
-= 1.11.0 / 2026-07-30 =
-* **New Feature**: Discovery-driven admin menu, submenu, and admin-bar visibility. The old manual textareas are replaced by searchable multiselects populated from the live menu tree. Hide and block are now unified: hiding a page also blocks direct URL access. A collapsed manual textarea remains as a precision escape hatch.
-* **Bug Fix**: Five Advanced Restrictions settings (removed menus, submenus, admin-bar nodes, restricted scripts, restricted pages) were silently dead since the 1.7.0 HyperFields migration. They now reach the enforcer correctly.
-* **Bug Fix**: The "Disable Application Passwords" restriction was a no-op due to a wrong config key. Application passwords are now actually disabled site-wide.
-* **Bug Fix**: App Passwords and XML-RPC restriction hooks were registered at the wrong filter priority. Fixed.
-* **Changed**: Bundled HyperFields library updated to 1.5.0, adding automatic cache invalidation on settings saves.
-
-= 1.10.0 / 2026-07-10 =
-* **New Feature**: Bundled the official WordPress Two-Factor plugin as a library, with a site-enforced provider policy (Email, TOTP Authenticator App, Recovery Codes) and crash-safe coexistence with the standalone plugin.
-* **New Feature**: "Enable 2FA" and "Enforce 2FA for Admins" checkboxes on the Login Security tab (both default ON). Admins are challenged with an emailed code at login; each admin can switch to TOTP. Super users always bypass enforcement.
-* **New Feature**: `FUERTEWP_DISABLE_2FA` constant as a higher-priority off switch for operators.
-* **Changed**: Auto-update settings moved from the Main tab to a dedicated Updates tab.
-
-= 1.9.6 / 2026-06-06 =
-* **New Feature**: Disable Comments site-wide with a single toggle. Closes comments and pings on all post types, removes the Comments admin menu and dashboard widget, blocks comment feeds and REST API comment endpoints, blocks XML-RPC comment methods and pingback, and removes the X-Pingback header.
-
-= 1.9.5 / 2026-06-02 =
-* **Bug Fix**: Super-users were incorrectly affected by restrictions meant only for non-super-users (Permalinks, ACF, Theme/Plugin Editor, Theme/Plugin Install, Customizer CSS). Added a single source of truth for super-user checks and fixed a case-sensitivity bug in email matching.
-
-= 1.9.4 / 2026-05-08 =
-* **Bug Fix**: Fixed WooCommerce Action Scheduler async runner being blocked by the Login URL Hider. AJAX and cron requests now bypass the login redirect.
 
 [See the complete changelog on GitHub](https://github.com/EstebanForge/Fuerte-WP/blob/master/CHANGELOG.md)
 
