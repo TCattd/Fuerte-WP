@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "155c5923861cee02bb48b7b972be8224",
+    "content-hash": "39150aa308f12458db57825a54747008",
     "packages": [
         {
             "name": "estebanforge/hyperfields",
-            "version": "1.5.2",
+            "version": "1.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EstebanForge/HyperFields.git",
-                "reference": "de47dc439da08525aea0537352eab498d1a4182e"
+                "reference": "6c3d7d199a8bba0aca9b000ba0ba7b79f89cd20d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EstebanForge/HyperFields/zipball/de47dc439da08525aea0537352eab498d1a4182e",
-                "reference": "de47dc439da08525aea0537352eab498d1a4182e",
+                "url": "https://api.github.com/repos/EstebanForge/HyperFields/zipball/6c3d7d199a8bba0aca9b000ba0ba7b79f89cd20d",
+                "reference": "6c3d7d199a8bba0aca9b000ba0ba7b79f89cd20d",
                 "shasum": ""
             },
             "require": {
@@ -52,9 +52,9 @@
             "description": "HyperFields: A powerful custom field system for WordPress, providing metaboxes, options pages, and conditional logic.",
             "support": {
                 "issues": "https://github.com/EstebanForge/HyperFields/issues",
-                "source": "https://github.com/EstebanForge/HyperFields/tree/1.5.2"
+                "source": "https://github.com/EstebanForge/HyperFields/tree/1.5.4"
             },
-            "time": "2026-08-09T20:46:21+00:00"
+            "time": "2026-08-11T01:28:45+00:00"
         }
     ],
     "packages-dev": [
