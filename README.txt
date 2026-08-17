@@ -1,7 +1,7 @@
 === Fuerte-WP | WordPress Security, Auto-Updates and Admin Control ===
 Contributors: tcattd
 Tags: security, auto-updates, two-factor, login-security, maintenance
-Stable tag: 1.11.3
+Stable tag: 1.11.4
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 8.2
