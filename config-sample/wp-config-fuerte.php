@@ -28,6 +28,22 @@ define('FUERTEWP_FORCE', false);
 define('FUERTEWP_DISABLE_2FA', false);
 
 /**
+ * Filesystem kill switches (server ops): create marker files in the WordPress
+ * root or one level above it, in the folder where a moved wp-config.php would
+ * live. Presence only: an empty file counts, content is never read. Survives
+ * plugin updates and DB changes; remove the file to re-enable.
+ *
+ * Caution: the parent-directory lookup is site-wide. On shared hosting
+ * where several sites share one parent folder, a single marker disables
+ * Fuerte-WP for all of them.
+ *
+ * .fuertewp-disable       Disable the entire plugin.
+ * .fuertewp-disable-mfa   Disable the bundled Two-Factor only.
+ *
+ * Example: site at /user/public_html/, marker at /user/.fuertewp-disable.
+ */
+
+/**
  * Edit this configuration array and set up as you like.
  */
 $fuertewp = [
@@ -206,6 +222,7 @@ $fuertewp = [
     */
     'emails' => [
         'fatal_error' => true,  // Site admin OR recovery_email address
+        'application_password_created' => true, // User account (WP 7.2+), critical security notice
         'automatic_updates' => false, // Site admin
         'comment_awaiting_moderation' => false, // Site admin
         'comment_has_been_published' => false, // Post author

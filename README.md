@@ -64,7 +64,7 @@ Fuerte-WP's Auto-Update Management System provides comprehensive control over Wo
 - **Recovery Email Routing**: Route WordPress admin emails to the right maintenance team
 - **Custom Sender Configuration**: Professional email sender setup that matches your domain
 - **Email Audit Trail**: Logging that helps with maintenance communication tracking
-
+- **Notification Control**: Choose which built-in WordPress emails still send (fatal errors, auto-updates, comment notices, password changes, privacy requests, new user and network alerts, application password creation)
 ### 🔐 Optional: Admin Access Management
 *For organizations with multiple administrators*
 
@@ -161,6 +161,15 @@ Upload your updated ```wp-config-fuerte.php``` to your WordPress's root director
 
 Don't worry. New Fuerte-WP features that need new configuration values will not run or affect you until you upgrade your config file and add the new/missing settings.
 
+### Emergency stop (server operations)
+
+Sites where wp-admin is locked down still have a kill switch at the server layer. Create empty marker files in the WordPress root or one level above it (the same parent directory where a moved `wp-config.php` can live):
+
+- `.fuertewp-disable` disables Fuerte-WP completely. The plugin will not boot at all until the file is removed.
+- `.fuertewp-disable-mfa` disables only the bundled Two-Factor feature; everything else keeps running.
+
+An empty file is enough (`touch .fuertewp-disable`); content is never read. Caution: the parent-directory lookup is site-wide, so on shared hosting where several sites share one parent folder, one marker disables Fuerte-WP for all of them.
+
 ## Documentation
 
 For detailed documentation, please see:
@@ -171,7 +180,6 @@ For detailed documentation, please see:
 - **[Composer Commands](docs/COMPOSER_COMMANDS.md)** - Available composer scripts for development
 - **[Security Policy](SECURITY.md)** - Security reporting and policies
 - **[CLAUDE.md](CLAUDE.md)** - Project architecture and development guidelines (for contributors)
-- **[TODO](docs/TODO.md)** - Planned features and development roadmap
 
 ## FAQ
 

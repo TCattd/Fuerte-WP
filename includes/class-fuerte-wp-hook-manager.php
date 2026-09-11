@@ -326,8 +326,15 @@ class Fuerte_Wp_Hook_Manager
      */
     private static function register_email_hooks()
     {
-        // Recovery email (always needed if plugin is active)
-        self::add_hook('recovery_mode_email', 'Fuerte_Wp_Enforcer', 'recovery_email_address', 10, true, 1);
+        $email_settings = self::$config['emails'] ?? [];
+
+        // Fatal error (recovery mode) email: redirect to the configured
+        // address, or suppress entirely when the toggle is off.
+        if (!isset($email_settings['fatal_error']) || $email_settings['fatal_error']) {
+            self::add_hook('recovery_mode_email', 'Fuerte_Wp_Enforcer', 'recovery_email_address', 10, true, 1);
+        } else {
+            self::add_hook('recovery_mode_email', 'Fuerte_Wp_Enforcer', 'suppress_email_notification', 10, true, 1);
+        }
 
         // Sender email customization
         if (isset(self::$config['general']['sender_email_enable']) && self::$config['general']['sender_email_enable']) {
@@ -335,22 +342,49 @@ class Fuerte_Wp_Hook_Manager
             self::add_hook('wp_mail_from_name', 'Fuerte_Wp_Enforcer', 'sender_email_name', 10, true);
         }
 
-        // Email notification filters
-        $email_settings = self::$config['emails'] ?? [];
+        // Email notification filters. Keys = emails.* toggles; values = real
+        // WordPress core hooks, verified against vendored core 7.0.
+        // Unchecked toggle = suppress via the hook; checked = send (no hook).
         $email_hooks = [
-            'fatal_error' => 'disable_fatal_error_emails',
-            'automatic_updates' => 'disable_update_emails',
-            'comment_awaiting_moderation' => 'disable_comment_moderation_emails',
-            'comment_has_been_published' => 'disable_comment_published_emails',
-            'user_reset_their_password' => 'disable_password_reset_emails',
-            'user_confirm_personal_data_export_request' => 'disable_data_export_emails',
-            'new_user_created' => 'disable_new_user_emails',
+            'automatic_updates' => [
+                'auto_core_update_send_email',
+                'auto_plugin_update_send_email',
+                'auto_theme_update_send_email',
+            ],
+            'comment_awaiting_moderation' => ['notify_moderator'],
+            'comment_has_been_published' => ['notify_post_author'],
+            'user_reset_their_password' => ['wp_password_change_notification_email'],
+            'user_confirm_personal_data_export_request' => ['user_request_confirmed_email_to'],
+            'new_user_created' => ['wp_new_user_notification_email_admin'],
+            'network_new_site_created' => ['send_new_site_email'],
+            'network_new_site_activated' => ['wpmu_welcome_notification'],
         ];
 
-        foreach ($email_hooks as $setting => $filter) {
+        // Application password created (ships in WP 7.2; core.trac changeset
+        // 63582, ticket #63927). Critical security notice. Wire only when
+        // core has registered the notifier on wp_create_application_password
+        // in default-filters.php: has_action() probes core's own wiring, so
+        // a renamed or reshipped feature keeps us inert instead of wiring a
+        // disable filter nobody applies.
+        if (has_action('wp_create_application_password', 'wp_application_password_created_notification')) {
+            $email_hooks['application_password_created'] = ['wp_send_application_password_created_email'];
+        }
+
+        foreach ($email_hooks as $setting => $filters) {
             if (isset($email_settings[$setting]) && !$email_settings[$setting]) {
-                self::add_hook($filter, 'Fuerte_Wp_Enforcer', 'filter_email_notifications', 10, true, 1);
+                foreach ($filters as $filter) {
+                    self::add_hook($filter, 'Fuerte_Wp_Enforcer', 'suppress_email_notification', 10, true, 1);
+                }
             }
+        }
+
+        // Network user registration has no dedicated core disable filter:
+        // newuser_notify_siteadmin() gates on the registrationnotification
+        // site option. Short-circuit that option read instead. Core ties
+        // newblog_notify_siteadmin() (self-service signup notice) to the
+        // same option, so this toggle also silences that email.
+        if (isset($email_settings['network_new_user_site_registered']) && !$email_settings['network_new_user_site_registered']) {
+            self::add_hook('pre_site_option_registrationnotification', 'Fuerte_Wp_Enforcer', 'disable_site_registration_notifications', 10, true, 0);
         }
     }
 
@@ -481,6 +515,10 @@ class Fuerte_Wp_Hook_Manager
             'comments_open', 'pings_open', 'comments_array',
             'get_comments_number', 'wp_headers', 'rest_pre_dispatch',
             'manage_posts_columns', 'manage_pages_columns',
+            'auto_core_update_send_email', 'auto_plugin_update_send_email',
+            'auto_theme_update_send_email', 'notify_moderator', 'notify_post_author',
+            'send_new_site_email', 'wpmu_welcome_notification',
+            'user_request_confirmed_email_to', 'pre_site_option_registrationnotification',
         ])) {
             add_filter($hook, $final_callback, $priority, $accepted_args);
         } else {
@@ -535,20 +573,20 @@ class Fuerte_Wp_Hook_Manager
     private static function should_register_email_hooks()
     {
         $email_settings = self::$config['emails'] ?? [];
+        $general = self::$config['general'] ?? [];
 
-        // Always register recovery email hooks
-        if (isset(self::$config['general']['recovery_email']) && !empty(self::$config['general']['recovery_email'])) {
+        // Sender rewrite and the recovery redirect also live in
+        // register_email_hooks(). File configs are not merged with defaults
+        // (load_from_file() returns the raw $fuertewp array), so an absent
+        // emails section must not kill them.
+        if (!empty($general['recovery_email']) || !empty($general['sender_email_enable'])) {
             return true;
         }
 
-        // Check if any email settings are configured
-        foreach ($email_settings as $enabled) {
-            if ($enabled === true || $enabled === 'yes') {
-                return true;
-            }
-        }
-
-        return false;
+        // Email hooks register in both directions: redirects when a toggle
+        // is on, suppression filters when it is off. Any configured emails
+        // section therefore needs its hooks.
+        return !empty($email_settings);
     }
 
     /**

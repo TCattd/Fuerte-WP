@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'HyperFields\\Abilities\\AbilityRegistrar' => $vendorDir . '/estebanforge/hyperfields/src/Abilities/AbilityRegistrar.php',
     'HyperFields\\AdminPage' => $vendorDir . '/estebanforge/hyperfields/src/AdminPage.php',
     'HyperFields\\Admin\\Activation' => $vendorDir . '/estebanforge/hyperfields/src/Admin/Activation.php',
     'HyperFields\\Admin\\ExportImportPageConfig' => $vendorDir . '/estebanforge/hyperfields/src/Admin/ExportImportPageConfig.php',

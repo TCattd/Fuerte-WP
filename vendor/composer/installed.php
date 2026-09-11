@@ -1,8 +1,8 @@
 <?php return array(
     'root' => array(
         'name' => 'estebanforge/fuerte-wp',
-        'pretty_version' => '1.11.3',
-        'version' => '1.11.3.0',
+        'pretty_version' => '1.12.0',
+        'version' => '1.12.0.0',
         'reference' => null,
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
@@ -11,8 +11,8 @@
     ),
     'versions' => array(
         'estebanforge/fuerte-wp' => array(
-            'pretty_version' => '1.11.3',
-            'version' => '1.11.3.0',
+            'pretty_version' => '1.12.0',
+            'version' => '1.12.0.0',
             'reference' => null,
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'estebanforge/hyperfields' => array(
-            'pretty_version' => '1.5.5',
-            'version' => '1.5.5.0',
-            'reference' => 'cd53a36335e1c35a8f1e2c964eb324861fad20c4',
+            'pretty_version' => '1.6.1',
+            'version' => '1.6.1.0',
+            'reference' => '89c7b190c35e56ff06bc7b7a54f89d1b58a8db72',
             'type' => 'library',
             'install_path' => __DIR__ . '/../estebanforge/hyperfields',
             'aliases' => array(),

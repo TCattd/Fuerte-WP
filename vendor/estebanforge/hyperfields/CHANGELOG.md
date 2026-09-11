@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1] - 2026-09-10
+
+### Added
+- **`Field::toJsonSchema()`.** Machine-readable JSON Schema export of any field: `email`/`url`/`date`/`datetime` formats, `enum` from option keys (string-normalized, matching `sanitizeSelectValue()`), `minimum`/`maximum` from number bounds, recursive repeater object shapes from sub-fields, and `boolean` for checkboxes. Structural/UI types (`tabs`, `heading`, `separator`, `custom`, `header_scripts`, `footer_scripts`, `html`, `hidden`, `sidebar`, `association`, `map`, `media_gallery`) and any type with a non-derivable storage shape return `null`; the `hyperfields/field/json_schema` filter is the escape hatch to supply or override a schema. `image` declares `integer` (sanitizeValue stores `absint`), `color` declares `string|null` (`sanitize_hex_color` returns null for invalid input).
+- **OptionsPage single-field writer and page registry.** `getCapability()`, `getMenuSlug()`, `getPageTitle()`, `getRegisteredPages()` (pages index themselves in `register()`, so machine surfaces resolve them without an admin request), `findField()` / `allFields()` across sections plus legacy page-level fields, and `setFieldValue($fieldName, $value)`: the Settings-API save pipeline narrowed to one field (`wps_sanitize` -> `Field::sanitizeValue()` -> `wps_validate` -> `hyperfields/options_page/pre_save` filter -> `option_path` dual-write -> `update_option`, which fires the semantic `after_save` action and cache invalidation). Same-value writes are idempotent successes instead of the `false` `update_option()` returns on unchanged rows.
+- **Abilities API module (WordPress 6.9+).** `hyperfields/list-option-pages` (page inventory with per-field JSON Schema; `manage_options`), `hyperfields/get-option` and `hyperfields/update-option` (permission resolved per page from the page's own capability at execution time; unknown pages fail closed). Writes run through `OptionsPage::setFieldValue()`, so they are indistinguishable from a form save of that single field. The field inventory is request-scoped for pages with conditional sections: fields whose visibility condition fails at registration time are absent until the dependency value changes and a new request registers them. Same posture as the other Hyper modules: register everything, expose nothing; `hyperfields/abilities/enabled`, `hyperfields/abilities/expose_rest`, and `hyperfields/abilities/mcp_public` filters control availability.
+
+## [1.6.0] - 2026-08-29
+
+### Fixed
+- **Select fields with numeric-string option keys saved the wrong value.** PHP casts numeric-string array keys to int (`['2' => …]` becomes `[2 => …]`), so `Field::sanitizeSelectValue()`'s strict `in_array` against the raw keys never matched the string values a form posts — every numeric-keyed select silently fell back to its first option on save. Both sides are now string-normalized before the strict comparison. Regression test covers numeric-keyed selects (valid value, int input, invalid fallback).
+
 ## [1.5.5] - 2026-08-17
 
 ### Security

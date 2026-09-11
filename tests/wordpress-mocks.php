@@ -73,6 +73,25 @@ function add_filter($tag, $function_to_add, $priority = 10, $accepted_args = 1) 
     ];
     return true;
 }
+function add_action($tag, $function_to_add, $priority = 10, $accepted_args = 1) {
+    return add_filter($tag, $function_to_add, $priority, $accepted_args);
+}
+
+function has_action($tag, $callback = false) {
+    global $wp_tests_hooks;
+    if (!isset($wp_tests_hooks[$tag])) {
+        return false;
+    }
+    if (false === $callback) {
+        return !empty($wp_tests_hooks[$tag]);
+    }
+    foreach ($wp_tests_hooks[$tag] as $hook) {
+        if ($hook['function'] === $callback) {
+            return $hook['priority'];
+        }
+    }
+    return false;
+}
 
 function apply_filters($tag, $value) {
     return $value;

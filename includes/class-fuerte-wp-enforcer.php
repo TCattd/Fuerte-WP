@@ -783,17 +783,50 @@ class Fuerte_Wp_Enforcer
     }
 
     /**
-     * Filter email notifications.
+     * Suppress a notification email by killing its recipient.
      *
-     * @since 1.7.0
+     * Wired to three filter shapes, all verified in WP core:
+     *   - bool send filters (e.g. wp_send_application_password_created_email): returns false
+     *   - content-array filters (e.g. wp_new_user_notification_email_admin): empties 'to'
+     *   - recipient-string filters (e.g. user_request_confirmed_email_to): returns ''
+     * wp_mail() rejects an empty recipient via PHPMailer and returns false
+     * without sending, so every suppression shape is safe and type-faithful.
      *
-     * @param mixed $value Original value
+     * @since 1.12.0
      *
-     * @return bool False to disable notification
+     * @param mixed $value Original filter value (bool, array, or string)
+     *
+     * @return mixed Suppressed value
      */
-    public static function filter_email_notifications($value)
+    public static function suppress_email_notification($value)
     {
+        if (is_array($value)) {
+            $value['to'] = '';
+
+            return $value;
+        }
+
+        if (is_string($value)) {
+            return '';
+        }
+
         return false;
+    }
+
+    /**
+     * Short-circuit the registrationnotification site option.
+     *
+     * Core gates newuser_notify_siteadmin() / newblog_notify_siteadmin()
+     * on this option and ships no dedicated disable filter, so the
+     * network registration email toggle flips core's own switch.
+     *
+     * @since 1.12.0
+     *
+     * @return string 'no' (pre_site_option short-circuit requires a non-false value)
+     */
+    public static function disable_site_registration_notifications(): string
+    {
+        return 'no';
     }
 
     /**
@@ -1015,18 +1048,24 @@ class Fuerte_Wp_Enforcer
     }
 
     /**
-     * Change WP recovery email adresss.
+     * Redirect the recovery mode (fatal error) email.
      *
-     * @return string Email address
+     * Receives the full core $email array via the recovery_mode_email
+     * filter and only replaces the recipient, keeping subject, message,
+     * headers and attachments intact.
+     *
+     * @since 1.7.0
+     *
+     * @param array $email_data Core recovery mode email data
+     *
+     * @return array Email data with redirected recipient
      */
-    public static function recovery_email_address(): array
+    public static function recovery_email_address($email_data = [])
     {
-        global $fuertewp, $pagenow, $current_user;
+        global $fuertewp;
 
-        $recovery_email
-            = $fuertewp['general']['recovery_email']
+        $email_data['to'] = $fuertewp['general']['recovery_email']
             ?? 'dev@' . parse_url(home_url())['host'];
-        $email_data['to'] = $recovery_email;
 
         return $email_data;
     }

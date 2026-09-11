@@ -5,7 +5,7 @@
  * Plugin Name:       Fuerte-WP
  * Plugin URI:        https://github.com/EstebanForge/Fuerte-WP
  * Description:       Stronger WP. Limit access to critical WordPress areas, even other for admins.
- * Version:           1.11.4
+ * Version:           1.12.0
  * Author:            Esteban Cuevas
  * Author URI:        https://actitud.xyz
  * License:           GPL-2.0+
@@ -23,6 +23,17 @@
 // If this file is called directly, abort.
 if (!defined('WPINC')) {
     die();
+}
+
+/*
+ * Server-ops kill switch: a .fuertewp-disable marker file in ABSPATH or one
+ * level above it (the docroot parent, where a moved wp-config.php would live)
+ * disables the entire plugin. Presence only; empty file counts.
+ */
+require_once plugin_dir_path(__FILE__) . 'includes/class-fuerte-wp-dot-files.php';
+
+if (Fuerte_Wp_Dot_Files::all_disabled()) {
+    return false;
 }
 
 define('FUERTEWP_PLUGIN_BASE', plugin_basename(__FILE__));

@@ -74,12 +74,15 @@ Coverage:
 
 **Escape hatch:** an operator with filesystem access sets `FUERTEWP_DISABLE_2FA` to true in `wp-config-fuerte.php`. When set, Fuerte-WP stops loading its bundled copy entirely (not just enforcement), so the standalone plugin can be activated cleanly on the next request without a class-redeclare fatal. This is the recovery lever for both lockouts and for migrating to the standalone plugin.
 
+Since 1.12.0 the same tier is reachable without editing `wp-config-fuerte.php`: a `.fuertewp-disable-mfa` marker file (WordPress root or its parent directory, wp-config.php-style lookup) keeps the bundled copy unloaded, and `.fuertewp-disable` disables the whole plugin. Presence only: an empty file counts.
+
 ### 4. Lockout recovery (first-class, not deferred)
 
 A self-protecting plugin that can lock out its own administrators with no escape hatch is a worse outcome than any other con in this document. Recovery levers:
 
 - **Super users bypass enforcement.** Users in `super_users` (the existing config list, mirrored in `wp-config-fuerte.php`) bypass per-role 2FA enforcement, exactly as they bypass every other Fuerte-WP restriction.
 - **`FUERTEWP_DISABLE_2FA` kill-switch.** A constant in `wp-config-fuerte.php`, matching the existing `FUERTEWP_DISABLE` / `FUERTEWP_FORCE` naming convention. Unlike those, it uses a **lenient truthiness check** (accepts `true`, `1`, `'1'`, `'true'`) because it is the documented recovery lever and a silent no-op from a stringy value would lock the operator out of their own site. When set, it stops loading the bundled provider code so the standalone plugin (or no 2FA) can take over.
+- **`.fuertewp-disable-mfa` marker file (1.12.0).** Same effect as the constant, at the same filesystem trust tier, but reachable when `wp-config-fuerte.php` is not writable (provisioned containers, incident response): create the file in the WordPress root or its parent and the bundled copy never loads. The master `.fuertewp-disable` marker implies it.
 - **WP-CLI fallback.** Operators with CLI access can clear user meta (`_two_factor_*` keys) directly.
 
 These three levers cover the standard recovery matrix (another admin, wp-cli/DB meta deletion, plugin deactivation via filesystem) that Fuerte-WP's self-protection otherwise removes for non-super-users.
@@ -93,7 +96,7 @@ These three levers cover the standard recovery matrix (another admin, wp-cli/DB 
 - **Assets load natively.** `dist/` CSS/JS (QR codes, backup-code UI, login scripts) served from the bundled path without Strauss's PHP-only limitation.
 - **Self-protecting.** Does not depend on a second plugin's uptime (unlike soft dependency).
 - **Coexists safely with standalone installs.** The activation-block prevents the double-load case; detect-and-defer handles the already-running case.
-- **Recovery is real.** Super-user enforcement bypass + `FUERTEWP_DISABLE_2FA` bundled-load kill-switch + documented CLI path.
+- **Recovery is real.** Super-user enforcement bypass + `FUERTEWP_DISABLE_2FA` bundled-load kill-switch + dot-file kill switches (`.fuertewp-disable`, `.fuertewp-disable-mfa`) + documented CLI path.
 - **Clean uninstall.** Deleting Fuerte-WP purges bundled 2FA data (`_two_factor_*` user meta incl. TOTP secrets and backup codes, plus the `two_factor_enabled_providers` option) via `Two_Factor_Core::uninstall()` invoked from `uninstall.php`. No orphaned PII.
 
 ## What this costs

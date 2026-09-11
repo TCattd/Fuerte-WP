@@ -949,9 +949,13 @@ class Field
             return (string) $value;
         }
 
-        $allowed_values = array_keys($this->options);
+        // PHP casts numeric-string array keys to int ('4' => 4). Values
+        // arriving from forms are strings, so a strict in_array against the
+        // raw keys never matches a numeric-keyed select and silently falls
+        // back to the first option. Normalize both sides.
+        $allowed_values = array_map('strval', array_keys($this->options));
 
-        return in_array($value, $allowed_values, true) ? (string) $value : (string) $allowed_values[0];
+        return in_array((string) $value, $allowed_values, true) ? (string) $value : $allowed_values[0];
     }
 
     /**
@@ -1058,5 +1062,174 @@ class Field
         $args['attributes'] = $attrs;
 
         return $args;
+    }
+
+    /**
+     * Field types with no meaningful value schema: pure UI structure or
+     * storage whose shape is not derivable from the definition alone.
+     * toJsonSchema() returns null for these; the
+     * hyperfields/field/json_schema filter is the escape hatch for
+     * consumers that know better.
+     */
+    private const NON_SCHEMA_TYPES = [
+        'tabs',
+        'heading',
+        'separator',
+        'custom',
+        'header_scripts',
+        'footer_scripts',
+        'html',
+        'hidden',
+        'sidebar',
+        'association',
+        'map',
+        'media_gallery',
+    ];
+
+    /**
+     * JSON Schema describing this field's stored value.
+     *
+     * The machine-readable export of the field definition: feeds ability
+     * input/output schemas, REST argument validation, and (through the MCP
+     * adapter) tool input schemas. Returns null for structural/UI-only
+     * types and for types whose storage shape is not derivable from the
+     * definition; the hyperfields/field/json_schema filter can supply a
+     * schema for any null result.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function toJsonSchema(): ?array
+    {
+        $schema = $this->buildJsonSchema();
+
+        /**
+         * Override or supply a field's JSON Schema.
+         *
+         * @param array<string, mixed>|null $schema Null when the type has no derivable schema.
+         * @param Field                     $field  The field being exported.
+         */
+        return apply_filters('hyperfields/field/json_schema', $schema, $this);
+    }
+
+    /**
+     * Build the schema for the field type at hand.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function buildJsonSchema(): ?array
+    {
+        if (in_array($this->type, self::NON_SCHEMA_TYPES, true)) {
+            return null;
+        }
+
+        $schema = ['type' => 'string'];
+        $enum_keys = [];
+
+        if (in_array($this->type, ['select', 'radio', 'radio_image'], true)) {
+            // strval matches sanitizeSelectValue(): PHP coerces numeric-string
+            // option keys ('2' => x) to ints, and the enum must describe the
+            // stored strings, not PHP's array-key view of them.
+            $enum_keys = array_map('strval', array_keys($this->options));
+        } elseif (in_array($this->type, ['multiselect', 'set'], true)) {
+            $enum_keys = array_map('strval', array_keys($this->options));
+        }
+
+        switch ($this->type) {
+            case 'email':
+                $schema = ['type' => 'string', 'format' => 'email'];
+                break;
+            case 'url':
+            case 'oembed':
+                $schema = ['type' => 'string', 'format' => 'uri'];
+                break;
+            case 'date':
+                $schema = ['type' => 'string', 'format' => 'date'];
+                break;
+            case 'datetime':
+                $schema = ['type' => 'string', 'format' => 'date-time'];
+                break;
+            case 'number':
+                $schema = ['type' => 'number'];
+                if ($this->min !== null) {
+                    $schema['minimum'] = $this->min;
+                }
+                if ($this->max !== null) {
+                    $schema['maximum'] = $this->max;
+                }
+                break;
+            case 'checkbox':
+                $schema = ['type' => 'boolean'];
+                break;
+            case 'image':
+                // sanitizeValue stores absint(): 0 means "none set".
+                $schema = ['type' => 'integer'];
+                break;
+            case 'color':
+                // sanitize_hex_color() returns null for invalid input, and
+                // that null is stored.
+                $schema = ['type' => ['string', 'null']];
+                break;
+            case 'multiselect':
+            case 'set':
+                $schema = [
+                    'type'  => 'array',
+                    'items' => $enum_keys !== []
+                        ? ['type' => 'string', 'enum' => $enum_keys]
+                        : ['type' => 'string'],
+                ];
+                break;
+            case 'repeater':
+                $schema = $this->buildRepeaterJsonSchema();
+                break;
+            default:
+                // text, textarea, color, time, image, file, rich_text,
+                // code-editor-style strings, and select/radio families.
+                $schema = ['type' => 'string'];
+                if ($enum_keys !== []) {
+                    $schema['enum'] = $enum_keys;
+                }
+                break;
+        }
+
+        $description = $this->help !== '' && $this->help !== null ? $this->help : $this->label;
+        if (is_string($description) && $description !== '') {
+            $schema['description'] = $description;
+        }
+
+        if ($this->default !== null && $this->default !== '') {
+            $schema['default'] = $this->default;
+        }
+
+        return $schema;
+    }
+
+    /**
+     * Repeater schema: array of objects shaped by the sub-fields (recursive;
+     * non-schema sub-fields are omitted from the object shape).
+     *
+     * @return array<string, mixed>|null
+     */
+    private function buildRepeaterJsonSchema(): ?array
+    {
+        if (!is_callable([$this, 'getSubFields'])) {
+            return ['type' => 'array', 'items' => ['type' => 'object']];
+        }
+
+        $properties = [];
+        foreach ($this->getSubFields() as $sub_field) {
+            $sub_schema = $sub_field->toJsonSchema();
+            if ($sub_schema === null) {
+                continue;
+            }
+            $properties[$sub_field->getName()] = $sub_schema;
+        }
+
+        return [
+            'type'  => 'array',
+            'items' => [
+                'type'       => 'object',
+                'properties' => $properties,
+            ],
+        ];
     }
 }

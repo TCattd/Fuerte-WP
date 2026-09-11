@@ -94,11 +94,20 @@ class Fuerte_Wp_TwoFactor
      * strict-true convention because this constant is the documented recovery
      * lever and a silent no-op from a stringy value would trap the operator
      * out of their own site.
+     * The .fuertewp-disable / .fuertewp-disable-mfa marker files (ABSPATH or
+     * its parent) disable it as well, before this constant is consulted.
      *
      * @return bool
      */
     public static function is_disabled()
     {
+        // Server-ops kill switches: .fuertewp-disable / .fuertewp-disable-mfa
+        // in ABSPATH or its parent. Master implies MFA: a fully disabled
+        // plugin never boots either.
+        if (Fuerte_Wp_Dot_Files::mfa_disabled()) {
+            return true;
+        }
+
         if (!defined('FUERTEWP_DISABLE_2FA')) {
             return false;
         }

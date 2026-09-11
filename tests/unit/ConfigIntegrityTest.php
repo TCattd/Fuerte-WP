@@ -52,6 +52,16 @@ test('config integrity - general settings have defaults', function () {
     expect($config['general'])->toHaveKey('autoupdate_plugins');
 });
 
+test('config integrity - application password email is enabled by default', function () {
+    // Critical security notice (WP 7.2+): absent option must mean send.
+    global $wp_tests_options;
+    $wp_tests_options = [];
+
+    $config = Fuerte_Wp_Config::get_config(true);
+
+    expect($config['emails']['application_password_created'])->toBeTrue();
+});
+
 test('config integrity - cache invalidation works correctly', function () {
     // Arrange: Initial config
     global $wp_tests_options;

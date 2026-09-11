@@ -26,6 +26,7 @@ class ComposerStaticInit280712ceda1ca80d5fa39c713f713c43
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'HyperFields\\Abilities\\AbilityRegistrar' => __DIR__ . '/..' . '/estebanforge/hyperfields/src/Abilities/AbilityRegistrar.php',
         'HyperFields\\AdminPage' => __DIR__ . '/..' . '/estebanforge/hyperfields/src/AdminPage.php',
         'HyperFields\\Admin\\Activation' => __DIR__ . '/..' . '/estebanforge/hyperfields/src/Admin/Activation.php',
         'HyperFields\\Admin\\ExportImportPageConfig' => __DIR__ . '/..' . '/estebanforge/hyperfields/src/Admin/ExportImportPageConfig.php',

@@ -1,6 +1,6 @@
 # Fuerte-WP — Agent Knowledge Base
 
-**Updated:** 2026-07-17
+**Updated:** 2026-09-11
 
 ## OVERVIEW
 WordPress security plugin. Limits access to critical WP areas, even for admins. Enforces restrictions, manages 2FA, auto-updates, login security, email controls.
@@ -25,6 +25,7 @@ includes/
   class-fuerte-wp.php              # Core orchestrator (loads deps, wires hooks, runs enforcer)
   class-fuerte-wp-enforcer.php     # Security engine (singleton) — ALL restrictions/rules
   class-fuerte-wp-config.php       # Config loader (file > DB), transient-cached
+  class-fuerte-wp-dot-files.php    # Filesystem kill switches (.fuertewp-disable, .fuertewp-disable-mfa)
   class-fuerte-wp-hook-manager.php # Static hook registration + conditional gating
   class-fuerte-wp-helper.php       # is_super_user(), IP/CIDR utilities
   class-fuerte-wp-two-factor.php   # Wrapper: boots bundled Two-Factor lib
@@ -86,6 +87,7 @@ Escape hatches (defined in `wp-config.php` or `wp-config-fuerte.php`):
 - `FUERTEWP_DISABLE` (true) — plugin returns early, never boots.
 - `FUERTEWP_FORCE` (true) — enforce restrictions even for super users.
 - `FUERTEWP_DISABLE_2FA` (truthy) — skip bundled Two-Factor lib load.
+- Filesystem tier (server ops, see `Fuerte_Wp_Dot_Files`): marker files `.fuertewp-disable` (plugin never boots, checked first in `fuerte-wp.php`) and `.fuertewp-disable-mfa` (2FA stays off). Searched in ABSPATH and its parent (docroot), wp-config.php style. Presence only; empty file counts; checked before every constant. Parent-directory markers are site-wide on shared hosting: sibling sites under one parent share the switch.
 
 Config shape (normalized): `$fuertewp['general']`, `['super_users']`, `['tweaks']`, `['restrictions']`, `['emails']`, `['restricted_scripts']`, `['restricted_pages']`, `['removed_menus']`, `['removed_submenus']`, `['removed_adminbar_menus']`, `['login_security']`.
 
@@ -104,8 +106,9 @@ Wrapper `includes/class-fuerte-wp-two-factor.php`, class `Fuerte_Wp_TwoFactor`. 
 ## EMAIL MANAGEMENT
 Hooked in `Fuerte_Wp_Hook_Manager::register_email_hooks()`:
 - `wp_mail_from` / `wp_mail_from_name` — sender rewrite (gated on `general.sender_email_enable`).
-- `recovery_mode_email` — redirect to configured recovery address.
-- Notification filters (gated by `emails[...]` toggles): fatal_error, automatic_updates, comment_awaiting_moderation, comment_has_been_published, user_reset_their_password, user_confirm_personal_data_export_request, new_user_created.
+- `recovery_mode_email` — toggle on: redirect to the configured recovery address (callback replaces only the recipient, keeps the rest of the core email array). Toggle off: suppress the email entirely.
+- Notification toggles (`emails[...]`, `true` = send / `false` = suppress; every hook below is a real WP core filter, verified against vendored core 7.0): fatal_error switches the recovery redirect for suppression, application_password_created (ships WP 7.2, core.trac 63582 / ticket #63927, default on, gated on `has_action('wp_create_application_password', 'wp_application_password_created_notification')` — core's own default-filters.php registration, so a reshipped/renamed feature keeps us inert; absent from released core until 7.2) -> `wp_send_application_password_created_email`, automatic_updates -> `auto_core_update_send_email` + `auto_plugin_update_send_email` + `auto_theme_update_send_email`, comment_awaiting_moderation -> `notify_moderator`, comment_has_been_published -> `notify_post_author`, user_reset_their_password -> `wp_password_change_notification_email`, user_confirm_personal_data_export_request -> `user_request_confirmed_email_to`, new_user_created -> `wp_new_user_notification_email_admin`, network_new_site_created -> `send_new_site_email`, network_new_site_activated -> `wpmu_welcome_notification`, network_new_user_site_registered -> `pre_site_option_registrationnotification` (no core bool filter exists for `newuser_notify_siteadmin()`; the plugin short-circuits core's own registrationnotification gate, which also silences `newblog_notify_siteadmin()` self-service signup notices).
+- Suppression callback: `Fuerte_Wp_Enforcer::suppress_email_notification()` — bool filters get `false`, content-array filters get `'to' => ''`, recipient-string filters get `''`. `wp_mail()` safely rejects an empty recipient.
 - **2FA token emails are NOT intercepted** — `Two_Factor_Email::send_code()` calls `wp_mail()` directly.
 
 `Fuerte_Wp_Enforcer::sender_email_address()`: empty `sender_email` config falls back to `no-reply@<home_url host>`. Treat empty strings as unset (fixed 1.10.0).
@@ -145,7 +148,7 @@ Hooked in `Fuerte_Wp_Hook_Manager::register_email_hooks()`:
 7. **File-config dead toggle:** when `wp-config-fuerte.php` exists, admin checkboxes render but don't save. Affects every field, not just 2FA. Separate refactor.
 8. **Mailpit dev mail:** `wp_mail()` under PHP-FPM requires the catchmail wrapper + FPM pool NOT to override `GEM_PATH` to a stale Ruby version. See the docker repo's `php-conf/`.
 9. `is_enforced_user()` matches literal role slug `'administrator'`. Renamed custom admin roles are missed on multisite.
-10. The `disable_*_emails` filter names registered by fuerte-wp are custom; verify they map to real WP core hooks before relying on them (separate pre-existing issue).
+10. (Fixed 1.12.0) The `emails.*` toggles now map to real WP core hooks verified against vendored core. The old custom `disable_*_emails` filter names were no-ops; do not resurrect them.
 
 ## OTHER CONTEXT FILES
 - `CLAUDE.md` → symlink to `AGENTS.md` (this file).

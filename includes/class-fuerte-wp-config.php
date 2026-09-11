@@ -328,6 +328,7 @@ class Fuerte_Wp_Config
             ],
             'emails' => [
                 'fatal_error' => $settings['fuertewp_emails_fatal_error'] ?? true,
+                'application_password_created' => $settings['fuertewp_emails_application_password_created'] ?? true,
                 'automatic_updates' => $settings['fuertewp_emails_automatic_updates'] ?? false,
                 'comment_awaiting_moderation' => $settings['fuertewp_emails_comment_awaiting_moderation'] ?? false,
                 'comment_has_been_published' => $settings['fuertewp_emails_comment_has_been_published'] ?? false,
@@ -455,6 +456,7 @@ class Fuerte_Wp_Config
         // Load email settings
         $config['emails'] = [
             'fatal_error' => get_option('_fuertewp_emails_fatal_error', true),
+            'application_password_created' => get_option('_fuertewp_emails_application_password_created', true),
             'automatic_updates' => get_option('_fuertewp_emails_automatic_updates', false),
             'comment_awaiting_moderation' => get_option('_fuertewp_emails_comment_awaiting_moderation', false),
             'comment_has_been_published' => get_option('_fuertewp_emails_comment_has_been_published', false),
@@ -780,6 +782,7 @@ class Fuerte_Wp_Config
 
             'fuertewp_emails_fatal_error' => $config['emails']['fatal_error'] ?? true,
             'fuertewp_emails_automatic_updates' => $config['emails']['automatic_updates'] ?? false,
+            'fuertewp_emails_application_password_created' => $config['emails']['application_password_created'] ?? true,
             'fuertewp_emails_comment_awaiting_moderation' => $config['emails']['comment_awaiting_moderation'] ?? false,
             'fuertewp_emails_comment_has_been_published' => $config['emails']['comment_has_been_published'] ?? false,
             'fuertewp_emails_user_reset_their_password' => $config['emails']['user_reset_their_password'] ?? false,

@@ -243,7 +243,20 @@ class Fuerte_Wp_Admin
                 Field::make('checkbox', 'fuertewp_emails_fatal_error', __('Fatal Error.', 'fuerte-wp'))
                     ->setDefault(true)
                     ->setHelp(__('Receipt: site admin or recovery email address (main options).', 'fuerte-wp'))
-            )
+            );
+
+        // Shown only when core wires the notification (ships WP 7.2,
+        // core.trac 63582 / #63927). Enabled by default: critical security alert.
+        if (has_action('wp_create_application_password', 'wp_application_password_created_notification')) {
+            $emails_section
+                ->addField(
+                    Field::make('checkbox', 'fuertewp_emails_application_password_created', __('Application password created.', 'fuerte-wp'))
+                        ->setDefault(true)
+                        ->setHelp(__('Receipt: user. Sent when an application password is added to the account. Requires WordPress 7.2.', 'fuerte-wp'))
+                );
+        }
+
+        $emails_section
             ->addField(
                 Field::make('checkbox', 'fuertewp_emails_automatic_updates', __('Automatic updates.', 'fuerte-wp'))
                     ->setDefault(false)
@@ -282,7 +295,7 @@ class Fuerte_Wp_Admin
             ->addField(
                 Field::make('checkbox', 'fuertewp_emails_network_new_user_site_registered', __('Network: new user site registered.', 'fuerte-wp'))
                     ->setDefault(false)
-                    ->setHelp(__('Receipt: network admin.', 'fuerte-wp'))
+                    ->setHelp(__('Receipt: network admin. Unchecking also switches off the network "registration notification" setting.', 'fuerte-wp'))
             )
             ->addField(
                 Field::make('checkbox', 'fuertewp_emails_network_new_site_activated', __('Network: new site activated.', 'fuerte-wp'))

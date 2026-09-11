@@ -1,7 +1,7 @@
 === Fuerte-WP | WordPress Security, Auto-Updates and Admin Control ===
 Contributors: tcattd
 Tags: security, auto-updates, two-factor, login-security, maintenance
-Stable tag: 1.11.4
+Stable tag: 1.12.0
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 8.2
@@ -221,6 +221,10 @@ Yes. Fuerte-WP is fully compatible with WordPress multisite and can be network-a
 = Can I configure Fuerte-WP without the admin UI? =
 
 Yes. Define a `$fuertewp` array in `wp-config-fuerte.php` inside your `ABSPATH` directory. File configuration wins over the database, so the same baseline ships to every site you manage. See `config-sample/wp-config-fuerte.php` for the full shape.
+
+= Is there an emergency kill switch? =
+
+Yes. Server operators can create empty marker files in the WordPress root or one level above it: `.fuertewp-disable` disables Fuerte-WP completely, `.fuertewp-disable-mfa` disables only the bundled Two-Factor feature. The presence of the file is enough; remove it to re-enable. A marker in the parent directory applies to every site sharing that parent.
 
 = Where can I find more documentation? =
 
